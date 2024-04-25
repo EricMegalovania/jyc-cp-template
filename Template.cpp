@@ -1,4 +1,5 @@
 //火车头，娱乐用，用来平时做题凹卡常题
+/*
 #pragma GCC target("avx")
 #pragma GCC optimize(1)
 #pragma GCC optimize(2)
@@ -48,6 +49,7 @@
 #pragma GCC optimize("-funsafe-loop-optimizations")
 #pragma GCC optimize("inline-functions-called-once")
 #pragma GCC optimize("-fdelete-null-pointer-checks")
+*/
 
 //模板正式开始
 #include<bits/stdc++.h>
@@ -64,6 +66,7 @@ using LL=long long;
 using PII=pair<int,int>;
 
 const int mod=998244353;
+mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
 //double关键字比大小
 #define eps (1e-8)
@@ -122,22 +125,23 @@ void self_mul(vector<vector<LL>>& a,int n){//a=a*a
 #define N 100010
 
 //线性筛欧拉函数
-bool notP[N]={}; int phi[N],mn_p[N]={};
+bool notP[N]={}; int phi[N],mn_p[N]={1};
 vector<int>prime;
-void init_prime(const int& n=N){
+void init_prime(const int& n=N){//init [1,n-1]
 	phi[1]=1;
-	for(int i=2;i<=n;i++){
+	for(int i=2;i<n;i++){
 		if(!notP[i]){
 			prime.push_back(mn_p[i]=i);
 			phi[i]=i-1;
 		}
-		for(int j=0;j<prime.size() && i*prime[j]<=n && i*prime[j]>0;j++){
-			notP[i*prime[j]]=1,mn_p[i*prime[j]]=prime[j];
-			if(i%prime[j]==0){
-				phi[i*prime[j]]=phi[i]*prime[j];
+		for(const int& p:prime){
+			if(i>(n-1)/p) break;
+			notP[i*p]=1,mn_p[i*p]=p;
+			if(i%p==0){
+				phi[i*p]=phi[i]*p;
 				break;
 			}
-			phi[i*prime[j]]=phi[i]*(prime[j]-1);
+			phi[i*p]=phi[i]*(p-1);
 		}
 	}
 }
@@ -347,22 +351,34 @@ void heavy_path_decomposition(){
 	}
 }
 
-//平衡树 Warning: written 2 years ago, may have weird bug(s)
+//平衡树（普通平衡树）
+template<typename T>
 class fhqTreap{
 private:
 	struct Node{
-		int l,r,siz,rnd,val;
+		int l,r,siz; LL rnd;
+		T val,sum;
+		Node(){
+			l=r=siz=0; rnd=0ll;
+			val=sum=T(0);
+		}
+		Node(int l_,int r_,int siz_,LL rnd_,T val_,T sum_){
+			l=l_,r=r_,siz=siz_; rnd=rnd_;
+			val=val_,sum=sum_;
+		}
 	};
-	vector<Node>q=vector<Node>(N);
-	int nw,root,rootX,rootY,rootZ;
-	int New(int val){
-		q[nw++]={0,0,1,rand(),val};
-		return nw;
+	vector<Node>q;
+	int root,rootX,rootY,rootZ;
+	int New(T val){
+		Node new_node=Node(0,0,1,rng(),val,val);
+		q.push_back(new_node);
+		return q.size()-1;
 	}
 	void Update(int id){
 		q[id].siz=q[q[id].l].siz+q[q[id].r].siz+1;
+		q[id].sum=q[q[id].l].val+q[q[id].r].val+q[id].val;
 	}
-	void Split(int id,int key,int& idX,int& idY){
+	void Split(int id,T key,int& idX,int& idY){
 		if(id==0){
 			idX=idY=0;
 			return;
@@ -391,40 +407,45 @@ private:
 		}
 	}
 public:
-	void Init(){
-		root=nw=0;
+	fhqTreap(){
+		init();
 	}
-	void Insert(int val){
+	void init(){
+		root=0; q.clear();
+		Node empty_node=Node();
+		q.push_back(empty_node);
+	}
+	void insert(T val){
 		Split(root,val,rootX,rootY);
 		root=Merge(Merge(rootX,New(val)),rootY);
 	}
-	void Del(int val){
+	void erase(T val){//actually, 'extract' may be more precise
 		Split(root,val,rootX,rootZ);
 		Split(rootX,val-1,rootX,rootY);
 		rootY=Merge(q[rootY].l,q[rootY].r);
 		root=Merge(Merge(rootX,rootY),rootZ);
 	}
-	int Pre(int val){
+	T prev(T val){
 		Split(root,val-1,rootX,rootY);
 		int tmp=rootX;
 		while(q[tmp].r) tmp=q[tmp].r;
 		root=Merge(rootX,rootY);
 		return q[tmp].val;
 	}
-	int Nxt(int val){
+	T next(T val){
 		Split(root,val,rootX,rootY);
 		int tmp=rootY;
 		while(q[tmp].l) tmp=q[tmp].l;
 		root=Merge(rootX,rootY);
 		return q[tmp].val;
 	}
-	int Rank(int val){//val's rank
+	int rank(T val){//val's rank
 		Split(root,val-1,rootX,rootY);
 		int ans=q[rootX].siz+1;
 		root=Merge(rootX,rootY);
 		return ans;
 	}
-	int Get(int rank){
+	T get(int rank){
 		int id=root;
 		while(1){
 //			printf("id:%d val:%d l:%d lsiz:%d r:%d rsiz:%d|rank:%d\n",id,q[id].val,q[id].l,q[q[id].l].siz,q[id].r,q[q[id].r].siz,rank);  
@@ -436,14 +457,26 @@ public:
 			}
 		}
 	}
+//	void output(){
+//		auto dfs=[&](auto self,int u)->void{
+//			if(!u) return;
+//			self(self,q[u].l);
+//			debug("%d|val=%d ls=%d rs=%d\n",u,q[u].val,q[u].l,q[u].r);
+//			self(self,q[u].r);
+//		};
+//		debug("output fhqTreap\n");
+//		dfs(dfs,root);
+//		debug("\n");
+//	}
 };
 
 //字符串哈希（多重哈希）
-namespace HASH_CONST{
+const int HashL=2;//hash layer
+namespace HC{//Hash Const
 	const int P[4]={13331,233,131,19260817};
 	const int MOD[4]={(int)(1e9+7),998244353,1004535809,754974721};
 	LL ksm[N][4];
-	void init(int use=4){
+	void init(int use=HashL){
 		for(int j=0;j<use;j++){
 			ksm[0][j]=1;
 			for(int i=1;i<N;i++){
@@ -468,7 +501,7 @@ public:
 			for(int j=0;j<T;j++){
 				h[0][j]=0;
 				for(int i=1;i<=n;i++){
-					h[i][j]=(h[i-1][j]*HASH_CONST::P[j]+s[i]-'a'+1)%HASH_CONST::MOD[j];
+					h[i][j]=(h[i-1][j]*HC::P[j]+s[i]-'a'+1)%HC::MOD[j];
 				}
 			}
 		}
@@ -476,7 +509,7 @@ public:
 			for(int j=0;j<T;j++){
 				h[n+1][j]=0;
 				for(int i=n;i>0;i--){
-					h[i][j]=(h[i+1][j]*HASH_CONST::P[j]+s[i]-'a'+1)%HASH_CONST::MOD[j];
+					h[i][j]=(h[i+1][j]*HC::P[j]+s[i]-'a'+1)%HC::MOD[j];
 				}
 			}
 		}
@@ -485,16 +518,16 @@ public:
 		array<LL,T>ret;
 		if(!sign){
 			for(int j=0;j<T;j++){
-				ret[j]=h[r][j]-h[l-1][j]*HASH_CONST::ksm[r-l+1][j];
+				ret[j]=h[r][j]-h[l-1][j]*HC::ksm[r-l+1][j];
 			}
 		}
 		else{
 			for(int j=0;j<T;j++){
-				ret[j]=h[l][j]-h[r+1][j]*HASH_CONST::ksm[r-l+1][j];
+				ret[j]=h[l][j]-h[r+1][j]*HC::ksm[r-l+1][j];
 			}
 		}
 		for(int j=0;j<T;j++){
-			ret[j]=(ret[j]%HASH_CONST::MOD[j]+HASH_CONST::MOD[j])%HASH_CONST::MOD[j];
+			ret[j]=(ret[j]%HC::MOD[j]+HC::MOD[j])%HC::MOD[j];
 		}
 		return ret;
 	}
