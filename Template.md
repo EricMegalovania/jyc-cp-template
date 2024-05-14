@@ -726,7 +726,7 @@ int exgcd(int a, int b, int& x, int& y) {
 }
 ```
 
-
+### 线性筛欧拉函数
 
 P.S. 以下 $N$ 均为据题意设定好的一个常数
 
@@ -918,4 +918,15 @@ $$
 #pragma GCC optimize("-funsafe-loop-optimizations")
 #pragma GCC optimize("inline-functions-called-once")
 #pragma GCC optimize("-fdelete-null-pointer-checks")
+```
+
+### 写在最后（来自Benq大神的几句话）
+
+```
+stuff you should look for
+int overflow, array bounds
+special cases (n=1?)
+do smth instead of nothing and stay organized
+WRITE STUFF DOWN
+DON'T GET STUCK ON ONE APPROACH
 ```
