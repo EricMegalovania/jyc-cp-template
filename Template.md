@@ -178,7 +178,7 @@ public:
 
 ### 树链剖分（重链剖分）（LCA模板）
 
-直接把“P3384【模板】重链剖分/树链剖分”的代码复制了一遍
+直接把[P3384【模板】重链剖分/树链剖分](https://www.luogu.com.cn/problem/P3384)的代码复制了一遍
 
 因为原题有取模操作，抄模板的时候记得**删去取模，删去取模，删去取模！！！**
 
@@ -285,14 +285,14 @@ class fhqTreap{
 private:
 	struct Node{
 		int l,r,siz; LL rnd;
-		T val,sum;
+		T val; LL sum;
 		Node(){
 			l=r=siz=0; rnd=0ll;
-			val=sum=T(0);
+			val=T(0); sum=0ll;
 		}
-		Node(int l_,int r_,int siz_,LL rnd_,T val_,T sum_){
+		Node(int l_,int r_,int siz_,LL rnd_,T val_,LL sum_){
 			l=l_,r=r_,siz=siz_; rnd=rnd_;
-			val=val_,sum=sum_;
+			val=val_; sum=sum_;
 		}
 	};
 	vector<Node>q;
@@ -304,7 +304,7 @@ private:
 	}
 	void Update(int id){
 		q[id].siz=q[q[id].l].siz+q[q[id].r].siz+1;
-		q[id].sum=q[q[id].l].val+q[q[id].r].val+q[id].val;
+		q[id].sum=1ll*q[q[id].l].val+q[q[id].r].val+q[id].val;
 	}
 	void Split(int id,T key,int& idX,int& idY){
 		if(id==0){
@@ -399,6 +399,42 @@ public:
 };
 ```
 
+## 图论
+
+### Tarjan
+
+```cpp
+namespace Tarjan{
+    vector<int>dfn(n+1),low(n+1),inStack(n+1),scc(n+1),siz(n+1);
+    int timStamp=0,col=0;
+    stack<int>stk;
+    auto tarjan=[&](auto self,int u)->void{
+        low[u]=dfn[u]=++timStamp;
+        stk.push(u),inStack[u]=1;
+        for(int v:e[u]){
+            if(!dfn[v]){
+                self(self,v);
+                low[u]=min(low[u],low[v]);
+            }
+            else if(inStack[v]){
+                low[u]=min(low[u],low[v]);
+            }
+        }
+        if(dfn[u]==low[u]){
+            ++col;
+            while(stk.top()!=u){
+                siz[scc[stk.top()]=col]++;
+                inStack[stk.top()]=0; stk.pop();
+            }
+            siz[scc[stk.top()]=col]++;
+            inStack[stk.top()]=0; stk.pop();
+        }
+    };
+}
+```
+
+
+
 ## 字符串
 
 ### 字符串哈希（多重哈希）
@@ -486,19 +522,20 @@ public:
 定义函数 $z[i]$ 表示 $s$ 和 $s[i,n-1]$ （即以 $s[i]$ 开头的后缀）的最长公共前缀（LCP）的长度，则 $z$ 被成为 $s$ 的 **Z函数**。特别的，$z[0]=0$
 
 ```cpp
-vector<int> z_function(string s) {
-  int n = (int)s.length();
-  vector<int> z(n);
-  for (int i = 1, l = 0, r = 0; i < n; ++i) {
-    if (i <= r && z[i - l] < r - i + 1) {
-      z[i] = z[i - l];
-    } else {
-      z[i] = max(0, r - i + 1);
-      while (i + z[i] < n && s[z[i]] == s[i + z[i]]) ++z[i];
-    }
-    if (i + z[i] - 1 > r) l = i, r = i + z[i] - 1;
-  }
-  return z;
+vector<int>z_function(string s){
+	int n=(int)s.length();
+	vector<int>z(n);
+	for (int i=1,l=0,r=0;i<n;i++){
+		if(i<=r&&z[i-l]<r-i+1){
+			z[i]=z[i-l];
+		}
+		else{
+			z[i]=max(0,r-i+1);
+			while(i+z[i]<n && s[z[i]]==s[i+z[i]]) z[i]++;
+		}
+		if(i+z[i]-1>r) l=i,r=i+z[i]-1;
+	}
+	return z;
 }
 ```
 
@@ -920,6 +957,80 @@ $$
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 ```
 
+### 模拟退火
+
+用一句话概括过程：如果新状态的解更优则修改答案，否则以一定的概率接收新状态
+
+定义当前温度为 $T$，新状态 $S'$ 和已知状态 $S$ （新状态由已知状态通过随机的方式得到）之间的能量（值）差为 $\Delta E$ $(\Delta E\ge0)$，则发生状态转移（修改最优解）的概率为
+$$
+P(\Delta E)=
+\begin{cases}
+1 & S'\text{ is better than S}\\
+exp(-\Delta E/T) & \text{otherwise}
+\end{cases}
+$$
+$P.S.$ 
+
+1. 这里 $E$ 越小代表越接近最优解，实际若 $E$ 越大越接近最优解，可考虑把 $-E$ 作为能量值函数
+
+2. 为了使得解更为精确，通常不直接取当前解作为答案，而是在退火过程中维护遇到的所有解的最优值
+
+3. 有时为了使得到的解更有质量，会在模拟退火结束后，以当前温度在得到的解附近多次随机状态，尝试得到更优的解（其过程与模拟退火相似）
+
+以下代码以[P1337 [JSOI2004] 平衡点 / 吊打XXX](https://www.luogu.com.cn/problem/P1337)（求 $n$ 个点的带权费马点）为例（改了改 wiki 里的代码）
+
+```cpp
+mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+double Rand(){return (long double)(rng())/UINT_MAX;}//生成一个[0,1]的小数
+int Rand(int l,int r){return rng()%(r-l+1)+l;}//生成一个[l,r]的整数
+
+#define N 1010
+int n,x[N],y[N],w[N];
+double ansx,ansy,dis;
+
+//calc返回能量值函数，在calc中更新答案
+double calc(double xx,double yy){
+	double res=0;
+	for (int i=1;i<=n;i++){
+		double dx=x[i]-xx,dy=y[i]-yy;
+		res+=sqrt(dx*dx+dy*dy)*w[i];
+	}
+	if(res<dis) dis=res,ansx=xx,ansy=yy;
+	return res;
+}
+
+void SA(){//simulated_annealing
+	double nowx=ansx,nowy=ansy;
+	double eps_t=1e-4;
+    //模拟退火参数，起始温度，终止温度，每次乘以的系数
+	for(auto t=2e5;t>eps_t;t*=0.99){
+		double nxtx=nowx+t*(Rand()*2-1);
+		double nxty=nowy+t*(Rand()*2-1);
+		double delta=calc(nxtx,nxty)-calc(nowx,nowy);
+		if(exp(-delta/t)>Rand()) nowx=nxtx,nowy=nxty;
+	}
+    //在得到的解附近多次随机状态，尝试得到更优的解
+	for (int i=1;i<=1000;i++){
+		double nxtx=ansx+eps_t*(Rand()*2-1);
+		double nxty=ansy+eps_t*(Rand()*2-1);
+		calc(nxtx,nxty);
+	}
+}
+
+int main() {
+	n=read();
+	for(int i=1;i<=n;i++){
+		x[i]=read(),y[i]=read(),w[i]=read();
+		ansx+=x[i],ansy+=y[i];
+	}
+	ansx/=n,ansy/=n,dis=calc(ansx,ansy);
+    //卡时技巧，填一个比题目时限略小的数
+	while((double)clock()/CLOCKS_PER_SEC<0.9) SA();
+	printf("%.3lf %.3lf\n", ansx, ansy);
+	return 0;
+}
+```
+
 ### 写在最后（来自Benq大神的几句话）
 
 ```
@@ -930,3 +1041,4 @@ do smth instead of nothing and stay organized
 WRITE STUFF DOWN
 DON'T GET STUCK ON ONE APPROACH
 ```
+
