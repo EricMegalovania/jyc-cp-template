@@ -10,6 +10,8 @@
 
 ---
 
+<div STYLE="page-break-after: always;"></div>
+
 ## 缺省源
 
 模板正式开始
@@ -53,6 +55,8 @@ inline int read(){return READ<int>();}
 inline LL readLL(){return READ<LL>();}
 ```
 
+<div STYLE="page-break-after: always;"></div>
+
 ## 数据结构
 
 ### 树状数组
@@ -83,6 +87,8 @@ public:
 	}
 };
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 线段树
 
@@ -176,6 +182,8 @@ public:
 #undef ls
 #undef rs
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 树链剖分（重链剖分）（LCA模板）
 
@@ -275,6 +283,8 @@ void heavy_path_decomposition(){
 	}
 }
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ###  平衡树
 
@@ -399,6 +409,8 @@ public:
 //	}
 };
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 吉司机线段树
 
@@ -571,6 +583,8 @@ public:
 #undef QUERY
 ```
 
+<div STYLE="page-break-after: always;"></div>
+
 ## 图论
 
 ### Tarjan
@@ -605,7 +619,7 @@ namespace Tarjan{
 }
 ```
 
-
+<div STYLE="page-break-after: always;"></div>
 
 ## 字符串
 
@@ -687,6 +701,8 @@ public:
 };
 ```
 
+<div STYLE="page-break-after: always;"></div>
+
 ### Z函数（扩展KMP）
 
 约定：字符串下标以 $0$ 为起点
@@ -710,6 +726,8 @@ vector<int>z_function(string s){
 	return z;
 }
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ## 数学
 
@@ -859,6 +877,8 @@ struct BigIntTiny {
 };
 ```
 
+<div STYLE="page-break-after: always;"></div>
+
 ### 快速幂&矩阵乘法
 
 矩阵乘法中，$f$ 为答案矩阵，是一维长为 $n$ 的 $vector$；$a$ 为转移矩阵，是二维 $n\cdot n$ 的 $vector$
@@ -898,13 +918,14 @@ void self_mul(vector<vector<LL>>& a,int n){//a=a*a
 }
 ```
 
+<div STYLE="page-break-after: always;"></div>
+
 ### 扩展欧几里得
 
 最终会给出一组满足 $a\cdot x+b\cdot y=g$ 的解
 
-- 迭代法实现
-
 ```cpp
+//迭代法实现
 int exgcd(int a, int b, int &x, int &y) {
   if (!b) {
     x = 1;
@@ -917,11 +938,8 @@ int exgcd(int a, int b, int &x, int &y) {
   y = t - (a / b) * y;
   return d;
 }
-```
 
-- 非迭代法实现
-
-```cpp
+//非迭代法实现
 int exgcd(int a, int b, int& x, int& y) {
   x = 1, y = 0;
   int x1 = 0, y1 = 1, a1 = a, b1 = b;
@@ -936,8 +954,6 @@ int exgcd(int a, int b, int& x, int& y) {
 ```
 
 ### 线性筛欧拉函数
-
-P.S. 以下 $N$ 均为据题意设定好的一个常数
 
 ```cpp
 bool notP[N]={}; int phi[N],mn_p[N]={1};
@@ -961,6 +977,8 @@ void init_prime(const int& n=N){//init [1,n-1]
 	}
 }
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 组合数学
 
@@ -988,6 +1006,8 @@ namespace Fac{//factorial
 	}
 }
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 #### 错位排列
 
@@ -1028,6 +1048,8 @@ H_{n}&=\frac{H_{n-1}(4n-2)}{n+1}\\
 H_{n}&=\binom{2n}{n}-\binom{2n}{n-1}
 \end{aligned}
 $$
+
+<div STYLE="page-break-after: always;"></div>
 
 #### 斯特林数
 
@@ -1070,6 +1092,8 @@ $$
 <center>没有</center>
 
 待补充：同一行/列的第一类斯特林数的计算
+
+<div STYLE="page-break-after: always;"></div>
 
 ## 杂项
 
@@ -1128,6 +1152,8 @@ $$
 #pragma GCC optimize("inline-functions-called-once")
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 ```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 模拟退火
 
