@@ -1,8 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-using LL=long long;
-
 const int inf=INT_MAX;
 #define ls (id<<1)
 #define rs (id<<1|1)
@@ -120,8 +115,7 @@ private:
 	}
 public:
 	JiSGT(const vector<int>& a,int n){
-		q.resize(n*4);
-		build(a,1,n);
+		init(a,n);
 	}
 	void init(const vector<int>& a,int n){
 		q.resize(n*4);

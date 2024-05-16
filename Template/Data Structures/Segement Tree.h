@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 #define ls (id<<1)
 #define rs (id<<1|1)
 class SGT{//以线段树维护区间最大值为例，支持区间修改
@@ -47,8 +44,7 @@ private:
 	}
 public:
 	SGT(const vector<int>& a,int n){
-		q.resize(n*5);
-		build(a,1,n);
+		init(a,n);
 	}
 	void init(const vector<int>& a,int n){
 		q.resize(n*5);

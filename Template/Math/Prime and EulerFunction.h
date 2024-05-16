@@ -1,8 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#define N 1000010
-
 bool notP[N]={}; int phi[N],mn_p[N]={1};
 vector<int>prime;
 void init_prime(const int& n=N){//init [1,n-1]

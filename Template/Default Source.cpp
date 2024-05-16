@@ -11,9 +11,6 @@ using namespace std;
 using LL=long long;
 using PII=pair<int,int>;
 
-const int mod=998244353;
-mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
-
 //double关键字比大小
 #define eps (1e-8)
 inline int sign(const double& x){
@@ -34,7 +31,9 @@ inline T READ(){
 }
 inline int read(){return READ<int>();}
 inline LL readLL(){return READ<LL>();}
+mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
+const int mod=998244353;
 int main(){
 	
 	return 0;

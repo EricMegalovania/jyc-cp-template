@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 double Rand(){return (long double)(rng())/UINT_MAX;}//生成一个[0,1]的小数
 int Rand(int l,int r){return rng()%(r-l+1)+l;}//生成一个[l,r]的整数

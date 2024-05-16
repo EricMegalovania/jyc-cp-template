@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 vector<int>z_function(string s){
 	int n=(int)s.length();
 	vector<int>z(n);

@@ -1,18 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-using LL=long long;
-
-template<typename T>
-inline T READ(){
-	T x=0; bool f=0; char c=getchar();
-	while(c<'0' || c>'9') f|=(c=='-'),c=getchar();
-	while(c>='0' && c<='9') x=x*10+c-'0',c=getchar();
-	return f?-x:x;
-}
-inline int read(){return READ<int>();}
-inline LL readLL(){return READ<LL>();}
-
 //P3384, remember to erase the mod
 void heavy_path_decomposition(){
 	int n=read(),T=read(),root=read(),mod=read();

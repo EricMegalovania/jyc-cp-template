@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 template<typename T>//T is int or LL
 class FenTree{
 private:
@@ -11,7 +8,7 @@ private:
 	}
 public:
 	FenTree(int n_){
-		c.assign(n=n_,T(0));
+		init(n_);
 	}
 	void init(int n_){
 		c.assign(n=n_,T(0));

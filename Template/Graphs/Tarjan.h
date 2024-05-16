@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 namespace Tarjan{
 	vector<int>dfn(n+1),low(n+1),inStack(n+1),scc(n+1),siz(n+1);
 	int timStamp=0,col=0;

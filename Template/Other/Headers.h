@@ -1,4 +1,3 @@
-#include<bits/stdc++.h>
 #pragma GCC target("avx")
 #pragma GCC optimize(1)
 #pragma GCC optimize(2)

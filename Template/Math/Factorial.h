@@ -1,10 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-using LL=long long;
-
-#define N 1000010
-
 const int mod=1e9+7;
 LL ksm(LL a,LL b){
 	a%=mod; LL ret=1;

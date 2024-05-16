@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 //迭代法实现
 int exgcd(int a, int b, int &x, int &y) {
 	if (!b) {

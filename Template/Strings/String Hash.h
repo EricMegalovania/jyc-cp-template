@@ -1,10 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-using LL=long long;
-
-#define N 1000010
-
 const int HL=2;//hash layer
 namespace HC{//Hash Const
 	const int P[4]={13331,233,131,19260817};

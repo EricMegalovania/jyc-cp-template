@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 //https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h
 struct BigIntTiny {
 	int sign;
