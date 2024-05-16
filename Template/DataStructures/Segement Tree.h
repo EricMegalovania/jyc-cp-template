@@ -57,7 +57,7 @@ public:
 	void modify(int l,int r,int val,int id=1){
 		if(q[id].l==l && q[id].r==r){
 			//modify the value
-			q[id].mx=val,q[id].tag=1;
+			q[id].mx=max(q[id].mx,val),q[id].tag=1;
 			return;
 		}
 		spread(id);
@@ -77,6 +77,7 @@ public:
 	}
 	int get(int pos,int id=1){
 		if(q[id].l==q[id].r) return q[id].mx;
+		spread(id);
 		int mid=q[id].l+q[id].r>>1;
 		if(pos<=mid) return get(pos,ls);
 		return get(pos,rs);
