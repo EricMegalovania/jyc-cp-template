@@ -846,10 +846,31 @@ public:
 
 ### 虚树
 
-模板题：[ABC340G Leaf Color](https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc340_g)
+模板题：[CF613D](https://codeforces.com/problemset/problem/613/D)，核心代码（二次排序法）如下：
 
 ```cpp
+vector<int>adj[N]; //adj存虚树
+int flag[N]; //flag判断是否是关键点
 
+void solve(int col){
+    int m=read();
+    vector<int>a(m),b;
+    for(int i=0;i<m;i++) flag[a[i]=read()]=col;
+    if(flag[1]!=col) a.push_back(1),m++; //把根节点1放进虚树内，不会影响答案且减少了特判
+    sort(a.begin(),a.end(),cmp); //a中存关键点，按照dfn排序
+    for(int i=0;i<m-1;i++){
+        b.push_back(a[i]);
+        b.push_back(LCA(a[i],a[i+1])); //插入关键点之间的lca
+    }
+    b.push_back(a.back()); //别忘了把最后一个点放进去
+    sort(b.begin(),b.end(),cmp); //把所有虚树上的点按照dfn排序
+    b.erase(unique(b.begin(),b.end()),b.end()); //去重
+    for(int u:b) adj[u].clear(); //清空上一次的虚树
+    for(int i=0;i<b.size()-1;i++){
+        adj[LCA(b[i],b[i+1])].push_back(b[i+1]); //虚树连边
+    }
+    printf("%d\n",calc(1,col).first); //在虚树上处理出答案
+}
 ```
 
 <div STYLE="page-break-after: always;"></div>
@@ -1361,6 +1382,634 @@ $$
 <center>没有</center>
 
 待补充：同一行/列的第一类斯特林数的计算
+
+<div STYLE="page-break-after: always;"></div>
+
+## 计算几何
+
+### 计算几何基础
+
+#### 知识点
+
+摘自繁凡的博客和 $yxc$ 的讲义
+
+1. 前置知识点
+   1. $\pi=arccos(-1)$
+   2. 余弦定理 $c^2=a^2+b^2-2abcos\theta$
+
+2. 浮点数的比较
+
+```cpp
+const double eps=1e-8; //精度，可按需要增加至1e-12之类的
+int sign(double x){ //符号函数
+    if(fabs(x)<eps) return 0;
+    if(x<0) return -1;
+    return 1;
+}
+int cmp(double x,double y){ //比较函数
+    if(fabs(x-y)<eps) return 0;
+    if(x<y) return -1;
+    return 1;
+}
+```
+
+3. 向量
+
+   1. 点与向量的保存，以及运算符重载
+
+      ```cpp
+      using PDD=pair<double,double>;
+      #define x first
+      #define y second
+      
+      PDD operator +(PDD a,PDD b){return PDD{a.x+b.x,a.y+b.y};}
+      PDD operator -(PDD a,PDD b){return PDD{a.x-b.x,a.y-b.y};}
+      PDD operator *(PDD a,double k){return PDD{k*a.x,k*a.y};}
+      PDD operator *(double k,PDD a){return PDD{k*a.x,k*a.y};}
+      ```
+
+   2. 内积（点积）$A\cdot B = |A||B|cos\theta$
+
+      1. 几何意义：向量 $A$ 在向量 $B$ 上的投影与 $B$ 的长度的乘积
+      2. 代码实现
+
+      ```cpp
+      double dot(PDD a,PDD b){
+          return a.x*b.x+a.y*b.y;
+      }
+      ```
+
+   3. 外积（叉积）$A\times B=|A||B|\sin\theta$
+
+      1. 几何意义：向量 $A$ 与 $B$ 张成的平行四边形的有向面积。$B$ 在 $A$ 的逆时针方向为正
+      2. 代码实现
+
+      ```cpp
+      double cross(PDD a,PDD b){
+          return a.x*b.y-b.x*a.y;
+      }
+      ```
+
+   4. 常用函数
+
+      1. 取模
+
+      ```cpp
+      double get_length(PDD a){
+          return sqrt(dot(a,a));
+      }
+      ```
+
+      2. 计算向量夹角
+
+      ```cpp
+      double get_angle(PDD a,PDD b){
+          return acos(dot(a,b)/get_length(a)/get_length(b));
+      }
+      ```
+
+      3. 计算两个向量构成的平行四边形有向面积
+
+      ```cpp
+      double area(PDD a,PDD b,PDD c){
+          return cross(b-a,c-a);
+      }
+      ```
+
+      4. 向量 $A$ **顺时针**旋转 $angle$（弧度制）的角度：
+
+      ```cpp
+      PDD rotate(PDD a,double angle){
+          return PDD{ a.x*cos(angle) + a.y*sin(angle),
+                     -a.x*sin(angle) + a.y*cos(angle) };
+      }
+      ```
+
+4. 点与线
+
+   1. 直线定理
+
+      1. 一般式 $ax+by+c=0$
+      2. 点向式 $p_0+vt$
+      3. 斜截式 $y=kx+b$
+
+   2. 常用操作
+      (1) 判断点在直线上 $A\times B=0$
+      (2) 两直线相交（取直线 $p+vt,\space q+wt$ 的交点）
+
+      ```cpp
+      //cross(v,w)==0 则两直线平行或者重合，注意特判，这里没加
+      PDD get_line_inter(PDD p, PDD v, PDD q, PDD w){
+          PDD u = p - q;
+          double t = cross(w, u) / cross(v, w);
+          return p + v * t;
+      }
+      ```
+
+      (3) 点到直线的距离
+
+      ```cpp
+      //点p; 直线由a, b两点表示
+      double dis2line(PDD p, PDD a, PDD b){
+          PDD v1 = b - a, v2 = p - a;
+          return fabs(cross(v1, v2) / get_length(v1));
+      }
+      ```
+
+      (4) 点到线段的距离
+
+      ```cpp
+      double dis2seg(PDD p, PDD a, PDD b){
+          if (a == b) return get_length(p - a);
+          PDD v1 = b - a, v2 = p - a, v3 = p - b;
+          if (sign(dot(v1, v2)) < 0) return get_length(v2);
+          if (sign(dot(v1, v3)) > 0) return get_length(v3);
+          return dis2line(p, a, b);
+      }
+      ```
+
+      (5) 点在直线上的投影
+
+      ```cpp
+      PDD get_line_proj(PDD p, PDD a, PDD b){
+          PDD v = b - a;
+          return a + v * (dot(v, p - a) / dot(v, v));
+      }
+      ```
+
+      (6) 点是否在线段上
+
+      ```cpp
+      bool on_seg(PDD p, PDD a, PDD b){
+          return sign(cross(p - a, p - b)) == 0 && sign(dot(p - a, p - b)) <= 0;
+      }
+      ```
+
+      (7) 判断两线段是否相交
+
+      ```cpp
+      bool seg_inter(PDD a1, PDD a2, PDD b1, PDD b2){
+      	double c1 = cross(a2-a1, b1-a1), c2 = cross(a2-a1, b2-a1);
+      	double c3 = cross(b2-b1, a1-b1), c4 = cross(b2-b1, a2-b1);
+      	// 有if则允许线段在端点处相交，无if则不允许，根据需要添加
+      	if(!sign(c1) && !sign(c2) && !sign(c3) && !sign(c4)){
+      		bool f1 = on_seg(b1, a1, a2);
+      		bool f2 = on_seg(b2, a1, a2);
+      		bool f3 = on_seg(a1, b1, b2);
+      		bool f4 = on_seg(a2, b1, b2);
+      		bool f = (f1|f2|f3|f4);
+      		return f;
+      	}
+      	return (sign(c1)*sign(c2) < 0 && sign(c3)*sign(c4) < 0);
+      }
+      ```
+
+5. 多边形
+
+   1. 三角形
+
+      1. 面积
+
+         1. 叉积
+
+         2. 海伦公式
+            $$
+            \begin{aligned}
+            p &= \frac{a + b + c}{2}\\
+            S &= \sqrt{p(p - a)\cdot(p - b)\cdot(p - c)}
+            \end{aligned}
+            $$
+
+       2. 三角形四心
+
+          1. 外心，外接圆圆心
+             三边中垂线交点。到三角形三个顶点的距离相等
+          2. 内心，内切圆圆心
+             角平分线交点，到三边距离相等
+          3. 垂心
+             三条垂线交点
+          4. 重心
+             三条中线交点（到三角形三顶点距离的平方和最小的点，三角形内到三边距离之积最大的点）
+
+   2. 普通多边形，通常按逆时针存储所有点
+
+      1. 定义
+
+         1. 多边形
+            由在同一平面且不再同一直线上的多条线段首尾顺次连接且不相交所组成的图形叫多边形
+         2. 简单多边形
+            简单多边形是除相邻边外其它边不相交的多边形
+         3. 凸多边形
+            过多边形的任意一边做一条直线，如果其他各个顶点都在这条直线的同侧，则把这个多边形叫做凸多边形
+            任意凸多边形外角和均为 $360^{\circ}$
+            任意凸多边形内角和为 $(n−2)180^{\circ}$
+
+      2. 常用函数
+
+         1. 求多边形面积（不一定是凸多边形）
+            我们可以从第一个顶点出发把凸多边形分成n − 2个三角形，然后把面积加起来。
+
+             ```cpp
+            double polygon_area(vector<PDD>p){
+                double s = 0;
+                for (int i = 1; i + 1 < p.size(); i ++ )
+                    s += cross(p[i] - p[0], p[i + 1] - p[i]);
+                return s / 2;
+            }
+             ```
+
+         2. 判断点是否在多边形内（不一定是凸多边形）
+            a. 射线法，从该点任意做一条和所有边都不平行的射线。交点个数为偶数，则在多边形外，为奇数，则在多边形内
+            b. 转角法
+
+         3. 判断点是否在凸多边形内
+            只需判断点是否在所有边的左边（逆时针存储多边形）
+
+   3. 皮克定理
+      皮克定理是指一个计算点阵中，顶点在格点上的多边形面积的公式:
+      $$
+      S = a + \frac{b}{2} - 1
+      $$
+      其中 $a$ 表示多边形内部的点数，$b$ 表示多边形边界上的点数，$S$ 表示多边形的面积。
+
+6. 圆
+
+   1. 圆与直线交点
+   2. 两圆交点
+   3. 点到圆的切线
+   4. 两圆公切线
+   5. 两圆相交面积
+
+<div STYLE="page-break-after: always;"></div>
+
+#### 完整代码
+
+```cpp
+const double eps=1e-8; //精度，可按需要增加至1e-12之类的
+int sign(double x){ //符号函数
+	if(fabs(x)<eps) return 0;
+	if(x<0) return -1;
+	return 1;
+}
+int cmp(double x,double y){ //比较函数
+	if(fabs(x-y)<eps) return 0;
+	if(x<y) return -1;
+	return 1;
+}
+
+using PDD=pair<double,double>;
+#define x first
+#define y second
+
+//基本运算符重载
+PDD operator +(PDD a,PDD b){return PDD{a.x+b.x,a.y+b.y};}
+PDD operator -(PDD a,PDD b){return PDD{a.x-b.x,a.y-b.y};}
+PDD operator *(double k,PDD a){return PDD{k*a.x,k*a.y};}
+PDD operator *(PDD a,double k){return PDD{k*a.x,k*a.y};}
+PDD operator /(PDD a,double k){return PDD{a.x/k,a.y/k};}
+
+double dot(PDD a,PDD b){ //内积
+	return a.x*b.x+a.y*b.y;
+}
+
+double cross(PDD a,PDD b){ //叉积
+	return a.x*b.y-b.x*a.y;
+}
+
+//取模（长度）
+double get_length(PDD a){
+	return sqrt(dot(a,a));
+}
+
+//计算向量夹角
+double get_angle(PDD a,PDD b){
+	return acos(dot(a,b)/get_length(a)/get_length(b));
+}
+
+//计算两个向量构成的平行四边形的面积
+double area(PDD a,PDD b,PDD c){
+	return cross(b-a,c-a);
+}
+
+//A绕原点**顺时针**旋转angle（弧度制）
+PDD rotate(PDD a,double angle){
+	return PDD{a.x*cos(angle) + a.y*sin(angle),
+		-a.x*sin(angle) + a.y*cos(angle)};
+}
+
+//取直线p+vt, q+wt的交点
+//cross(v,w)==0 则两直线平行或者重合，注意特判，这里没加特判
+PDD get_line_inter(PDD p, PDD v, PDD q, PDD w){
+	PDD u = p - q;
+	double t = cross(w, u) / cross(v, w);
+	return p + v * t;
+}
+
+//点p; 直线由a, b两点表示
+//点到直线的距离
+double dis2line(PDD p, PDD a, PDD b){
+	PDD v1 = b - a, v2 = p - a;
+	return fabs(cross(v1, v2) / get_length(v1));
+}
+
+//点到线段的距离
+double dis2seg(PDD p, PDD a, PDD b){
+	if (a == b) return get_length(p - a);
+	PDD v1 = b - a, v2 = p - a, v3 = p - b;
+	if (sign(dot(v1, v2)) < 0) return get_length(v2);
+	if (sign(dot(v1, v3)) > 0) return get_length(v3);
+	return dis2line(p, a, b);
+}
+
+//点在直线上的投影
+PDD get_line_proj(PDD p, PDD a, PDD b){
+	PDD v = b - a;
+	return a + v * (dot(v, p - a) / dot(v, v));
+}
+
+//点是否在线段上
+bool on_seg(PDD p, PDD a, PDD b){
+	return sign(cross(p - a, p - b)) == 0 && sign(dot(p - a, p - b)) <= 0;
+}
+
+//判断两线段是否相交
+bool seg_inter(PDD a1, PDD a2, PDD b1, PDD b2){
+	double c1 = cross(a2-a1, b1-a1), c2 = cross(a2-a1, b2-a1);
+	double c3 = cross(b2-b1, a1-b1), c4 = cross(b2-b1, a2-b1);
+	// 有if则允许线段在端点处相交，无if则不允许，根据需要添加
+	if(!sign(c1) && !sign(c2) && !sign(c3) && !sign(c4)){
+		bool f1 = on_seg(b1, a1, a2);
+		bool f2 = on_seg(b2, a1, a2);
+		bool f3 = on_seg(a1, b1, b2);
+		bool f4 = on_seg(a2, b1, b2);
+		bool f = (f1|f2|f3|f4);
+		return f;
+	}
+	return (sign(c1)*sign(c2) < 0 && sign(c3)*sign(c4) < 0);
+}
+
+
+//计算**任意**多边形面积（不一定凸）
+double polygon_area(vector<PDD>p){
+	double s = 0;
+	for (int i = 1; i + 1 < p.size(); i ++ )
+		s += cross(p[i] - p[0], p[i + 1] - p[i]);
+	return s / 2;
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 凸包
+
+#### 代码1（普通凸包） (by fhy)
+
+```cpp
+using p_t = int;
+using p_t2 = long long;
+struct P{
+	mutable p_t x, y;
+	P operator - (P b)const{
+		return {x - b.x, y - b.y};
+	}
+	p_t2 operator ^ (P b)const{
+		return (p_t2)x * b.y - (p_t2)y * b.x;
+	}
+	bool operator < (P b)const{
+		return x < b.x;
+	}
+	bool operator < (p_t b)const{
+		return x < b;
+	}
+};
+int sgn(p_t2 x){
+	return (x > 0) - (x < 0);
+}
+struct HULL:set<P, less<> >{//上凸包 
+	int out(P v){
+		auto it = lower_bound(v.x);
+		if(it == end()) return 1;
+		if(it->x == v.x) return sgn(v.y - it->y);
+		if(it == begin()) return 1;
+		auto p = prev(it);
+		return sgn(*p - v ^ *it - v);
+	}
+	void add(P v){
+		if(out(v) <= 0) return;
+		auto it = find(v);
+		if(it != end()) it->y = v.y;
+		else it = insert(v).first;
+		auto p = next(it);
+		if(p != end()){
+			auto nxt = next(p);
+			while(nxt != end()){
+				if(sgn(*it - *p ^ *nxt - *p) > 0) break;
+				p = erase(p); nxt = next(p);
+			}
+		}
+		if(it != begin()){
+			p = prev(it);
+			while(p != begin()){
+				auto pre = prev(p);
+				if(sgn(*pre - *p ^ *it - *p) > 0) break;
+				erase(p); p = prev(it);
+			}
+		}
+	}
+}hull[2];
+int main(){
+	int q;
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin >> q;
+	while(q--){
+		int op, x, y;
+		cin >> op >> x >> y;
+		if(op == 1) hull[0].add({x, y}), hull[1].add({x, -y});
+		else printf(hull[0].out({x, y}) <= 0 && hull[1].out({x, -y}) <= 0 ? "YES\n" : "NO\n");
+	}
+	return 0;
+}
+```
+
+#### 代码2（点全是整数）（by fhy)
+
+```cpp
+using line_t = long long;
+struct Line{
+	mutable line_t k, b, x;
+	bool operator < (Line rhs)const{
+		return k > rhs.k || k == rhs.k && b < rhs.b;
+	}
+	bool operator < (line_t rhs)const{
+		return x < rhs;
+	}
+};
+struct LCH : set<Line, less<> >{
+	static const line_t sup = 1e6, inf = 0;
+	long long floor(line_t x, line_t y){
+		return x / y - ((x ^ y) < 0 && x % y);
+	}
+	bool over(iterator x, iterator y){
+		if(y == end()){
+			x->x = sup;
+			return 0;
+		}
+		if(x->k == y->k) x->x = inf;
+		else x->x = floor(y->b - x->b, x->k - y->k);
+		return x->x >= y->x;
+	}
+	void add(Line v){
+		auto z = insert(v).first, y = z++, x = y;
+		while(over(y, z))
+			z = erase(z);
+		if(x == begin()) return;
+		if(over(--x, y))
+			over(x, erase(y));
+		while((y = x) != begin() && (--x)->x >= y->x)
+			over(x, erase(y));
+	}
+	line_t query(int x){
+		auto it = lower_bound(x);
+		return 1ll * it->k * x + it->b;
+	}
+};
+```
+
+#### 代码3 (by jyc)
+
+```cpp
+void Andrew(vector<PDD>& a,vector<PDD>& up,vector<PDD>& down){
+	sort(a.begin(),a.end(),[](const PDD& A,const PDD& B){
+		if(dcmp(A.y,B.y)==0) return dcmp(A.x,B.x)==-1;
+		return dcmp(A.y,B.y)==-1;
+	});
+	up={a[0]};
+	for(int i=1;i<a.size();i++){
+		while(up.size()>=2 && sign(area(up[up.size()-2],up.back(),a[i]))>=0)
+			up.pop_back();
+		up.push_back(a[i]);
+	}
+	down={up.back()};
+	for(int i=a.size()-1;i>=0;i--){
+		while(down.size()>=2 && sign(area(down[down.size()-2],down.back(),a[i]))>=0)
+			down.pop_back();
+		down.push_back(a[i]);
+	}
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 半平面交
+
+by fhy
+
+```cpp
+using p_t = long double;
+const p_t eps = 1e-9;
+inline int sgn(p_t x) {
+    return (x > eps) - (x < -eps);
+}
+struct P{
+    p_t x, y;
+    P(p_t x, p_t y): x(x), y(y){}
+    P(): x(0), y(0){}
+    inline P operator - (P rhs)const{
+        return {x - rhs.x, y - rhs.y};
+    }
+    inline P operator + (P rhs) const{
+        return {x + rhs.x, y + rhs.y};
+    }
+    inline P operator * (p_t k)const{
+        return {x * k, y * k};
+    }
+    inline p_t operator ^ (P rhs)const{
+        return x * rhs.y - rhs.x * y;
+    }
+    inline p_t operator * (P rhs)const{
+        return x * rhs.x + y * rhs.y;
+    }
+    inline friend istream& operator >> (istream &in, P &rhs){
+        return in >> rhs.x >> rhs.y;
+    }
+}p[200010], t[200010], c[5];
+P e = {0, -1};
+inline int cmp(P i, P j){
+    p_t x = i ^ e, y = j ^ e;
+    int a = x == 0 && i * e >= 0, b = y == 0 && j * e >= 0;
+    if(a || b) return b - a;
+    if(x == 0 || y == 0 || sgn(x) == sgn(y)) return sgn(i ^ j);
+    return sgn(y - x);
+}
+struct L{
+    P a, x;
+    L(P a, P b): a(a), x(b - a){}
+    L(): a(), x(){}
+    inline P operator ^ (L rhs)const{
+        return a - x * ((rhs.x ^ (a - rhs.a)) / (rhs.x ^ x));
+    }
+    inline bool operator < (L rhs)const{
+        int o = cmp(x, rhs.x);
+        if (o) return o > 0;
+        return pos(rhs.a) < 0;
+    }
+    inline bool operator == (L rhs) const {
+        return cmp(x, rhs.x) == 0;
+    }
+    inline void inv() {
+        x = {-x.y, x.x};
+    }
+    inline int pos(P rhs)const{
+        return sgn(x ^ rhs - a);
+    }
+}s[200010], q[200010];
+
+int n;
+p_t xl = -1e4, yl = -1e4, xr = 1e4, yr = 1e4;
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin >> n;
+	int m = 0;
+	for(int i = 1; i <= n; i++){
+		p_t a, b, c, d;
+		cin >> a >> b >> c >> d;
+		s[m++] = L(P(a, b), P(c, d));
+	}
+	for(int i = 0; i <= 4; i++)
+		c[i] = {i == 1 || i == 2 ? xr : xl, i >> 1 & 1 ? yr : yl};
+	for(int i = 0; i < 4; i++)
+		s[m++] = {c[i], c[i + 1]};
+	sort(s, s + m);
+	
+	int l = 0, r = 0;
+	for (int i = 0; i < m; i++) {
+		if (i && s[i] == s[i - 1]) continue;
+		while (l + 1 < r && s[i].pos(t[r - 1]) <= 0) {
+			r -= 1;
+		}
+		while (l + 1 < r && s[i].pos(t[l + 1]) <= 0) {
+			l += 1;
+		}
+		q[r++] = s[i];
+		if (l + 1 < r) {
+			t[r - 1] = q[r - 2] ^ q[r - 1];
+		}
+	}
+	while (l + 1 < r && q[l].pos(t[r - 1]) <= 0) {
+		r -= 1;
+	}
+	t[l] = t[r] = q[r - 1] ^ q[l];
+	
+	p_t res = 0;
+	for(int i = l + 1; i < r - 1; i++){
+		res += (t[i] - t[r]) ^ (t[i + 1] - t[r]);
+	}
+	printf("%.3Lf\n", res / 2);
+	return 0;
+}
+```
 
 <div STYLE="page-break-after: always;"></div>
 
