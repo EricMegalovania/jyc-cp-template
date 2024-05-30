@@ -1044,20 +1044,6 @@ private:
 	vector<edge>e;
 	vector<int>fir,dep,cur;
 	int n,s,t; LL maxflow;
-public:
-	MF(){}
-	MF(int n_){init(n_);}
-	void init(int n_){//n个点，下标从1~n
-		n=n_,maxflow=0;
-		e.clear();
-		fir.assign(n+1,-1);
-	}
-	void addedge(int u,int v,T w){
-		e.push_back({v,fir[u],w,0});
-		fir[u]=e.size()-1;
-		e.push_back({u,fir[v],0,0});
-		fir[v]=e.size()-1;
-	}
 	bool bfs(){
 		queue<int>q; q.push(s);
 		dep.assign(n+1,0); dep[s]=1;
@@ -1086,6 +1072,20 @@ public:
 		}
 		return ret;
 	}
+public:
+	MF(){}
+	MF(int n_){init(n_);}
+	void init(int n_){//n个点，下标从1~n
+		n=n_,maxflow=0;
+		e.clear();
+		fir.assign(n+1,-1);
+	}
+	void addedge(int u,int v,T w){
+		e.push_back({v,fir[u],w,0});
+		fir[u]=e.size()-1;
+		e.push_back({u,fir[v],0,0});
+		fir[v]=e.size()-1;
+	}
 	LL dinic(int s_,int t_){
 		s=s_,t=t_;
 		while(bfs()){
@@ -1101,7 +1101,7 @@ public:
 
 ### 费用流（Dinic）
 
-初始化需传入点的个数 $n$（不用传什么 $n+1$ 之类的），调用 ```MF::dinic(s,t,sign=0)``` 来获得 $s$ 到 $t$ 的最小/大费用最大流（其中 ``sign==0`` 为最小费用，```sign==1``` 为最大费用）
+初始化需传入点的个数 $n$（不用传什么 $n+1$ 之类的），调用 ```MF::dinic(s,t,sign)``` 来获得 $s$ 到 $t$ 的最小/大费用最大流（其中 ``sign==0`` 为最小费用，```sign==1``` 为最大费用），```sign``` 缺省时为最小费用
 
 ```cpp
 using PLL=pair<LL,LL>;
@@ -1119,21 +1119,6 @@ private:
 	vector<LL>dis;
 	int n,s,t; bool sign;
 	LL total_cost,maxflow;
-public:
-	MCMF(){}
-	MCMF(int n_){init(n_);}
-	void init(int n_){//n个点，下标从1~n
-		n=n_,total_cost=maxflow=0;
-		e.clear();
-		fir.assign(n+1,-1);
-		vis.assign(n+1,0);
-	}
-	void addedge(int u,int v,T w,T c){
-		e.push_back({v,fir[u],w,0,c});
-		fir[u]=e.size()-1;
-		e.push_back({u,fir[v],0,0,-c});
-		fir[v]=e.size()-1;
-	}
 	bool spfa(){
 		dis.assign(n+1,sign?-inf:inf),cur=fir;
 		queue<int>q;
@@ -1172,6 +1157,21 @@ public:
 		vis[u]=0;
 		return ret;
 	}
+public:
+	MCMF(){}
+	MCMF(int n_){init(n_);}
+	void init(int n_){//n个点，下标从1~n
+		n=n_,total_cost=maxflow=0;
+		e.clear();
+		fir.assign(n+1,-1);
+		vis.assign(n+1,0);
+	}
+	void addedge(int u,int v,T w,T c){
+		e.push_back({v,fir[u],w,0,c});
+		fir[u]=e.size()-1;
+		e.push_back({u,fir[v],0,0,-c});
+		fir[v]=e.size()-1;
+	}
 	//sign: 0=min_cost, 1=max_cost
 	PLL dinic(int s_,int t_,const bool& sign_=0){
 		s=s_,t=t_,sign=sign_;
@@ -1200,6 +1200,7 @@ $init$ 时，传入字符数组首地址，字符串长度（以及是否倒着�
 
 ```cpp
 const int HL=2;//hash layer
+using ALH=array<LL,HL>;
 namespace HC{//Hash Const
 	const int P[4]={13331,233,131,19260817};
 	const int MOD[4]={(int)(1e9+7),998244353,1004535809,754974721};
@@ -1213,12 +1214,12 @@ namespace HC{//Hash Const
 		}
 	}
 }
-template<int T>//T must be a constant
 class Hash{
 private:
-	vector<array<LL,T>>h;
+	vector<ALH>h;
 	bool sign;//0:normal 1:reverse
 public:
+	Hash(){}
 	Hash(char *s,int n,bool sign_=0){
 		init(s,n,sign_);
 	}
@@ -1226,7 +1227,7 @@ public:
 		h.resize(n+2);
 		sign=sign_;
 		if(!sign){
-			for(int j=0;j<T;j++){
+			for(int j=0;j<HL;j++){
 				h[0][j]=0;
 				for(int i=1;i<=n;i++){
 					h[i][j]=(h[i-1][j]*HC::P[j]+s[i]-'a'+1)%HC::MOD[j];
@@ -1234,7 +1235,7 @@ public:
 			}
 		}
 		else{
-			for(int j=0;j<T;j++){
+			for(int j=0;j<HL;j++){
 				h[n+1][j]=0;
 				for(int i=n;i>0;i--){
 					h[i][j]=(h[i+1][j]*HC::P[j]+s[i]-'a'+1)%HC::MOD[j];
@@ -1242,30 +1243,58 @@ public:
 			}
 		}
 	}
-	array<LL,T>calc(const int& l,const int& r){
-		array<LL,T>ret;
+	ALH calc(const int& l,const int& r){
+		static ALH ret;
 		if(!sign){
-			for(int j=0;j<T;j++){
+			for(int j=0;j<HL;j++){
 				ret[j]=h[r][j]-h[l-1][j]*HC::ksm[r-l+1][j];
 			}
 		}
 		else{
-			for(int j=0;j<T;j++){
+			for(int j=0;j<HL;j++){
 				ret[j]=h[l][j]-h[r+1][j]*HC::ksm[r-l+1][j];
 			}
 		}
-		for(int j=0;j<T;j++){
+		for(int j=0;j<HL;j++){
 			ret[j]=(ret[j]%HC::MOD[j]+HC::MOD[j])%HC::MOD[j];
 		}
 		return ret;
 	}
-	static bool check(const array<LL,T>& a,const array<LL,T>& b){
-		for(int i=0;i<T;i++){
+	static bool check(const ALH& a,const ALH& b){
+		for(int i=0;i<HL;i++){
 			if(a[i]!=b[i]) return 0;
 		}
 		return 1;
 	}
 };
+ALH get(int len){
+	static ALH ret; 
+	for(int i=0;i<HL;i++){
+		ret[i]=HC::ksm[len][i];
+	}
+	return ret;
+}
+ALH operator +(const ALH& A,const ALH& B){
+	static ALH ret;
+	for(int i=0;i<HL;i++){
+		ret[i]=(A[i]+B[i])%HC::MOD[i];
+	}
+	return ret;
+}
+ALH operator -(const ALH& A,const ALH& B){
+	static ALH ret;
+	for(int i=0;i<HL;i++){
+		ret[i]=((A[i]-B[i])%HC::MOD[i]+HC::MOD[i])%HC::MOD[i];
+	}
+	return ret;
+}
+ALH operator *(const ALH& A,const ALH& B){
+	static ALH ret;
+	for(int i=0;i<HL;i++){
+		ret[i]=A[i]*B[i]%HC::MOD[i];
+	}
+	return ret;
+}
 ```
 
 <div STYLE="page-break-after: always;"></div>

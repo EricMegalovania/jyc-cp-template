@@ -13,21 +13,6 @@ private:
 	vector<LL>dis;
 	int n,s,t; bool sign;
 	LL total_cost,maxflow;
-public:
-	MCMF(){}
-	MCMF(int n_){init(n_);}
-	void init(int n_){//n个点，下标从1~n
-		n=n_,total_cost=maxflow=0;
-		e.clear();
-		fir.assign(n+1,-1);
-		vis.assign(n+1,0);
-	}
-	void addedge(int u,int v,T w,T c){
-		e.push_back({v,fir[u],w,0,c});
-		fir[u]=e.size()-1;
-		e.push_back({u,fir[v],0,0,-c});
-		fir[v]=e.size()-1;
-	}
 	bool spfa(){
 		dis.assign(n+1,sign?-inf:inf),cur=fir;
 		queue<int>q;
@@ -65,6 +50,21 @@ public:
 		}
 		vis[u]=0;
 		return ret;
+	}
+public:
+	MCMF(){}
+	MCMF(int n_){init(n_);}
+	void init(int n_){//n个点，下标从1~n
+		n=n_,total_cost=maxflow=0;
+		e.clear();
+		fir.assign(n+1,-1);
+		vis.assign(n+1,0);
+	}
+	void addedge(int u,int v,T w,T c){
+		e.push_back({v,fir[u],w,0,c});
+		fir[u]=e.size()-1;
+		e.push_back({u,fir[v],0,0,-c});
+		fir[v]=e.size()-1;
 	}
 	//sign: 0=min_cost, 1=max_cost
 	PLL dinic(int s_,int t_,const bool& sign_=0){
