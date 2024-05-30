@@ -63,8 +63,7 @@ namespace ST_C{ //Sparse Table Constant
 	vector<int>Logn;
 	void init(int maxn=N){
 		Logn.resize(maxn);
-		Logn[1]=0;
-		Logn[2]=1;
+		Logn[1]=0,Logn[2]=1;
 		for (int i=3;i<maxn;i++) {
 			Logn[i]=Logn[i/2]+1;
 		}
@@ -314,15 +313,40 @@ private:
 		int ls,rs,mn;
 	};
 	vector<Node>q;
+	void update(int id){
+		q[id].cnt=min(q[q[id].ls].mn,q[q[id].rs].mn);
+	}
+	int build(const vector<int>& a,int l,int r){
+		int id=q.size();
+		q.push_back(Node{0,0,inf});
+		if(l==r){
+			q[id].mn=a[l];
+			return id;
+		}
+		int mid=l+r>>1;
+		q[id].ls=build(a,l,mid);
+		q[id].rs=build(a,mid+1,r);
+		update(id);
+		return id;
+	}
 public:
 	vector<int>root;
 	pSGT(){
 		init();
 	}
+	pSGT(const vector<int>& a,int n){
+		init(a,n);
+	}
 	void init(){
 		q.clear(),root.clear();
 		q.push_back(Node{0,0,inf});
 		root.push_back(0);
+	}
+	void init(const vector<int>& a,int n){
+		q.clear(),root.clear();
+		q.push_back(Node{0,0,inf});
+		root.push_back(0);
+		add_root(build(a,1,n));
 	}
 	void add_root(const int& x){
 		root.push_back(x);
@@ -344,7 +368,7 @@ public:
 		int mid=l+r>>1;
 		if(R<=mid) return find(q[id].ls,L,R,l,mid);
 		else if(L>mid) return find(q[id].rs,L,R,mid+1,r);
-		else return min(find(q[id].ls,L,mid,l,mid), find(q[id].rs,mid+1,R,mid+1,r));
+		else return min(find(q[id].ls,L,mid,l,mid),find(q[id].rs,mid+1,R,mid+1,r));
 	}
 };
 
@@ -384,7 +408,7 @@ int main(){
 	}
 	for(int T=read(),last=0,u,k;T--;){
 		u=(read()+last)%n+1,k=(read()+last)%n;
-		last=sgt.find(sgt.root[rt[min(max_dep,dep[u]+k)]], dfn[u],dfn[u]+siz[u]-1,1,n);
+		last=sgt.find(sgt.root[rt[min(max_dep,dep[u]+k)]],dfn[u],dfn[u]+siz[u]-1,1,n);
 		printf("%d\n",last);
 	}
 	return 0;
@@ -1000,6 +1024,166 @@ namespace Tarjan{
         }
     };
 }
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 最大流（Dinic）
+
+初始化需传入点的个数 $n$（不用传什么 $n+1$ 之类的），调用 ```MF::dinic(s,t)``` 来获得 $s$ 到 $t$ 的最大流
+
+```cpp
+const int inf=INT_MAX; //inf可按需要修改
+template<typename T> //T是int或者LL
+class MF{ //Max Flow
+private:
+	struct edge{
+		int v,nxt;
+		T cap,flow;
+	};
+	vector<edge>e;
+	vector<int>fir,dep,cur;
+	int n,s,t; LL maxflow;
+public:
+	MF(){}
+	MF(int n_){init(n_);}
+	void init(int n_){//n个点，下标从1~n
+		n=n_,maxflow=0;
+		e.clear();
+		fir.assign(n+1,-1);
+	}
+	void addedge(int u,int v,T w){
+		e.push_back({v,fir[u],w,0});
+		fir[u]=e.size()-1;
+		e.push_back({u,fir[v],0,0});
+		fir[v]=e.size()-1;
+	}
+	bool bfs(){
+		queue<int>q; q.push(s);
+		dep.assign(n+1,0); dep[s]=1;
+		while(q.size()){
+			int u=q.front(); q.pop();
+			for(int i=fir[u];~i;i=e[i].nxt){
+				int v=e[i].v;
+				if((!dep[v])&&(e[i].cap>e[i].flow)){
+					dep[v]=dep[u]+1;
+					q.push(v);
+				}
+			}
+		}
+		return dep[t];
+	}
+	T dfs(int u,T flow){
+		if ((u==t) || (!flow)) return flow;
+		T ret=0;
+		for(int &i=cur[u];~i;i=e[i].nxt){
+			int v=e[i].v; T d;
+			if ((dep[v] == dep[u] + 1) &&
+				(d = dfs(v, min(flow - ret, e[i].cap - e[i].flow)))){
+				ret+=d,e[i].flow+=d,e[i^1].flow-=d;
+				if(ret==flow) return ret;
+			}
+		}
+		return ret;
+	}
+	LL dinic(int s_,int t_){
+		s=s_,t=t_;
+		while(bfs()){
+			cur=fir;
+			maxflow+=dfs(s,inf);
+		}
+		return maxflow;
+	}
+};
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 费用流（Dinic）
+
+初始化需传入点的个数 $n$（不用传什么 $n+1$ 之类的），调用 ```MF::dinic(s,t,sign=0)``` 来获得 $s$ 到 $t$ 的最小/大费用最大流（其中 ``sign==0`` 为最小费用，```sign==1``` 为最大费用）
+
+```cpp
+using PLL=pair<LL,LL>;
+const int inf=INT_MAX; //inf可按需要修改
+//T是int或者LL; sign: 0=最小费用, 1=最大费用
+template<typename T>
+class MCMF{ //Min Cost Max Flow
+private:
+	struct edge{
+		int v,nxt;
+		T cap,flow,cost;
+	};
+	vector<edge>e;
+	vector<int>fir,cur,vis;
+	vector<LL>dis;
+	int n,s,t; bool sign;
+	LL total_cost,maxflow;
+public:
+	MCMF(){}
+	MCMF(int n_){init(n_);}
+	void init(int n_){//n个点，下标从1~n
+		n=n_,total_cost=maxflow=0;
+		e.clear();
+		fir.assign(n+1,-1);
+		vis.assign(n+1,0);
+	}
+	void addedge(int u,int v,T w,T c){
+		e.push_back({v,fir[u],w,0,c});
+		fir[u]=e.size()-1;
+		e.push_back({u,fir[v],0,0,-c});
+		fir[v]=e.size()-1;
+	}
+	bool spfa(){
+		dis.assign(n+1,sign?-inf:inf),cur=fir;
+		queue<int>q;
+		q.push(s),dis[s]=0,vis[s]=1;
+		while(q.size()){
+			int u=q.front(); q.pop();
+			vis[u]=0;
+			for(int i=fir[u];~i;i=e[i].nxt){
+				int v=e[i].v;
+				if((e[i].cap>e[i].flow) &&
+					(sign?(dis[v]<dis[u]+e[i].cost):(dis[v]>dis[u]+e[i].cost))){
+					dis[v]=dis[u]+e[i].cost;
+					if(!vis[v]){
+						q.push(v),vis[v]=1;
+					}
+				}
+			}
+		}
+		return dis[t]!=(sign?-inf:inf);
+	}
+	T dfs(int u,T flow){
+		if ((u==t) || (!flow)) return flow;
+		T ret=0; vis[u]=1;
+		for(int &i=cur[u];~i;i=e[i].nxt){
+			int v=e[i].v; T d;
+			if (!vis[v] && dis[v]==dis[u]+e[i].cost &&
+				(d = dfs(v, min(flow - ret, e[i].cap - e[i].flow)))){
+				total_cost+=1ll*d*e[i].cost,ret+=d,
+				e[i].flow+=d,e[i^1].flow-=d;
+				if(ret==flow){
+					vis[u]=0;
+					return ret;
+				}
+			}
+		}
+		vis[u]=0;
+		return ret;
+	}
+	//sign: 0=min_cost, 1=max_cost
+	PLL dinic(int s_,int t_,const bool& sign_=0){
+		s=s_,t=t_,sign=sign_;
+		while(spfa()){
+			T x;
+			while((x=dfs(s,inf))){
+				maxflow+=x;
+			}
+		}
+		return {maxflow,total_cost};
+	}
+};
 ```
 
 <div STYLE="page-break-after: always;"></div>

@@ -6,15 +6,40 @@ private:
 		int ls,rs,mn;
 	};
 	vector<Node>q;
+	void update(int id){
+		q[id].cnt=min(q[q[id].ls].mn,q[q[id].rs].mn);
+	}
+	int build(const vector<int>& a,int l,int r){
+		int id=q.size();
+		q.push_back(Node{0,0,inf});
+		if(l==r){
+			q[id].mn=a[l];
+			return id;
+		}
+		int mid=l+r>>1;
+		q[id].ls=build(a,l,mid);
+		q[id].rs=build(a,mid+1,r);
+		update(id);
+		return id;
+	}
 public:
 	vector<int>root;
 	pSGT(){
 		init();
 	}
+	pSGT(const vector<int>& a,int n){
+		init(a,n);
+	}
 	void init(){
 		q.clear(),root.clear();
 		q.push_back(Node{0,0,inf});
 		root.push_back(0);
+	}
+	void init(const vector<int>& a,int n){
+		q.clear(),root.clear();
+		q.push_back(Node{0,0,inf});
+		root.push_back(0);
+		add_root(build(a,1,n));
 	}
 	void add_root(const int& x){
 		root.push_back(x);
