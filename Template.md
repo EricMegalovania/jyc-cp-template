@@ -43,8 +43,8 @@ inline int dcmp(const double& x,const double& y){
 template<typename T>
 inline T READ(){
 	T x=0; bool f=0; char c=getchar();
-	while(c<'0' || c>'9') f|=(c=='-'),c=getchar();
-	while(c>='0' && c<='9') x=x*10+c-'0',c=getchar();
+	while(!isdigit(c)) f|=(c=='-'),c=getchar();
+	while(isdigit(c)) x=x*10+c-'0',c=getchar();
 	return f?-x:x;
 }
 inline int read(){return READ<int>();}
@@ -54,6 +54,60 @@ inline LL readLL(){return READ<LL>();}
 <div STYLE="page-break-after: always;"></div>
 
 ## 数据结构
+
+### ST 表
+
+```cpp
+#define N 1000010
+namespace ST_C{ //Sparse Table Constant
+	vector<int>Logn;
+	void init(int maxn=N){
+		Logn.resize(maxn);
+		Logn[1]=0;
+		Logn[2]=1;
+		for (int i=3;i<maxn;i++) {
+			Logn[i]=Logn[i/2]+1;
+		}
+	}
+}
+template<typename T>
+class ST{
+	using VT=vector<T>;
+	using VVT=vector<VT>;
+	using func_t=function<T(const T&,const T&)>; //func_t is func type
+	VVT a; //a is Sparse Table
+	func_t op;
+public:
+	//v的有效下标为 1~n
+	//func是比较函数，得传个std::function<T(T,T)>或者lamdba表达式
+	//auto max_int=[](const int& x,const int& y)->int{return x>y?x:y;};
+	ST(){}
+	ST(const vector<T> &v,int n,func_t func){
+		init(v,n,func);
+	}
+	void init(const vector<T> &v,int n,func_t func){
+		op=func;
+		int mx_l=ST_C::Logn[n]+1; //max log
+		a.assign(n+1,VT(mx_l,0));
+		for(int i=1;i<=n;i++){
+			a[i][0]=v[i];
+		}
+		for(int j=1;j<mx_l;j++){
+			int p=(1<<(j-1));
+			for(int i=1;i+p<=n;i++){
+				a[i][j]=op(a[i][j-1],a[i+(1<<(j-1))][j-1]);
+			}
+		}
+	}
+	T query(int l,int r){
+		int lt=r-l+1;
+		int p=ST_C::Logn[lt];
+		return op(a[l][p],a[r-(1<<p)+1][p]);
+	}
+};
+```
+
+<div STYLE="page-break-after: always;"></div>
 
 ### 树状数组
 
@@ -359,7 +413,7 @@ void heavy_path_decomposition(){
 		e[v].push_back(u);
 	}
 	vector<int>dep(n+1),fa(n+1),siz(n+1),son(n+1);
-	auto dfs1=[&](auto self,int u,int pre)->void{
+	auto dfs1=[&](auto&& self,int u,int pre)->void{
 		dep[u]=dep[pre]+1,fa[u]=pre,siz[u]=1;
 		for(int v:e[u]){
 			if(v==pre) continue;
@@ -371,7 +425,7 @@ void heavy_path_decomposition(){
 	dfs1(dfs1,root,0);
 	vector<int>id(n+1),nw(n+1),top(n+1);
 	int timStamp=0;
-	auto dfs2=[&](auto self,int u,int t)->void{
+	auto dfs2=[&](auto&& self,int u,int t)->void{
 		id[u]=++timStamp,nw[timStamp]=u,top[u]=t;
 		if(!son[u]) return;
 		self(self,son[u],t);
@@ -436,6 +490,45 @@ void heavy_path_decomposition(){
 		}
 	}
 }
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 倍增法求 LCA
+
+```cpp
+vector<int>dep(n+1);
+const int mx_p=log2(n)+2;
+vector lca(n+1,vector<int>(mx_p));
+auto dfs_init=[&](auto&& self,int u,int fa)->void{
+	dep[u]=dep[fa]+1,lca[u][0]=fa;
+	for(int v:e[u]){
+		if(v==fa) continue;
+		self(self,v,u);
+	}
+};
+dfs_init(dfs_init,root,0);
+for(int p=1;p<mx_p;p++){
+	for(int u=1;u<=n;u++){
+		lca[u][p]=lca[lca[u][p-1]][p-1];
+	}
+}
+auto LCA=[&](int u,int v)->int{
+	if(dep[v]<dep[u]) swap(u,v);
+	for(int p=mx_p-1;p>=0;p--){
+		if(dep[lca[v][p]]>=dep[u]){
+			v=lca[v][p];
+		}
+	}
+	if(u==v) return u;
+	for(int p=mx_p-1;p>=0;p--){
+		if(lca[u][p]!=lca[v][p]){
+			u=lca[u][p],
+			v=lca[v][p];
+		}
+	}
+	return lca[u][0];
+};
 ```
 
 <div STYLE="page-break-after: always;"></div>
