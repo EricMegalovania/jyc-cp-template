@@ -1325,6 +1325,194 @@ vector<int>z_function(string s){
 
 <div STYLE="page-break-after: always;"></div>
 
+### Trie（fhy）
+
+```cpp
+const int N = 1000050;
+int trie[N][26];
+int cnt[N];
+int id;
+
+void insert(string s)
+{
+	int p = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		int x = s[i] - 'a';
+		if (trie[p][x] == 0) trie[p][x] = ++id;
+		p = trie[p][x];
+	}
+	cnt[p]++;
+}
+
+int  find(string s)
+{
+	int p = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		int x = s[i] - 'a';
+		if (trie[p][x] == 0)return 0;
+		p = trie[p][x];
+	}
+	return cnt[p];
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### AC自动机（fhy）
+
+```cpp
+#include<bits/stdc++.h>
+#define N 500010
+using namespace std;
+namespace AC{
+	int nex[N][26],num[N],fail[N],c;
+	void init(){
+		c=0;
+		memset(nex[c],0,sizeof nex[c]);
+		fail[c]=num[c]=0;
+	}
+	void ins(char *s,int n){
+		int rt=0;
+		for(int i=0;i<n;i++){
+			int v=s[i]-'a';
+			if(!nex[rt][v]){
+				nex[rt][v]=++c;
+				memset(nex[c],0,sizeof nex[c]);
+				fail[c]=num[c]=0;
+			}
+			rt=nex[rt][v];
+		}
+		num[rt]++;
+	}
+	void build(){
+		queue<int>q;
+		for(int i=0;i<26;i++){
+			if(nex[0][i]){
+				fail[nex[0][i]]=0,q.push(nex[0][i]);
+			}
+		}
+		while(!q.empty()){
+			int u=q.front();q.pop();
+			for(int i=0;i<26;i++){
+				if(nex[u][i])fail[nex[u][i]]=nex[fail[u]][i],q.push(nex[u][i]);
+				else nex[u][i]=nex[fail[u]][i];
+			}
+		}
+	}
+	int query(char *s,int n){
+		int rt=0,ans=0;
+		for(int i=0;i<n;i++){
+			rt=nex[rt][s[i]-'a'];
+			for(int j=rt;j && ~num[j];j=fail[j]){//防止重搜
+				ans+=num[j],num[j]=-1;
+			}
+		}
+		return ans;
+	}
+};
+using namespace AC;
+int n;
+char p[1000005];
+int main(){
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++){
+		scanf("%s",p);
+		ins(p,strlen(p));
+	}
+	build();
+	scanf("%s",p);
+	printf("%d\n",query(p,strlen(p)));
+	return 0;
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+### 回文树（fhy）
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 1005;
+
+struct node {
+	int next[26];
+	int len;
+	int sufflink;
+	int num;
+};
+
+int len;
+char s[MAXN];
+node tree[MAXN];
+int num;            // node 1 - root with len -1, node 2 - root with len 0
+int suff;           // max suffix palindrome
+long long ans;
+
+bool addLetter(int pos) {
+	int cur = suff, curlen = 0;
+	int let = s[pos] - 'a';
+	
+	while (true) {
+		curlen = tree[cur].len;
+		if (pos - 1 - curlen >= 0 && s[pos - 1 - curlen] == s[pos])
+			break;
+		cur = tree[cur].sufflink;
+	}
+	if (tree[cur].next[let]) {
+		suff = tree[cur].next[let];
+		return false;
+	}
+	
+	num++;
+	suff = num;
+	tree[num].len = tree[cur].len + 2;
+	tree[cur].next[let] = num;
+	
+	if (tree[num].len == 1) {
+		tree[num].sufflink = 2;
+		tree[num].num = 1;
+		return true;
+	}
+	
+	while (true) {
+		cur = tree[cur].sufflink;
+		curlen = tree[cur].len;
+		if (pos - 1 - curlen >= 0 && s[pos - 1 - curlen] == s[pos]) {
+			tree[num].sufflink = tree[cur].next[let];
+			break;
+		}
+	}
+	tree[num].num = 1 + tree[tree[num].sufflink].num;
+	return true;
+}
+
+void initTree() {
+	num = 2; suff = 2;
+	tree[1].len = -1; tree[1].sufflink = 1;
+	tree[2].len = 0; tree[2].sufflink = 1;
+}
+
+int main() {
+	scanf("%s", s);
+	len = strlen(s);
+	
+	initTree();
+	
+	for (int i = 0; i < len; i++) {
+		addLetter(i);
+		ans += tree[suff].num;
+	}
+	cout << ans << endl;
+	return 0;
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
 ## 数学
 
 ### 高精度
