@@ -1205,8 +1205,8 @@ namespace HC{//Hash Const
 	const int P[4]={13331,233,131,19260817};
 	const int MOD[4]={(int)(1e9+7),998244353,1004535809,754974721};
 	LL ksm[N][4];
-	void init(int use=HL){
-		for(int j=0;j<use;j++){
+	void init(){
+		for(int j=0;j<HL;j++){
 			ksm[0][j]=1;
 			for(int i=1;i<N;i++){
 				ksm[i][j]=(ksm[i-1][j]*P[j])%MOD[j];
@@ -1267,10 +1267,10 @@ public:
 		return 1;
 	}
 };
-ALH get(int len){
-	static ALH ret; 
-	for(int i=0;i<HL;i++){
-		ret[i]=HC::ksm[len][i];
+ALH operator <<(const ALH& A,const int& len){
+	static ALH ret;
+	for(int i=0;i<2;i++){
+		ret[i]=(A[i]*HC::ksm[len][i])%HC::MOD[i];
 	}
 	return ret;
 }
@@ -1294,6 +1294,48 @@ ALH operator *(const ALH& A,const ALH& B){
 		ret[i]=A[i]*B[i]%HC::MOD[i];
 	}
 	return ret;
+}
+```
+
+<div STYLE="page-break-after: always;"></div>
+
+#### 防 Hack 特供版哈希
+
+- 打表程序（生成 ```1e9+x``` 的质数）
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	const int N=500;
+	vector<int>a;
+	auto deal=[&](const int& x)->void{
+		for(int i=2;i*i<=x;i++){
+			if(x%i==0) return;
+		}
+		a.push_back(x-1e9);
+	};
+	for(int i=1;a.size()<N;i++){
+		deal(1e9+i);
+	}
+	printf("const int TABLE_SIZE=%d;\n",N);
+	printf("const int table[TABLE_SIZE]={%d",a[0]);
+	for(int i=1;i<N;i++) printf(",%d",a[i]);
+	printf("};");
+	return 0;
+}
+```
+
+- 模板修改  ```MOD``` 数组
+
+```cpp
+namespace HC{//Hash Const
+	const int TABLE_SIZE=500;
+	const int table[TABLE_SIZE]={7,9,21,33,87,93,97,/*复制打表程序的输出*/};
+    //generate modular
+	auto GP=[]()->int{return 1'000'000'000+table[rng()%TABLE_SIZE];};
+	const int MOD[4]={GP(),GP(),GP(),GP()};
 }
 ```
 
@@ -2256,7 +2298,7 @@ double polygon_area(vector<PDD>p){
 
 ### 凸包
 
-#### 代码1（普通凸包） (by fhy)
+#### 代码1（动态凸包） (by fhy)
 
 ```cpp
 using p_t = int;
@@ -2326,7 +2368,7 @@ int main(){
 }
 ```
 
-#### 代码2（点全是整数）（by fhy)
+#### 代码2（动态凸包+全是整点）（by fhy)
 
 ```cpp
 using line_t = long long;
@@ -2370,7 +2412,7 @@ struct LCH : set<Line, less<> >{
 };
 ```
 
-#### 代码3 (by jyc)
+#### 代码3（普通凸包） (by jyc)
 
 ```cpp
 void Andrew(vector<PDD>& a,vector<PDD>& up,vector<PDD>& down){
@@ -2400,107 +2442,117 @@ void Andrew(vector<PDD>& a,vector<PDD>& up,vector<PDD>& down){
 by fhy
 
 ```cpp
-using p_t = long double;
-const p_t eps = 1e-9;
-inline int sgn(p_t x) {
-    return (x > eps) - (x < -eps);
-}
-struct P{
-    p_t x, y;
-    P(p_t x, p_t y): x(x), y(y){}
-    P(): x(0), y(0){}
-    inline P operator - (P rhs)const{
-        return {x - rhs.x, y - rhs.y};
-    }
-    inline P operator + (P rhs) const{
-        return {x + rhs.x, y + rhs.y};
-    }
-    inline P operator * (p_t k)const{
-        return {x * k, y * k};
-    }
-    inline p_t operator ^ (P rhs)const{
-        return x * rhs.y - rhs.x * y;
-    }
-    inline p_t operator * (P rhs)const{
-        return x * rhs.x + y * rhs.y;
-    }
-    inline friend istream& operator >> (istream &in, P &rhs){
-        return in >> rhs.x >> rhs.y;
-    }
-}p[200010], t[200010], c[5];
-P e = {0, -1};
-inline int cmp(P i, P j){
-    p_t x = i ^ e, y = j ^ e;
-    int a = x == 0 && i * e >= 0, b = y == 0 && j * e >= 0;
-    if(a || b) return b - a;
-    if(x == 0 || y == 0 || sgn(x) == sgn(y)) return sgn(i ^ j);
-    return sgn(y - x);
-}
-struct L{
-    P a, x;
-    L(P a, P b): a(a), x(b - a){}
-    L(): a(), x(){}
-    inline P operator ^ (L rhs)const{
-        return a - x * ((rhs.x ^ (a - rhs.a)) / (rhs.x ^ x));
-    }
-    inline bool operator < (L rhs)const{
-        int o = cmp(x, rhs.x);
-        if (o) return o > 0;
-        return pos(rhs.a) < 0;
-    }
-    inline bool operator == (L rhs) const {
-        return cmp(x, rhs.x) == 0;
-    }
-    inline void inv() {
-        x = {-x.y, x.x};
-    }
-    inline int pos(P rhs)const{
-        return sgn(x ^ rhs - a);
-    }
-}s[200010], q[200010];
+#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
+using namespace std;
 
-int n;
-p_t xl = -1e4, yl = -1e4, xr = 1e4, yr = 1e4;
-int main(){
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cin >> n;
-	int m = 0;
-	for(int i = 1; i <= n; i++){
-		p_t a, b, c, d;
-		cin >> a >> b >> c >> d;
-		s[m++] = L(P(a, b), P(c, d));
+const double eps = 1e-8;
+int n, pn, dq[20005], top, bot;
+struct Point {
+	double x, y;
+} p[20005];
+
+struct Line {
+	Point a, b;
+	double angle;
+	Line& operator= (Line l) {
+		a.x = l.a.x; a.y = l.a.y;
+		b.x = l.b.x; b.y = l.b.y;
+		angle = l.angle;
+		return *this;
 	}
-	for(int i = 0; i <= 4; i++)
-		c[i] = {i == 1 || i == 2 ? xr : xl, i >> 1 & 1 ? yr : yl};
-	for(int i = 0; i < 4; i++)
-		s[m++] = {c[i], c[i + 1]};
-	sort(s, s + m);
+} l[20005];
+
+int dblcmp(double k) {
+	if (fabs(k) < eps) return 0;
+	return k > 0 ? 1 : -1;
+}
+
+double multi(Point p0, Point p1, Point p2) {
+	return (p1.x-p0.x)*(p2.y-p0.y)-(p1.y-p0.y)*(p2.x-p0.x);
+}
+
+bool cmp(const Line& l1, const Line& l2) {
+	int d = dblcmp(l1.angle-l2.angle);
+	if (!d) return dblcmp(multi(l1.a, l2.a, l2.b)) > 0; 
+	return d < 0;
+}
+
+void addLine(Line& l, double x1, double y1, double x2, double y2) {
+	l.a.x = x1; l.a.y = y1;
+	l.b.x = x2; l.b.y = y2;
+	l.angle = atan2(y2-y1, x2-x1);
+}
+
+void getIntersect(Line l1, Line l2, Point& p) {
+	double A1 = l1.b.y - l1.a.y;
+	double B1 = l1.a.x - l1.b.x;
+	double C1 = (l1.b.x - l1.a.x) * l1.a.y - (l1.b.y - l1.a.y) * l1.a.x;
+	double A2 = l2.b.y - l2.a.y;
+	double B2 = l2.a.x - l2.b.x;
+	double C2 = (l2.b.x - l2.a.x) * l2.a.y - (l2.b.y - l2.a.y) * l2.a.x;
+	p.x = (C2 * B1 - C1 * B2) / (A1 * B2 - A2 * B1);
+	p.y = (C1 * A2 - C2 * A1) / (A1 * B2 - A2 * B1);
+}
+
+bool judge(Line l0, Line l1, Line l2) {
+	Point p;
+	getIntersect(l1, l2, p);
+	return dblcmp(multi(p, l0.a, l0.b)) < 0;
+}
+
+void HalfPlaneIntersect( ){
+	int i, j;
+	sort(l, l+n, cmp);
+	for (i = 0, j = 0; i < n; i++)
+		if (dblcmp(l[i].angle-l[j].angle) > 0) 
+			l[++j] = l[i];
+	n = j + 1;
+	dq[0] = 0; 
+	dq[1] = 1;
+	top = 1;   
+	bot = 0;
+	for (i = 2; i < n; i++) {
+		while (top > bot && judge(l[i], l[dq[top]], l[dq[top - 1]])) top--;
+		while (top > bot && judge(l[i], l[dq[bot]], l[dq[bot + 1]])) bot++;
+		dq[++top] = i;
+	} 
+	while (top > bot && judge(l[dq[bot]], l[dq[top]], l[dq[top-1]])) top--;
+	while (top > bot && judge(l[dq[top]], l[dq[bot]], l[dq[bot+1]])) bot++;
+	dq[++top] = dq[bot]; 
+	for (pn = 0, i = bot; i < top; i++, pn++)
+		getIntersect(l[dq[i+1]], l[dq[i]], p[pn]);
+}
+
+double getArea() { 
+	if (pn < 3) return 0;
+	double area = 0;
+	for (int i = 1; i < pn-1; i++)
+		area += multi(p[0], p[i], p[i+1]);
+	if (area < 0) area = -area;
+	return area/2;
+}
+
+int main()
+{
+	int i;
+	double x1, y1, x2, y2;
 	
-	int l = 0, r = 0;
-	for (int i = 0; i < m; i++) {
-		if (i && s[i] == s[i - 1]) continue;
-		while (l + 1 < r && s[i].pos(t[r - 1]) <= 0) {
-			r -= 1;
+	while (scanf ("%d", &n) != EOF) {
+		for (i = 0; i < n; i++) {
+			scanf("%lf%lf%lf%lf", &x1, &y1, &x2, &y2);
+			addLine(l[i], x1, y1, x2, y2);
 		}
-		while (l + 1 < r && s[i].pos(t[l + 1]) <= 0) {
-			l += 1;
-		}
-		q[r++] = s[i];
-		if (l + 1 < r) {
-			t[r - 1] = q[r - 2] ^ q[r - 1];
-		}
+		addLine(l[n++], 0, 0, 10000, 0);
+		addLine(l[n++], 10000, 0, 10000, 10000);
+		addLine(l[n++], 10000, 10000, 0, 10000);
+		addLine(l[n++], 0, 10000, 0, 0);
+		HalfPlaneIntersect();
+		printf ("%.1lf\n", getArea());
 	}
-	while (l + 1 < r && q[l].pos(t[r - 1]) <= 0) {
-		r -= 1;
-	}
-	t[l] = t[r] = q[r - 1] ^ q[l];
-	
-	p_t res = 0;
-	for(int i = l + 1; i < r - 1; i++){
-		res += (t[i] - t[r]) ^ (t[i + 1] - t[r]);
-	}
-	printf("%.3Lf\n", res / 2);
 	return 0;
 }
 ```
@@ -2639,6 +2691,17 @@ int main() {
 	printf("%.3lf %.3lf\n", ansx, ansy);
 	return 0;
 }
+```
+
+### pbds提供的umap代替品
+
+```cpp
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/hash_policy.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+gp_hash_table<pair<int,int>,int> h;
 ```
 
 ### 写在最后（来自Benq大神的几句话）

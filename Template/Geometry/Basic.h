@@ -4,7 +4,7 @@ int sign(double x){ //符号函数
 	if(x<0) return -1;
 	return 1;
 }
-int cmp(double x,double y){ //比较函数
+int dcmp(double x,double y){ //比较函数
 	if(fabs(x-y)<eps) return 0;
 	if(x<y) return -1;
 	return 1;

@@ -4,8 +4,8 @@ namespace HC{//Hash Const
 	const int P[4]={13331,233,131,19260817};
 	const int MOD[4]={(int)(1e9+7),998244353,1004535809,754974721};
 	LL ksm[N][4];
-	void init(int use=HL){
-		for(int j=0;j<use;j++){
+	void init(){
+		for(int j=0;j<HL;j++){
 			ksm[0][j]=1;
 			for(int i=1;i<N;i++){
 				ksm[i][j]=(ksm[i-1][j]*P[j])%MOD[j];
@@ -66,10 +66,10 @@ public:
 		return 1;
 	}
 };
-ALH get(int len){
-	static ALH ret; 
-	for(int i=0;i<HL;i++){
-		ret[i]=HC::ksm[len][i];
+ALH operator <<(const ALH& A,const int& len){
+	static ALH ret;
+	for(int i=0;i<2;i++){
+		ret[i]=(A[i]*HC::ksm[len][i])%HC::MOD[i];
 	}
 	return ret;
 }
