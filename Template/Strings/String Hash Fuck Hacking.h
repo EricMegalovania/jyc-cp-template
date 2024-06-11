@@ -71,7 +71,7 @@ public:
 };
 ALH operator <<(const ALH& A,const int& len){
 	static ALH ret;
-	for(int i=0;i<2;i++){
+	for(int i=0;i<HL;i++){
 		ret[i]=(A[i]*HC::ksm[len][i])%HC::MOD[i];
 	}
 	return ret;
