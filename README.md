@@ -18,7 +18,8 @@
   - 吉司机线段树
   - 虚树
 - 图论
-  - Tarjan
+  - Tarjan（无向图，割边）
+  - Tarjan（有向图）
   - 最大流（Dinic）
   - 费用流（Dinic）
 - 字符串
