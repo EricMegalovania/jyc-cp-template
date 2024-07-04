@@ -94,3 +94,5 @@ ALH operator *(const ALH& A,const ALH& B){
 	}
 	return ret;
 }
+
+HC::init(); //初始化

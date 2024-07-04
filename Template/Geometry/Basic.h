@@ -1,5 +1,7 @@
 using LD=long double;
-const LD eps=1e-12; //精度，可按需要增加至1e-16之类的(?)
+//eps不一定是越精度高越好！
+const LD eps=1e-8; //精度，可按需要增加至1e-12之类的(?)
+const LD pi=3.141592653589793238462643438328;
 int sign(LD x){ //符号函数
 	if(fabs(x)<eps) return 0;
 	if(x<0) return -1;
@@ -109,4 +111,46 @@ LD polygon_area(vector<PDD>p){
 	for (int i = 1; i + 1 < p.size(); i ++ )
 		s += cross(p[i] - p[0], p[i + 1] - p[i]);
 	return s / 2;
+}
+
+//三点求圆，如果flag=1，则只对非钝角三角形求，对锐角三角形返回R=-1
+pair<PDD,LD>circle_three(const PDD& A,const PDD& B,const PDD& C,const bool flag=1){
+	LD x=get_length(A-B);
+	LD y=get_length(B-C);
+	LD z=get_length(C-A);
+	if(flag){
+		if(sign(x*x+y*y-z*z)<=0 || sign(x*x+z*z-y*y)<=0 || sign(y*y+z*z-x*x)<=0){
+			return {PDD{},-1};
+		}
+	}
+	LD p=(x+y+z)/2;
+	LD s=sqrt(p*(p-x)*(p-y)*(p-z));
+	LD R=x*y*z/(s*4);
+	auto F=[&](LD a1,LD a2,LD a3,LD b1,LD b2,LD b3,LD c1,LD c2,LD c3)->LD{
+		return	a1*b2*c3 +b1*c2*a3 +c1*a2*b3
+				-a3*b2*c1 -b3*c2*a1 -c3*a2*b1;
+	};
+	LD X=
+	F(
+		1,1,1,
+		dot(A,A),dot(B,B),dot(C,C),
+		A.y,B.y,C.y
+	)/
+	F(
+		1,1,1,
+		A.x,B.x,C.x,
+		A.y,B.y,C.y
+	);
+	LD Y=
+	F(
+		1,1,1,
+		A.x,B.x,C.x,
+		dot(A,A),dot(B,B),dot(C,C)
+	)/
+	F(
+		1,1,1,
+		A.x,B.x,C.x,
+		A.y,B.y,C.y
+	);
+	return {PDD{X,Y}/2,R};
 }

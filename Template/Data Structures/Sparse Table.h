@@ -1,4 +1,3 @@
-#define N 1000010
 namespace ST_C{ //Sparse Table Constant
 	vector<int>Logn;
 	void init(int maxn=N){
@@ -44,3 +43,5 @@ public:
 		return op(a[l][p],a[r-(1<<p)+1][p]);
 	}
 };
+
+ST_C::init(); //初始化

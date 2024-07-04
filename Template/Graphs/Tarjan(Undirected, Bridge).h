@@ -1,7 +1,7 @@
 struct Edge{
 	int v,nxt;
 };
-int main(){
+void solve(){
 	int n=read(),m=read();
 	vector<Edge>e(2);
 	vector<int>h(n+1);

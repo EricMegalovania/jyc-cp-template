@@ -14,7 +14,7 @@ void solve(int col){
 	b.push_back(a.back()); //别忘了把最后一个点放进去
 	sort(b.begin(),b.end(),cmp); //把所有虚树上的点按照dfn排序
 	b.erase(unique(b.begin(),b.end()),b.end()); //去重
-	for(int u:b) adj[u].clear(); //清空上一次的虚树
+	for(auto u:b) adj[u].clear(); //清空上一次的虚树
 	for(int i=0;i<b.size()-1;i++){
 		adj[LCA(b[i],b[i+1])].push_back(b[i+1]); //虚树连边
 	}

@@ -1,4 +1,4 @@
-//╤╞л╛м╧╟Э 
+//Е┼╗Ф─│Е┤╦Е▄┘
 #include <bits/stdc++.h>
 using namespace std;
 using p_t = int;
@@ -21,7 +21,7 @@ struct P{
 int sgn(p_t2 x){
 	return (x > 0) - (x < 0);
 }
-struct HULL:set<P, less<> >{//иом╧╟Э 
+struct HULL:set<P, less<> >{//О©╫О©╫м╧О©╫О©╫ 
 	int out(P v){
 		auto it = lower_bound(v.x);
 		if(it == end()) return 1;
