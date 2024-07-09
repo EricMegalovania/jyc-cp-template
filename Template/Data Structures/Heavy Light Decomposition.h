@@ -1,4 +1,3 @@
-//P3384
 vector<int>dep(n+1),fa(n+1),siz(n+1),son(n+1);
 auto dfs1=[&](auto&& self,int u,int pre)->void{
 	dep[u]=dep[pre]+1,fa[u]=pre,siz[u]=1;
@@ -10,10 +9,10 @@ auto dfs1=[&](auto&& self,int u,int pre)->void{
 	}
 };
 dfs1(dfs1,root,0);
-vector<int>id(n+1),nw(n+1),top(n+1);
+vector<int>dfn(n+1),dfn_inv(n+1),top(n+1);
 int timStamp=0;
 auto dfs2=[&](auto&& self,int u,int t)->void{
-	id[u]=++timStamp,nw[timStamp]=u,top[u]=t;
+	dfn[u]=++timStamp,dfn_inv[timStamp]=u,top[u]=t;
 	if(!son[u]) return;
 	self(self,son[u],t);
 	for(auto v:e[u]){
@@ -30,49 +29,31 @@ auto LCA=[&](int u,int v)->int{
 	return dep[u]<dep[v]?u:v;
 };
 vector<int>sgt_init(n+1);
-for(int i=1;i<=n;i++) sgt_init[i]=a[nw[i]];
+for(int i=1;i<=n;i++) sgt_init[i]=a[dfn_inv[i]];
 SGT sgt(sgt_init,n);//sgt needs to support seg add, seg query
 auto modify_path=[&](int u,int v,LL val)->void{
 	while(top[u]!=top[v]){
 		if(dep[top[u]]<dep[top[v]]) swap(u,v);
-		sgt.modify(id[top[u]],id[u],val);
+		sgt.modify(dfn[top[u]],dfn[u],val);
 		u=fa[top[u]];
 	}
 	if(dep[u]<dep[v]) swap(u,v);
-	sgt.modify(id[v],id[u],val);
+	sgt.modify(dfn[v],dfn[u],val);
 };
 auto query_path=[&](int u,int v)->LL{
 	LL cnt=0ll;
 	while(top[u]!=top[v]){
 		if(dep[top[u]]<dep[top[v]]) swap(u,v);
-		cnt+=sgt.query(id[top[u]],id[u]);
+		cnt+=sgt.query(dfn[top[u]],dfn[u]);
 		u=fa[top[u]];
 	}
 	if(dep[u]<dep[v]) swap(u,v);
-	cnt+=sgt.query(id[v],id[u]);
-	return cnt%mod;
+	cnt+=sgt.query(dfn[v],dfn[u]);
+	return cnt;
 };
 auto modify_tree=[&](int u,int val)->void{
-	sgt.modify(id[u],id[u]+siz[u]-1,val);
+	sgt.modify(dfn[u],dfn[u]+siz[u]-1,val);
 };
 auto query_tree=[&](int u)->LL{
-	return sgt.query(id[u],id[u]+siz[u]-1);
+	return sgt.query(dfn[u],dfn[u]+siz[u]-1);
 };
-for(int op,u,v,w;T--;){
-	op=read(),u=read();
-	if(op==1){
-		v=read(),w=read();
-		modify_path(u,v,w);
-	}
-	else if(op==2){
-		v=read();
-		printf("%lld\n",query_path(u,v));
-	}
-	else if(op==3){
-		w=read();
-		modify_tree(u,w);
-	}
-	else{//op==4
-		printf("%lld\n",query_tree(u));
-	}
-}

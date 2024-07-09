@@ -100,6 +100,12 @@
 
 {\centering\section{数据结构}}
 
+\subsection{并查集}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Disjoint Set Union.h}
+
+\newpage
+
 \subsection{ST 表}
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Sparse Table.h}
@@ -150,11 +156,9 @@
 
 \subsection{树链剖分（重链剖分）（LCA模板）}
 
-直接把\href{https://www.luogu.com.cn/problem/P3384}{P3384【模板】重链剖分/树链剖分}的代码复制了一遍
+可以把树链剖分作为 $LCA$ 的模板来使用，比倍增的写法优秀很多
 
-也可以把树链剖分作为 $LCA$ 的模板来使用，比倍增的写法优秀很多
-
-\lstinputlisting[style=C++]{../Template/Data Structures/Heavy Path Decomposition.h}
+\lstinputlisting[style=C++]{"../Template/Data Structures/Heavy Light Decomposition.h"}
 
 \newpage
 
@@ -209,6 +213,18 @@
 \subsection{Tarjan（有向图）}
 
 \lstinputlisting[style=C++]{../Template/Graphs/Tarjan(Directed).h}
+
+\newpage
+
+\subsection{Kruskal 重构树}
+
+原图中两个点之间的所有简单路径上\textbf{最大边权的最小值} = \textbf{最小生成树}上两个点之间的简单路径上的最大值 = Kruskal 重构树上两点之间的 LCA 的权值
+
+原图中两个点之间的所有简单路径上\textbf{最小边权的最大值} = \textbf{最大生成树}上两个点之间的简单路径上的最小值 = Kruskal 重构树上两点之间的 LCA 的权值
+
+就是看在限制条件下，应该优先走 \textbf{边权小 or 边权大} 的边，然后选择 最小/大生成树
+
+\lstinputlisting[style=C++]{../Template/Graphs/Kruskal RE Tree.h}
 
 \newpage
 
@@ -331,10 +347,6 @@ by fhy
 
 \lstinputlisting[style=C++]{../Template/Math/BigIntTiny.h}
 
-\subsection{计算 $a^{1/b}$ 的下取整值}
-
-\lstinputlisting[style=C++]{"../Template/Math/Pow_inv.h"}
-
 \newpage
 
 \subsection{快速幂 \& 矩阵快速幂}
@@ -346,6 +358,10 @@ by fhy
 \lstinputlisting[style=C++]{"../Template/Math/QuickPow and MatrixMultiply.h"}
 
 \newpage
+
+\subsection{计算 $a^{1/b}$ 的下取整值}
+
+\lstinputlisting[style=C++]{"../Template/Math/Pow_inv.h"}
 
 \subsection{线性筛欧拉函数}
 
@@ -785,14 +801,6 @@ by fhy
 \newpage
 
 {\centering\section{杂项}}
-
-%\subsection{火车头}
-%
-%娱乐用，用来平时做题凹卡常题
-%
-%\lstinputlisting[style=C++]{"../Template/Other/Headers.h"}
-%
-%\newpage
 
 \subsection{模拟退火}
 

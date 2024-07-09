@@ -18,6 +18,17 @@ void mul(const vector<vector<LL>>& a,vector<LL>& f,int n){//f=a*f
 	}
 	swap(f,b);
 }
+void mul(const vector<vector<LL>>& a,vector<vector<LL>>& f,int n){//f=a*f
+	vector b(n,vector<LL>(n,0));
+	for(int k=0;k<n;k++){
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				b[i][j]=(b[i][j]+a[i][k]*f[k][j]%mod)%mod;
+			}
+		}
+	}
+	swap(f,b);
+}
 void self_mul(vector<vector<LL>>& a,int n){//a=a*a
 	vector b(n,vector<LL>(n,0));
 	for(int k=0;k<n;k++){
