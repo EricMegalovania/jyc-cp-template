@@ -32,6 +32,7 @@ public:
 		return new_id;
 	}
 	int find(int idL,int idR,int l,int r,int k){
+		if(q[idR].cnt-q[idL].cnt<k) return 0;
 		if(l==r) return l;
 		int mid=l+r>>1;
 		int lcnt=q[q[idR].ls].cnt-q[q[idL].ls].cnt;

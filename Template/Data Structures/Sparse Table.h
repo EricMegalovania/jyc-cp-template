@@ -12,19 +12,16 @@ template<typename T>
 class ST{
 	using VT=vector<T>;
 	using VVT=vector<VT>;
-	using func_t=function<T(const T&,const T&)>; //func_t is func type
+	using func_t=function<T(const T&,const T&)>; //RMQ函数，也可以用lambda表达式
 	VVT a; //a is Sparse Table
 	func_t op;
 public:
-	//v的有效下标为 1~n
-	//func是比较函数，得传个std::function<T(T,T)>或者lamdba表达式
-	//auto max_int=[](const int& x,const int& y)->int{return x>y?x:y;};
 	ST(){}
 	ST(const vector<T> &v,int n,func_t func){
-		init(v,n,func);
+		init(v,n,func); //v的有效下标为 1~n
 	}
 	void init(const vector<T> &v,int n,func_t func){
-		op=func;
+		op=func; //e.g. auto max_int=[](const int& x,const int& y)->int{return x>y?x:y};
 		int mx_l=ST_C::Logn[n]+1; //max log
 		a.assign(n+1,VT(mx_l,0));
 		for(int i=1;i<=n;i++){

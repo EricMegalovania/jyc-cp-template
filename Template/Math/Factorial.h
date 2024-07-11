@@ -27,3 +27,5 @@ namespace Fac{//factorial
 		return fc[x]*fc_inv[y]%mod*fc_inv[x-y]%mod;
 	}
 }
+
+Fac::init(); //初始化
