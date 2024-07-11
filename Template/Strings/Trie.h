@@ -1,7 +1,7 @@
 class Trie{
 private:
 	vector<array<int,26>>trie;
-	vector<int>end,cnt; //end标记一个模式串的结尾
+	vector<int>end,cnt; //end标记有多少个模式串以此为结尾
 	//cnt记录当前状态是多少个模式串的前缀
 public:
 	Trie(){init();}
