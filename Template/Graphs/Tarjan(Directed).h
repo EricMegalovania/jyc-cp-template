@@ -1,7 +1,7 @@
 //现在读完了 n, m 和全部的边
 vector<int>dfn(n+1),low(n+1),inStack(n+1),scc(n+1),siz(n+1);
 int timStamp=0,col=0;
-stack<int>stk;
+stack<int,vector<int>>stk;
 auto tarjan=[&](auto&& self,int u)->void{
 	low[u]=dfn[u]=++timStamp;
 	stk.push(u),inStack[u]=1;

@@ -160,6 +160,10 @@
 
 \lstinputlisting[style=C++]{"../Template/Data Structures/Heavy Light Decomposition.h"}
 
+\subsection{长链剖分}
+
+\lstinputlisting[style=C++]{"../Template/Data Structures/Heavy Light Decomposition 2.h"}
+
 \newpage
 
 \subsection{倍增法求 LCA}
@@ -276,7 +280,7 @@ namespace HC{//Hash Const
 	const int table[TABLE_SIZE]={7,9,21,33,87,93,97,/*复制打表程序的输出*/};
 	//generate modular
 	auto GP=[]()->int{return 10'0000'0000+table[rng()%TABLE_SIZE];};
-	const int MOD[4]={GP(),GP(),GP(),GP()};
+	const int MOD[2]={GP(),GP()};
 }
 \end{lstlisting}
 
@@ -380,6 +384,10 @@ by fhy
 最终会给出一组满足 $a\cdot x+b\cdot y=g$ 的解
 
 \lstinputlisting[style=C++]{"../Template/Math/Exgcd.h"}
+
+\subsection{分数类}
+
+\lstinputlisting[style=C++]{../Template/Math/Fraction.h}
 
 \newpage
 
@@ -841,6 +849,16 @@ $P.S.$
     \hspace{2em} 以下代码以\href{https://www.luogu.com.cn/problem/P1337}{P1337 [JSOI2004] 平衡点 / 吊打XXX}（求 $n$ 个点的带权费马点）为例（改了改 wiki 里的代码）
 
 \lstinputlisting[style=C++]{"../Template/Other/Simulated Annealing.h"}
+
+\newpage
+
+\subsection{和哈希}
+
+\textbf{加减，乘除}两对运算中任选一对即可
+
+\textbf{除法慎用，求逆元会使复杂度多一个log}
+
+\lstinputlisting[style=C++]{"../Template/Other/Sum Hash.h"}
 
 \newpage
 

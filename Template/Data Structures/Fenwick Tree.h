@@ -1,5 +1,5 @@
 template<typename T>//T is int or LL
-class FenTree{
+class Fenwick{
 private:
 	int n;
 	vector<T>c;
@@ -7,7 +7,8 @@ private:
 		return x&(-x);
 	}
 public:
-	FenTree(int n_){
+	Fenwick(){}
+	Fenwick(int n_){
 		init(n_);
 	}
 	void init(int n_){

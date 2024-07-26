@@ -1,9 +1,8 @@
 namespace ST_C{ //Sparse Table Constant
-	vector<int>Logn;
-	void init(int maxn=N){
-		Logn.resize(maxn);
+	int Logn[N];
+	void init(){
 		Logn[1]=0,Logn[2]=1;
-		for (int i=3;i<maxn;i++) {
+		for (int i=3;i<N;i++) {
 			Logn[i]=Logn[i/2]+1;
 		}
 	}
