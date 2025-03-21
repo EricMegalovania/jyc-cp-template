@@ -14,7 +14,10 @@ namespace Fac{//factorial
 	void init(){
 		for(int i=1;i<N;i++){
 			fc[i]=fc[i-1]*i%mod;
-			fc_inv[i]=fc_inv[i-1]*ksm(i,mod-2)%mod;
+		}
+		fc_inv[N-1]=ksm(fc[N-1],mod-2);
+		for(int i=N-2;i>0;i--){
+			fc_inv[i]=fc_inv[i+1]*(i+1)%mod;
 		}
 	}
 	LL F(const int& x){

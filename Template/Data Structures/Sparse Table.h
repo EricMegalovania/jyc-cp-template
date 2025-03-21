@@ -20,7 +20,7 @@ public:
 		init(v,n,func); //v的有效下标为 1~n
 	}
 	void init(const vector<T> &v,int n,func_t func){
-		op=func; //e.g. auto max_int=[](const int& x,const int& y)->int{return x>y?x:y};
+		op=func; //e.g. auto max_int=[](const int& x,const int& y)->int{return x>y?x:y;};
 		int mx_l=ST_C::Logn[n]+1; //max log
 		a.assign(n+1,VT(mx_l,0));
 		for(int i=1;i<=n;i++){

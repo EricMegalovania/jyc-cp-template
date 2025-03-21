@@ -3,7 +3,8 @@ using namespace std;
 
 //#define ONLINE
 #ifndef ONLINE
-#define debug(...) fprintf(stderr,##__VA_ARGS__)
+char DEBUG_BUFFER[1000];
+#define debug(...) {sprintf(DEBUG_BUFFER,##__VA_ARGS__);cerr<<DEBUG_BUFFER;}
 #else
 #define debug(...) ;
 #endif
@@ -14,19 +15,12 @@ using PII=pair<int,int>;
 #define all(x) (x).begin(),(x).end()
 #define allr(x) (x).rbegin(),(x).rend()
 
-//快读
-template<typename T>
-inline T READ(){
-	T x=0; bool f=0; char c=getchar();
-	while(!isdigit(c)) f|=(c=='-'),c=getchar();
-	while(isdigit(c)) x=x*10+c-'0',c=getchar();
-	return f?-x:x;
-}
-inline int read(){return READ<int>();}
-inline LL readLL(){return READ<LL>();}
-mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+#define FAST_IO {ios::sync_with_stdio(false);cin.tie(nullptr);}
+inline int read(){static int x; cin>>x; return x;}
+inline LL readLL(){static LL x; cin>>x; return x;}
+mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 
 int main(){
-	
+	FAST_IO;
 	return 0;
 }

@@ -1,8 +1,6 @@
-class bitTrie{
-private:
+struct bitTrie{
 	vector<array<int,2>>trie;
 	vector<int>cnt; //record prefix's number
-public:
 	bitTrie(){init();}
 	void init(){
 		trie.assign(1,{0,0});

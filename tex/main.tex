@@ -106,6 +106,12 @@
 
 \newpage
 
+\subsection{“边带权”并查集}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Disjoint Set Union Pro.h}
+
+\newpage
+
 \subsection{ST 表}
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Sparse Table.h}
@@ -148,6 +154,18 @@
 
 \newpage
 
+\subsection{可持久 01-Trie}
+
+\lstinputlisting[style=C++]{"../Template/Data Structures/Persistent bitTrie.h"}
+
+\newpage
+
+\subsection{珂朵莉树}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Old Driver Tree.h}
+
+\newpage
+
 \subsection{01-Trie}
 
 \lstinputlisting[style=C++]{../Template/Data Structures/bitTrie.h}
@@ -158,7 +176,7 @@
 
 可以把树链剖分作为 $LCA$ 的模板来使用，比倍增的写法优秀很多
 
-\lstinputlisting[style=C++]{"../Template/Data Structures/Heavy Light Decomposition.h"}
+\lstinputlisting[style=C++]{"../Template/Data Structures/Heavy Light Decomposition 1.h"}
 
 \subsection{长链剖分}
 
@@ -190,11 +208,31 @@
 
 \newpage
 
+\subsection{线段树分治}
+
+以\href{https://www.luogu.com.cn/problem/P5787}{P5787}为模板题
+
+\lstinputlisting[style=C++]{../Template/Data Structures/SGT-offline.h}
+
+\newpage
+
+\subsection{李超线段树}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Li-Chao-Tree.h}
+
+\newpage
+
 \subsection{吉司机线段树}
 
 把 Wiki 里的代码改了改
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Ji SGT.h}
+
+\newpage
+
+\subsection{猫树}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/CatSGT.h}
 
 \newpage
 
@@ -206,7 +244,19 @@
 
 \newpage
 
+\subsection{mindeque}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/mindeque.h}
+
+\newpage
+
 {\centering\section{图论}}
+
+\subsection{Tarjan（无向图，割点)}
+
+\lstinputlisting[style=C++]{../Template/Graphs/Tarjan(Undirected, Vertex).h}
+
+\newpage
 
 \subsection{Tarjan（无向图，割边）}
 
@@ -217,6 +267,12 @@
 \subsection{Tarjan（有向图）}
 
 \lstinputlisting[style=C++]{../Template/Graphs/Tarjan(Directed).h}
+
+\newpage
+
+\subsection{点分治}
+
+\lstinputlisting[style=C++]{../Template/Graphs/Tree Divide.h}
 
 \newpage
 
@@ -243,10 +299,6 @@
 \newpage
 
 \subsection{费用流（Dinic）}
-
-初始化需传入点的个数 $n$（不用传什么 $n+1$ 之类的）
-
-调用 \texttt{"MF::dinic(s,t,sign)"} 来获得 $s$ 到 $t$ 的最小/大费用最大流（其中 \texttt{sign==0} 为最小费用，\texttt{sign==1} 为最大费用），\texttt{sign} 缺省时为最小费用
 
 \lstinputlisting[style=C++]{../Template/Graphs/Min Cost Max Flow.h}
 
@@ -305,6 +357,12 @@ namespace HC{//Hash Const
 \subsection{AC 自动机}
 
 \lstinputlisting[style=C++]{../Template/Strings/Aho-Corasick Automaton.h}
+
+\newpage
+
+\subsection{AC 自动机（简单版）}
+
+\lstinputlisting[style=C++]{../Template/Strings/Aho-Corasick Automaton Easy.h}
 
 \newpage
 
@@ -369,6 +427,12 @@ by fhy
 
 \newpage
 
+\subsection{\_{}\_{}int128 取平方根}
+
+\lstinputlisting[style=C++]{"../Template/Math/Square-128.h"}
+
+\newpage
+
 \subsection{计算 $a^{1/b}$ 的下取整值}
 
 \lstinputlisting[style=C++]{"../Template/Math/Pow_inv.h"}
@@ -388,6 +452,65 @@ by fhy
 \subsection{分数类}
 
 \lstinputlisting[style=C++]{../Template/Math/Fraction.h}
+
+\newpage
+
+\subsection{Mod-Int 类}
+
+用来处理可能对 0 求逆元的情况
+
+\lstinputlisting[style=C++]{../Template/Math/Mod-Int.h}
+
+\newpage
+
+\subsection{异或线性基}
+
+\lstinputlisting[style=C++]{../Template/Math/Linear Basis.h}
+
+\newpage
+
+\subsection{异或方程组高斯消元}
+
+\lstinputlisting[style=C++]{../Template/Math/Gauss Elimination.h}
+
+\newpage
+
+\subsection{Pollard-Rho 分解质因数}
+
+\lstinputlisting[style=C++]{../Template/Math/Pollard-Rho.h}
+
+\newpage
+
+\subsection{万能欧几里得算法}
+
+\lstinputlisting[style=C++]{../Template/Math/universal-gcd.cpp}
+
+\newpage
+
+\subsection{FFT}
+
+\lstinputlisting[style=C++]{../Template/Math/FFT.h}
+
+\newpage
+
+\subsection{NTT}
+
+\lstinputlisting[style=C++]{../Template/Math/NTT.h}
+
+\newpage
+
+
+\subsection{Min\_25 筛（超级无敌阉割版）}
+
+by fhy，只能求质数的前缀和
+
+\lstinputlisting[style=C++]{../Template/Math/Min_25.h}
+
+\newpage
+
+\subsection{Schreier Sims}
+
+\lstinputlisting[style=C++]{../Template/Math/Schreier-Sims.h}
 
 \newpage
 
@@ -862,6 +985,14 @@ $P.S.$
 
 \newpage
 
+% \subsection{手写 bitset}
+% 
+% \textbf{大概是 std::bitset 的 0.87 倍常数}
+% 
+% \lstinputlisting[style=C++]{"../Template/Other/Bitset.h"}
+% 
+% \newpage
+
 \subsection{pbds 提供的 umap 代替品}
 
 \begin{lstlisting}[style=C++]
@@ -872,6 +1003,46 @@ using namespace std;
 using namespace __gnu_pbds;
 gp_hash_table<pair<int,int>,int> h;
 \end{lstlisting}
+
+\subsection{预处理勾股数}
+
+\lstinputlisting[style=C++]{"../Template/Other/PPT.h"}
+
+\subsection{手写 unordered 类 STL 的 Hash class}
+
+\begin{lstlisting}[style=C++]
+using ALH=array<LL,Hash>
+class Hash_ALH{
+	public:
+	size_t operator()(const ALH& A) const{
+		return hash<LL>()(A[0])^hash<LL>()(A[1]);
+	}
+};
+\end{lstlisting}
+
+\subsection{加速 std::bitset 的预处理指令}
+
+\begin{lstlisting}[style=C++]
+	#define __AVX__ 1
+	#define __AVX2__ 1
+	#pragma GCC optimize("Ofast,unroll-loops")
+	#pragma GCC target("avx2,bmi,fma,popcnt")
+\end{lstlisting}
+
+\subsection{质因数个数与因数个数的上界}
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		n$\le$ & $10^{1}$ & $10^{2}$ & $10^{3}$ & $10^{4}$ & $10^{5}$ & $10^{6}$ & $10^{7}$ & $10^{8}$ & $10^{9}$ \\ \hline
+		$max\{\omega(n)\}$ & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 8 & 9 \\ \hline
+		$max\{d(n)\}$ & 4 & 12 & 32 & 64 & 128 & 240 & 448 & 768 & 1344 \\ \hline
+		n$\le$ & $10^{10}$ & $10^{11}$ & $10^{12}$ & $10^{13}$ & $10^{14}$ & $10^{15}$ & $10^{16}$ & $10^{17}$ & $10^{18}$ \\ \hline
+		$max\{\omega(n)\}$ & 10 & 10 & 11 & 12 & 12 & 13 & 13 & 14 & 15 \\ \hline
+		$max\{d(n)\}$ & 2304 & 4032 & 6720 & 10752 & 17280 & 26880 & 41472 & 64512 & 103680 \\ \hline
+	\end{tabular}
+\end{table}
 
 \subsection{写在最后（来自 Benq 大神的几句话）}
 

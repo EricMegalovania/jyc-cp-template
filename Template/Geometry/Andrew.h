@@ -16,6 +16,8 @@ vector<PDD> Andrew(vector<PDD>& a){
 		down.push_back(a[i]);
 	}
 	reverse(all(down));
-	down.insert(down.end(),allr(up));
+	down.pop_back();
+	up.erase(up.begin());
+	down.insert(down.end(),all(up));
 	return down;
 }

@@ -8,7 +8,9 @@ struct Mod{ //Barrett Reduction
 		return x<0?x+M.mod:x;
 	}
 	friend LL operator %(LL x,const Mod& M){
-		return x-((__int128_t(x)*M.base)>>64)*M.mod;
+		static LL r;
+		r=x-((__int128_t(x)*M.base)>>64)*M.mod;
+		return r==M.mod?0ll:r;
 	}
 	friend LL operator %=(const LL& x,const Mod& M){
 		return x%M;

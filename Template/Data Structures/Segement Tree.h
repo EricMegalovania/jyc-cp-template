@@ -28,7 +28,7 @@ private:
 			q[id].tag=0;
 		}
 	}
-	void build(const vector<int>& a,int l,int r,int id=1){
+	void build(const auto& a,int l,int r,int id=1){
 		if(l==r){
 			q[id].l=l,q[id].r=r;
 			
@@ -43,10 +43,10 @@ private:
 		q[id]=q[ls]+q[rs];
 	}
 public:
-	SGT(const vector<int>& a,int n){
+	SGT(const auto& a,int n){
 		init(a,n);
 	}
-	void init(const vector<int>& a,int n){
+	void init(const auto& a,int n){
 		q.resize(n*5);
 		build(a,1,n);
 	}
