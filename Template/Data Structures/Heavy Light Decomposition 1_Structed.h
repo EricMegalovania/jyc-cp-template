@@ -8,7 +8,7 @@ struct HLD{
 #endif
 	int root;
 	HLD(){}
-	HLD(const auto& e,int n,int rt=1){init(n,rt);}
+	HLD(const auto& e,int n,int rt=1){init(e,n,rt);}
 	void init(const auto& e,int n,int rt=1){
 		root=rt;
 		dep.resize(n+1),fa.resize(n+1),

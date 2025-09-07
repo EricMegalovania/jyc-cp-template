@@ -14,7 +14,7 @@ public:
 	void init(int n_){
 		c.assign(n=n_,T(0));
 	}
-	void add(int i,int x){
+	void add(int i,T x){
 		for(;i<n;i+=lowbit(i)) c[i]+=x;
 	}
 	T query(int i){

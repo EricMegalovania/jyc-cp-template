@@ -6,6 +6,7 @@
 \usepackage{cancel}
 \usepackage{amssymb}
 \usepackage{enumitem}
+\usepackage{pdfpages}
 \usepackage{pifont}% http://ctan.org/pkg/pifont
 \newcommand{\cmark}{\text{\color{ForestGreen}\ding{51}}}%
 \newcommand{\xmark}{\text{\color{red}\ding{55}}}%
@@ -91,8 +92,6 @@
 \newpage
 
 {\centering\section{缺省源}}
-
-模板正式开始
 
 \lstinputlisting[style=C++]{../Template/Default Source.cpp}
 
@@ -244,9 +243,27 @@
 
 \newpage
 
+\subsection{两个 set 维护中位数}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Median.h}
+
+\newpage
+
 \subsection{mindeque}
 
 \lstinputlisting[style=C++]{../Template/Data Structures/mindeque.h}
+
+\newpage
+
+\subsection{归并树}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Dividing Tree.h}
+
+\newpage
+
+\subsection{左偏树}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Leftist Tree.h}
 
 \newpage
 
@@ -374,6 +391,12 @@ by fhy
 
 \newpage
 
+\subsection{DFA}
+
+\lstinputlisting[style=C++]{../Template/Strings/FSM.h}
+
+\newpage
+
 {\centering\section{数学}}
 
 \subsection{高精度}
@@ -440,6 +463,14 @@ by fhy
 \subsection{线性筛欧拉函数}
 
 \lstinputlisting[style=C++]{"../Template/Math/Prime and EulerFunction.h"}
+
+\newpage
+
+\subsection{莫比乌斯反演}
+
+这里顺便筛了约数个数, $d_i$ 表示 $i$ 的约数个数, $num_i$ 表示 $i$ 的最小质因子出现次数
+
+\lstinputlisting[style=C++]{"../Template/Math/Mobius.h"}
 
 \newpage
 
@@ -937,15 +968,41 @@ $$
 
 \newpage
 
+\subsection{闵可夫斯基和}
+
+\lstinputlisting[style=C++]{"../Template/Geometry/Minkowski.h"}
+
+\subsection{点到凸包距离}
+
+如果点在凸包内, 距离就是 0
+
+\lstinputlisting[style=C++]{"../Template/Geometry/DisPointPoly.h"}
+
+\newpage
+
 \subsection{半平面交}
 
 by fhy
 
 \lstinputlisting[style=C++]{"../Template/Geometry/半平面交.cpp"}
 
+{\centering\section{杂项}}
+\subsection{竞赛向配置vscode}
+
+\begin{center}
+\includegraphics[width=1.1\textwidth]{"../Template/Other/vscode.pdf"}
+\end{center}
+% \includepdf[pages=-,scale=0.9]{"../Template/Other/vscode.pdf"}
+
 \newpage
 
-{\centering\section{杂项}}
+\subsection{数位 dp}
+
+给出一个区间 [l, r], 问有多少数字包含 38 或者 4
+
+\lstinputlisting[style=C++]{"../Template/Other/DP num dp.h"}
+
+\newpage
 
 \subsection{模拟退火}
 
@@ -1008,18 +1065,6 @@ gp_hash_table<pair<int,int>,int> h;
 
 \lstinputlisting[style=C++]{"../Template/Other/PPT.h"}
 
-\subsection{手写 unordered 类 STL 的 Hash class}
-
-\begin{lstlisting}[style=C++]
-using ALH=array<LL,Hash>
-class Hash_ALH{
-	public:
-	size_t operator()(const ALH& A) const{
-		return hash<LL>()(A[0])^hash<LL>()(A[1]);
-	}
-};
-\end{lstlisting}
-
 \subsection{加速 std::bitset 的预处理指令}
 
 \begin{lstlisting}[style=C++]
@@ -1028,6 +1073,16 @@ class Hash_ALH{
 	#pragma GCC optimize("Ofast,unroll-loops")
 	#pragma GCC target("avx2,bmi,fma,popcnt")
 \end{lstlisting}
+
+\subsection{某个交互题 trick}
+
+对于正整数 $x\ (x>1)$，令 $n=x^2$，则 $\lceil \dfrac{n}{1}\rceil,\lceil \dfrac{n}{2}\rceil,\cdots,\lceil \dfrac{n}{x-1}\rceil$ 各不相同 (\href{https://codeforces.com/contest/2135/problem/D2}{CF2135D2})
+
+\newpage
+
+\subsection{一些 Hash class}
+
+\lstinputlisting[style=C++]{"../Template/Other/Hash.h"}
 
 \subsection{质因数个数与因数个数的上界}
 

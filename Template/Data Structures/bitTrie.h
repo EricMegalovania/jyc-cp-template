@@ -22,17 +22,11 @@ struct bitTrie{
 		int p=0,ret=0;
 		for(int i=30,j;i>=0;i--){
 			j=x>>i&1;
-			if(trie[p][j^1] && cnt[trie[p][j^1]]>0){
-				ret|=(j^1)<<i;
-				p=trie[p][j^1];
+			if(cnt[trie[p][!j]]>0){
+				ret|=1<<i;
+				p=trie[p][!j];
 			}
-			else if(trie[p][j] && cnt[trie[p][j]]>0){
-				ret|=j<<i;
-				p=trie[p][j];
-			}
-			else{
-				return -1;
-			}
+			else p=trie[p][j];
 		}
 		return ret;
 	}

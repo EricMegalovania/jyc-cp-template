@@ -39,7 +39,7 @@ LD get_length(PDD a){
 
 //计算向量夹角
 LD get_angle(PDD a,PDD b){
-	return acos(dot(a,b)/get_length(a)/get_length(b));
+	return atan2(fabs(cross(a,b)),dot(a,b));
 }
 
 //计算两个向量构成的平行四边形的面积

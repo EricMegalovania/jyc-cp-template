@@ -29,7 +29,7 @@ public:
 		for(int j=1;j<mx_l;j++){
 			int p=(1<<(j-1));
 			for(int i=1;i+p<=n;i++){
-				a[i][j]=op(a[i][j-1],a[i+(1<<(j-1))][j-1]);
+				a[i][j]=op(a[i][j-1],a[i+p][j-1]);
 			}
 		}
 	}

@@ -10,8 +10,9 @@ LL ksm(LL a,LL b){
 }
 
 namespace Fac{//factorial
-	LL fc[N]={1},fc_inv[N]={1};
+	LL fc[N],fc_inv[N];
 	void init(){
+		fc[0]=fc_inv[0]=1;
 		for(int i=1;i<N;i++){
 			fc[i]=fc[i-1]*i%mod;
 		}
@@ -27,8 +28,11 @@ namespace Fac{//factorial
 		return fc[x]*fc_inv[x-y]%mod;
 	}
 	LL C(const int& x,const int& y){
+		if(x==y) return 1;
+		if(x<0 || y<0 || x-y<0) return 0;
 		return fc[x]*fc_inv[y]%mod*fc_inv[x-y]%mod;
 	}
 }
 
+// check mod !!!!
 Fac::init(); //初始化

@@ -12,4 +12,4 @@ namespace Comb{ //combination
 }
 using Comb::c;
 
-Comb:init(); //初始化
+Comb::init(); //初始化

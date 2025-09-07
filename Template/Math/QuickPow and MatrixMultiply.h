@@ -9,7 +9,8 @@ LL ksm(LL a,LL b){
 	return ret;
 }
 
-void mul(const vector<vector<LL>>& a,vector<LL>& f,int n){//f=a*f
+using M=vector<vector<LL>>;
+void mul(const M& a,vector<LL>& f,int n){//f=a*f
 	vector<LL>b(n,0);
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
@@ -18,7 +19,7 @@ void mul(const vector<vector<LL>>& a,vector<LL>& f,int n){//f=a*f
 	}
 	swap(f,b);
 }
-void mul(const vector<vector<LL>>& a,vector<vector<LL>>& f,int n){//f=a*f
+void mul(const M& a,M& f,int n){//f=a*f
 	vector b(n,vector<LL>(n,0));
 	for(int k=0;k<n;k++){
 		for(int i=0;i<n;i++){
@@ -29,7 +30,7 @@ void mul(const vector<vector<LL>>& a,vector<vector<LL>>& f,int n){//f=a*f
 	}
 	swap(f,b);
 }
-void self_mul(vector<vector<LL>>& a,int n){//a=a*a
+void self_mul(M& a,int n){//a=a*a
 	vector b(n,vector<LL>(n,0));
 	for(int k=0;k<n;k++){
 		for(int i=0;i<n;i++){

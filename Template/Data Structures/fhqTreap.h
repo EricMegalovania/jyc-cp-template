@@ -22,7 +22,7 @@ private:
 	}
 	void Update(int id){
 		q[id].siz=q[q[id].l].siz+q[q[id].r].siz+1;
-		q[id].sum=1ll*q[q[id].l].val+q[q[id].r].val+q[id].val;
+		q[id].sum=q[q[id].l].sum+q[q[id].r].sum+q[id].val;
 	}
 	void Split(int id,T key,int& idX,int& idY){
 		if(id==0){
