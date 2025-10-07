@@ -1,1 +1,0 @@
-"cpp": "cd $dir && g++ $fileName -pedantic -O2 -std=c++2a -pipe -Wall -Wextra '-Wl,--stack=1073741824' -Wshadow -Wconversion -g -lm -W -fstack-protector-strong -s -o $fileNameWithoutExt && $dir$fileNameWithoutExt",

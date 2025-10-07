@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//#define ONLINE
-#ifndef ONLINE
+#ifdef LOCAL
 char DEBUG_BUFFER[1000];
 #define debug(...) {sprintf(DEBUG_BUFFER,##__VA_ARGS__);\
 cerr<<"\033[1;36m"<<DEBUG_BUFFER<<"\033[0;2m"<<"\033[0m";\
@@ -27,27 +26,25 @@ void TEST(string S){
 #endif
 
 using LL=long long;
-using PII=pair<int,int>;
 #define ai(x) using ai##x=array<int,x>;
 ai(2);ai(3);ai(4);ai(5);ai(6);ai(7);ai(8);ai(9);ai(10);ai(26);
 #undef ai
 
-#define rep(x,st,ed) for(auto x=(st);x!=(ed);++x)
-#define repr(x,st,ed) for(auto x=(st);x!=(ed);--x)
 #define all(x) (x).begin(),(x).end()
 #define allr(x) (x).rbegin(),(x).rend()
 template<typename T>inline bool updmx(T& x,const T& y){return x<y?x=y,1:0;}
-template<typename T>inline bool updmn(T& x,const T& y){return x>y?x=y,1:0;}
+template<typename T>inline bool updmn(T& x,const T& y){return y<x?x=y,1:0;}
+template<typename T>inline void clr(T& x){T().swap(x);}
 
-#define FAST_IO {ios::sync_with_stdio(false);cin.tie(nullptr);}
-inline int read(){static int x; cin>>x; return x;}
-inline LL readLL(){static LL x; cin>>x; return x;}
 mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 int rand(int l,int r){return rng()%(r-l+1)+l;}
 
 void solve(){}
 int main(){
-	FAST_IO;
-	repr(T,read(),0) solve();
+#ifndef LOCAL
+	cin.tie(nullptr)->sync_with_stdio(false);
+#endif
+	int t; cin>>t;
+	while(t--) solve();
 	return 0;
 }

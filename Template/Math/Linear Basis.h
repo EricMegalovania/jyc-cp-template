@@ -1,14 +1,15 @@
+constexpr int K=64;
 using ULL=unsigned long long;
 class LB{ //linear-basis
 private:
-	array<ULL,64>a;
+	array<ULL,K>a;
 public:
 	LB(){init();}
 	void init(){
 		fill(all(a),0);
 	}
 	void insert(ULL x){
-		for(int i=63;i>=0;i--){
+		for(int i=K-1;i>=0;i--){
 			if(!(x>>i)) continue;
 			if(!a[i]){
 				a[i]=x;
@@ -18,7 +19,7 @@ public:
 		}
 	}
 	bool find(ULL x){
-		for(int i=63;i>=0;i--){
+		for(int i=K-1;i>=0;i--){
 			if(!(x>>i)) continue;
 			if(!a[i]) return 0;
 			x^=a[i];
@@ -26,14 +27,14 @@ public:
 		return 1;
 	}
 	ULL max(){
-		ULL res=a[63];
-		for(int i=62;i>=0;i--){
+		ULL res=0;
+		for(int i=K-1;i>=0;i--){
 			if((res^a[i])>res) res^=a[i];
 		}
 		return res;
 	}
 	ULL min(){
-		for(int i=0;i<=63;i++){
+		for(int i=0;i<K;i++){
 			if(a[i]!=0) return a[i];
 		}
 		return 0;

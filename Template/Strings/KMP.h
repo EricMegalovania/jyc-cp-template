@@ -9,12 +9,10 @@ vector<int> kmp(string s) {
 	}
 	return pi;
 }
-
 vector<int> kmp(string text, string pattern) {
 	string cur = pattern + '#' + text;
 	int sz1 = text.size(), sz2 = pattern.size();
-	vector<int> v;
-	vector<int> lps = kmp(cur);
+	vector<int> v, lps = kmp(cur);
 	for (int i = sz2 + 1; i <= sz1 + sz2; i++) {
 		if (lps[i] == sz2) v.push_back(i - 2 * sz2);
 	}

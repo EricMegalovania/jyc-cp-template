@@ -1,148 +1,213 @@
-constexpr int N = 5e5 + 5;
-constexpr int mod = 998244353;
-constexpr int inv3 = (mod + 1) / 3;
-inline ll quickpow(ll a, int b = mod - 2){
-	ll res = 1;
-	while (b){
-		if (b & 1)
-			(res *= a) %= mod;
-		(a *= a) %= mod;
-		b >>= 1;
+bool notP[N],haspr[N]; int phi[N],mn_p[N];
+vector<int>prime;
+void init_prime(const int& n=N){//init [1,n-1]
+	haspr[2]=haspr[4]=phi[1]=mn_p[1]=notP[1]=1;
+	for(int i=2;i<n;i++){
+		if(!notP[i]){
+			prime.push_back(mn_p[i]=i);
+			phi[i]=i-1;
+		}
+		for(const int& p:prime){
+			if(i>(n-1)/p) break;
+			notP[i*p]=1,mn_p[i*p]=p;
+			if(i%p==0){
+				phi[i*p]=phi[i]*p;
+				break;
+			}
+			phi[i*p]=phi[i]*(p-1);
+		}
 	}
-	return res;
+	for(int i=1;i<prime.size();++i){
+		int p=prime[i];
+		for(LL j=p;j<N;j*=p) haspr[j]=1;
+		for(LL j=2*p;j<N;j*=p) haspr[j]=1;
+	}
 }
-namespace polynomial{
-	int limit, len, rk[N];
-	inline void init(int n){
-		len = 0, limit = 1;
-		while (limit < n){
-			limit <<= 1;
-			++len;
-		}
-		for (int i = 0; i < limit; ++i)
-			rk[i] = (rk[i >> 1] >> 1) | ((i & 1) << (len - 1));
+
+LL qpow(LL a,LL b,LL p){
+	a%=p; LL r=1;
+	while(b){
+		if(b&1) r=r*a%p;
+		a=a*a%p;
+		b>>=1;
 	}
-	struct poly{
-		vector<ll> dp;
-		inline void resize(int n){
-			dp.resize(n);
+	return r;
+}
+
+// Primitive-Root, can change to vector<int>
+#ifdef ALLPR
+bool cop[N],ispr[N];
+vector<int>prim_root(int n){
+	if(!haspr[n]) return {};
+	if(n==2 || n==4) return {n-1};
+	int tmp=phi[n];
+	vector<int>d;
+	for(auto& p:prime){
+		if(p*p>tmp) break;
+		if(tmp%p==0){
+			d.push_back(p);
+			do{tmp/=p;}while(tmp%p==0);
+			for(int j=p;j<phi[n];j+=p) cop[j]=1;
 		}
-		inline ll operator [](const int &x) const{
-			return dp[x];
+	}
+	if(tmp>1){
+		d.push_back(tmp);
+		for(int i=tmp;i<phi[n];i+=tmp) cop[i]=1;
+	}
+	int mnpr=1;
+	for(;;++mnpr){
+		for(;__gcd(mnpr,n)!=1;++mnpr);
+		int j=0;
+		for(;j<d.size() && qpow(mnpr,phi[n]/d[j],n)!=1;++j);
+		if(j>=d.size()) break;
+	}
+	tmp=mnpr;
+	for(int i=1;i<phi[n];++i,tmp=tmp*mnpr%n){
+		if(!cop[i]) ispr[tmp]=1;
+		else cop[i]=0;
+	}
+	vector<int>vec;
+	for(int i=1;i<n;++i){
+		if(ispr[i]){
+			ispr[i]=0;
+			vec.push_back(i);
 		}
-		inline ll &operator [](const int &x){
-			return dp[x];
+	}
+	return vec;
+}
+#else
+int prim_root(int n){
+	if(!haspr[n]) return 0;
+	if(n==2 || n==4) return n-1;
+	int tmp=phi[n];
+	vector<int>d;
+	for(auto& p:prime){
+		if(p*p>tmp) break;
+		if(tmp%p==0){
+			d.push_back(p);
+			do{tmp/=p;}while(tmp%p==0);
 		}
-		inline int size() const{
-			return (int)dp.size();
+	}
+	if(tmp>1) d.push_back(tmp);
+	int mnpr=1;
+	for(;;++mnpr){
+		for(;__gcd(mnpr,n)!=1;++mnpr);
+		int j=0;
+		for(;j<d.size() && qpow(mnpr,phi[n]/d[j],n)!=1;++j);
+		if(j>=d.size()) break;
+	}
+	return mnpr;
+}
+#endif
+
+using Poly=vector<LL>;
+namespace NTT{
+	int lim,L,last=-1;
+	// modify if mod is constexpr
+	int g,gi; // pr, pr_inv
+	int mo=-1;
+	vector<int>r;
+	inline void ADD(LL& x,const LL& y){
+		if((x+=y)>=mo) x-=mo;
+	}
+	void NTT(vector<LL>& a,int type){
+		for(int i=0;i<lim;i++){
+			if(i<r[i]) swap(a[i],a[r[i]]);
 		}
-		inline void print(){
-			for (int i = 0; i < size(); ++i)
-				cout << (dp[i] + mod) % mod << ' ';
-			cout << '\n';
-		}
-		inline void NTT(){
-			for (int i = 0; i < limit; ++i)
-				if (i < rk[i])
-					swap(dp[i], dp[rk[i]]);
-			for (int mid = 1; mid < limit; mid <<= 1){
-				ll gn = quickpow(3, (mod - 1) / (mid << 1));
-				for (int i = 0; i < limit; i += mid << 1){
-					ll g = 1;
-					for (int j = 0; j < mid; ++j, (g *= gn) %= mod){
-						ll x = dp[i + j], y = dp[i + j + mid] * g % mod;
-						dp[i + j] = (x + y) % mod;
-						dp[i + j + mid] = (x - y) % mod;
-					}
+		for(int mid=1;mid<lim;mid<<=1){
+			// modify if mod is constexpr
+			LL Wn=qpow(type==1?g:gi,(mo-1)/(mid<<1),mo);
+			for(int j=0;j<lim;j+=(mid<<1)){
+				LL w=1;
+				for(int k=0;k<mid;k++,w=(w*Wn)%mo){
+					LL x=a[j+k];
+					LL y=w*a[j+k+mid]%mo;
+					ADD(a[j+k],y);
+					a[j+k+mid]=mo-y;
+					ADD(a[j+k+mid],x);
 				}
 			}
 		}
-		inline void INTT(){
-			for (int i = 0; i < limit; ++i)
-				if (i < rk[i])
-					swap(dp[i], dp[rk[i]]);
-			for (int mid = 1; mid < limit; mid <<= 1){
-				ll gn = quickpow(inv3, (mod - 1) / (mid << 1));
-				for (int i = 0; i < limit; i += mid << 1){
-					ll g = 1;
-					for (int j = 0; j < mid; ++j, (g *= gn) %= mod){
-						ll x = dp[i + j], y = dp[i + j + mid] * g % mod;
-						dp[i + j] = (x + y) % mod;
-						dp[i + j + mid] = (x - y) % mod;
-					}
+		if(type==-1){
+			// modify if mod is constexpr
+			LL inv=qpow(lim,mo-2,mo);
+			for(int i=0;i<lim;i++){
+				a[i]=(a[i]*inv)%mo;
+			}
+		}
+	}
+	void init_mod(const int& m){
+		if(mo==m) return;
+		mo=m;
+		if(mo==167772161 || mo==469762049 ||
+			mo==998244353 || mo==1004535809) g=3;
+		else if(mo==(int)(1e9+7)) g=5;
+		else if(mo==754974721) g=11;
+		else g=prim_root(mo);
+		gi=qpow(g,mo-2,mo);
+	}
+	void init(int d){
+		int l=1,lg=0;
+		while(l<=d){
+			l<<=1;
+			++lg;
+		}
+		if(l==last) return;
+		lim=l,L=lg;
+		r.assign(lim,0);
+		for(int i=0;i<lim;i++){
+			r[i]=(r[i>>1]>>1)|((i&1)<<(L-1));
+		}
+	}
+	void poly_mul(Poly& a,Poly& b){
+		const int n=a.size()-1;
+		const int m=b.size()-1;
+		if(min(n,m)<=64){
+			Poly c(n+m+1);
+			for(int i=0;i<=n;++i){
+				for(int j=0;j<=m;++j){
+					LL x=a[i]*b[j]%mo;
+					ADD(c[i+j],x);
 				}
 			}
-			ll inv = quickpow(limit);
-			for (int i = 0; i < limit; ++i)
-				(dp[i] *= inv) %= mod;
+			swap(a,c);
+			return;
 		}
-		inline friend poly operator*(poly lhs, poly rhs){
-			poly res;
-			int up = lhs.size() + rhs.size() - 1;
-			init(up);
-			res.resize(limit);
-			lhs.resize(limit), rhs.resize(limit);
-			lhs.NTT(), rhs.NTT();
-			for (int i = 0; i < limit; ++i)
-				res.dp[i] = lhs.dp[i] * rhs.dp[i] % mod;
-			res.INTT();
-			res.resize(up);
-			return res;
+		init(n+m);
+		a.resize(lim); NTT(a,1);
+		b.resize(lim); NTT(b,1);
+		for(int i=0;i<lim;i++){
+			a[i]=(a[i]*b[i])%mo;
 		}
-		inline friend poly operator-(poly lhs, poly rhs){
-			poly res;
-			res.resize(max(lhs.size(), rhs.size()));
-			lhs.resize(res.size()), rhs.resize(res.size());
-			for (int i = 0; i < res.size(); ++i)
-				res[i] = (lhs[i] - rhs[i]) % mod;
-			return res;
-		}
-		inline friend poly operator+(poly lhs, poly rhs){
-			poly res;
-			res.resize(max(lhs.size(), rhs.size()));
-			lhs.resize(res.size()), rhs.resize(res.size());
-			for (int i = 0; i < res.size(); ++i)
-				res[i] = (lhs[i] + rhs[i]) % mod;
-			return res;
-		}
-		inline poly solve(int n){
-			poly F, G;
-			if (n == 1){
-				F.dp.push_back(quickpow(dp[0]));
-				return F;
-			}
-			F = solve((n + 1) / 2);
-			G.resize(n);
-			for (int i = 0; i < n; ++i)
-				G.dp[i] = dp[i];
-			init(n * 2);
-			F.resize(limit), G.resize(limit);
-			F.NTT(), G.NTT();
-			for (int i = 0; i < limit; ++i)
-				F[i] = (2 - F[i] * G[i] % mod) * F[i] % mod;
-			F.INTT();
-			F.resize(n);
-			return F;
-		}
-		inline void reverse(){
-			for (int i = 0; i * 2 < size(); ++i)
-				swap(dp[i], dp[size() - i - 1]);
-		}
-		inline friend poly operator / (poly lhs, poly rhs){
-			lhs.reverse(), rhs.reverse();
-			int qwq = lhs.size() - rhs.size() + 1;
-			rhs.resize(qwq);
-			auto inv = rhs.solve(qwq);
-			auto div = lhs * inv;
-			div.resize(qwq);
-			div.reverse();
-			return div;
-		}
-		inline friend poly operator % (const poly &lhs, const poly &rhs){
-			auto R = lhs - lhs / rhs * rhs;
-			R.resize(rhs.size() - 1);
-			return R;
-		}
-	};
-};
-using polynomial::poly;
+		NTT(a,-1);
+		a.resize(n+m+1);
+	}
+}
+using NTT::init_mod;
+using NTT::poly_mul;
+
+// a[(i*j)%P]+=a[i]*a[j]%mod;
+int P,g; // g is pr of P
+Poly conv(const Poly& a,const Poly& b){
+	vector<LL>aa(P-1),bb(P-1);
+	for(int i=0,x=1;i<P-1;++i){
+		aa[i]=a[x];
+		bb[i]=b[x];
+		x=x*g%P;
+	}
+	poly_mul(aa,bb);
+	for(int i=P-1;i<aa.size();++i){
+		int j=i%(P-1);
+		aa[j]=(aa[j]+aa[i])%mod;
+	}
+	vector<LL>d(P);
+	for(int i=0,x=1;i<P-1;++i){
+		d[x]=aa[i];
+		x=x*g%P;
+	}
+	return d;
+}
+
+init_prime();
+init_mod();
+g=prim_root(P);

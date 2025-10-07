@@ -41,7 +41,7 @@
 	basicstyle   = \footnotesize\ttfamily,
 	stringstyle  = \color{purple},
 	keywordstyle = \color{blue!60!black}\bfseries,
-	commentstyle = \color{olive}\scshape,
+	commentstyle = \color{olive},
 }
 \lstdefinestyle{lnumbers}{
 	numbers     = left,
@@ -203,7 +203,7 @@
 
 依然坚定的使用无旋 $Treap$
 
-\lstinputlisting[style=C++]{../Template/Data Structures/Wenyi fhqTreap.h}
+\lstinputlisting[style=C++]{../Template/Data Structures/fhqTreap Wenyi.h}
 
 \newpage
 
@@ -355,6 +355,14 @@ namespace HC{//Hash Const
 
 \newpage
 
+\subsection{KMP}
+
+约定：字符串下标以 $0$ 为起点
+
+定义函数 $\pi[i]$ 表示 $s[0,i]$ 最长的相等的真前缀与真后缀的长度
+
+\lstinputlisting[style=C++]{../Template/Strings/KMP.h}
+
 \subsection{Z 函数（扩展 KMP）}
 
 约定：字符串下标以 $0$ 为起点
@@ -398,6 +406,14 @@ by fhy
 \newpage
 
 {\centering\section{数学}}
+
+\subsection{wjr 的数论}
+
+包含 Lucas 定理，ex-CRT 之类的高级科技
+
+\lstinputlisting[style=C++]{../Template/Math/Number Theory (wjr).h}
+
+\newpage
 
 \subsection{高精度}
 
@@ -494,9 +510,21 @@ by fhy
 
 \newpage
 
-\subsection{异或线性基}
+\subsection{异或线性基-普通}
 
 \lstinputlisting[style=C++]{../Template/Math/Linear Basis.h}
+
+\newpage
+
+\subsection{异或线性基-前后缀}
+
+\lstinputlisting[style=C++]{../Template/Math/Linear Basis Suffix.h}
+
+\newpage
+
+\subsection{异或线性基-高斯消元}
+
+\lstinputlisting[style=C++]{../Template/Math/Linear Basis Gaussian.h}
 
 \newpage
 
@@ -1039,6 +1067,12 @@ $P.S.$
 \textbf{除法慎用，求逆元会使复杂度多一个log}
 
 \lstinputlisting[style=C++]{"../Template/Other/Sum Hash.h"}
+
+\newpage
+
+\subsection{超级快 C++ 风格 IO}
+
+\lstinputlisting[style=C++]{"../Template/Other/IO.h"}
 
 \newpage
 

@@ -28,14 +28,14 @@ ALH operator -(const ALH& A,const ALH& B){
 }
 ALH operator *(const ALH& A,const ALH& B){
 	static ALH res;
-	for(int i=0;i<HL;i++){
+	for(int i=0;i<2;i++){
 		res[i]=A[i]*B[i]%HC::MOD[i];
 	}
 	return res;
 }
 ALH operator /(const ALH& A,const ALH& B){
 	static ALH res;
-	for(int i=0;i<HL;i++){
+	for(int i=0;i<2;i++){
 		res[i]=A[i]*HC::inv(B[i],i)%HC::MOD[i];
 	}
 	return res;

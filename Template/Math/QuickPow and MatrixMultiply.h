@@ -8,7 +8,6 @@ LL ksm(LL a,LL b){
 	}
 	return ret;
 }
-
 using M=vector<vector<LL>>;
 void mul(const M& a,vector<LL>& f,int n){//f=a*f
 	vector<LL>b(n,0);

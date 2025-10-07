@@ -20,10 +20,10 @@ private:
 		q.push_back(new_node);
 		return q.size()-1;
 	}
-	void Update(int id){
+	void update(int id){
 		q[id].siz=q[q[id].l].siz+q[q[id].r].siz+1;
 	}
-	void Spread(int id){
+	void spread(int id){
 		if(!id) return;
 		if(q[id].lazy){
 			q[q[id].l].lazy^=1;
@@ -32,43 +32,43 @@ private:
 			q[id].lazy=0;
 		}
 	}
-	void Split(int id,T key,int& idX,int& idY){
+	void split(int id,int key,int& x,int& y){
 		if(id==0){
-			idX=idY=0;
+			x=y=0;
 			return;
 		}
-		Spread(id);
+		spread(id);
 		if(q[q[id].l].siz+1<=key){
-			idX=id;
-			Split(q[id].r,key-q[q[id].l].siz-1,q[id].r,idY);
+			x=id;
+			split(q[id].r,key-q[q[id].l].siz-1,q[id].r,y);
 		}
 		else{
-			idY=id;
-			Split(q[id].l,key,idX,q[id].l);
+			y=id;
+			split(q[id].l,key,x,q[id].l);
 		}
-		Update(id);
+		update(id);
 	}
-	int Merge(int l,int r){
+	int merge(int l,int r){
 		if(l==0 || r==0) return l+r;
 		if(q[l].rnd<=q[r].rnd){
-			Spread(r);
-			q[r].l=Merge(l,q[r].l);
-			Update(r);
+			spread(r);
+			q[r].l=merge(l,q[r].l);
+			update(r);
 			return r;
 		}
 		else{
-			Spread(l);
-			q[l].r=Merge(q[l].r,r);
-			Update(l);
+			spread(l);
+			q[l].r=merge(q[l].r,r);
+			update(l);
 			return l;
 		}
 	}
-	void Print(vector<int>&a,int u){
+	void print(vector<T>&a,int u){
 		if(!u) return;
-		Spread(u);
-		Print(a,q[u].l);
+		spread(u);
+		print(a,q[u].l);
 		a.push_back(q[u].val);
-		Print(a,q[u].r);
+		print(a,q[u].r);
 	}
 public:
 	fhqTreap(){
@@ -79,17 +79,29 @@ public:
 		Node empty_node=Node();
 		q.push_back(empty_node);
 	}
-	void insert(int x){
-		root=Merge(root,New(x));
+	void insert(T x){
+		root=merge(root,New(x));
 	}
 	void reverse(int l,int r){
-		Split(root,l-1,rootX,rootZ);
-		Split(rootZ,r-l+1,rootY,rootZ);
+		split(root,l-1,rootX,rootZ);
+		split(rootZ,r-l+1,rootY,rootZ);
 		q[rootY].lazy^=1;
-		root=Merge(Merge(rootX,rootY),rootZ);
+		root=merge(merge(rootX,rootY),rootZ);
 	}
-	void to_ary(vector<int>&a){
+	T get(int rank){
+		int id=root;
+		while(1){
+			spread(id);
+			if(q[q[id].l].siz>=rank) id=q[id].l;
+			else if(q[q[id].l].siz+1==rank) return q[id].val;
+			else{
+				rank-=(q[q[id].l].siz+1);
+				id=q[id].r;
+			}
+		}
+	}
+	void to_ary(vector<T>&a){
 		a.clear();
-		Print(a,root);
+		print(a,root);
 	}
 };

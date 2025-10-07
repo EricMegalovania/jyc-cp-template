@@ -46,6 +46,20 @@ public:
 				q.push(j);
 			}
 		}
+		/*
+		vector<vector<int>>tt(trie.size());
+		for(int p=1;p<trie.size();++p){
+			tt[fail[p]].push_back(p);
+		}
+		q.push(0);
+		while (!q.empty()) {
+			int u=q.front(); q.pop();
+			for(int v:tt[u]){
+				idx[v]|=idx[u];
+				q.push(v);
+			}
+		}
+		*/
 	}
 	void query(const string& s){
 		int p=0;

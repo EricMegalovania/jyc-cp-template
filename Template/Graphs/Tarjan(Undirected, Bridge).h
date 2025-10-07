@@ -5,7 +5,7 @@ struct Edge{
 vector<Edge>e(2);
 vector<int>h(n+1);
 auto addedge=[&](int u,int v)->void{
-	e.push_back({v,h[u]});
+	e.emplace_back(v,h[u]);
 	h[u]=e.size()-1;
 };
 for(int i=1,u,v;i<=m;i++){
