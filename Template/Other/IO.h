@@ -9,6 +9,7 @@ struct IO{
 	p1(buf),p2(buf),pp(pbuf),
 	in(i),out(o),prec(6),fmt(std::chars_format::fixed){}
 	~IO(){fwrite(pbuf,1,pp-pbuf,out);}
+	bool eof() const{return feof(in) && (p1==p2);}
 	char gc(){
 #ifdef LOCAL
 		return getchar();
