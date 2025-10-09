@@ -4,7 +4,7 @@ f(n)=\sum_{d|n} g(d)
 f(n)=\sum_{n|d} g(d)
 - g(n)=\sum_{n|d} mu(d/n)f(d)
 */
-bool notP[N];
+bitset<N>notP;
 int mu[N],mn_p[N];
 int d[N],num[N];
 vector<int>prime;

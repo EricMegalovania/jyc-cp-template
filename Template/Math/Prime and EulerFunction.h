@@ -1,4 +1,4 @@
-bool notP[N]; int phi[N],mn_p[N];
+bitset<N>notP; int phi[N],mn_p[N];
 vector<int>prime;
 void init_prime(const int& n=N){//init [1,n-1]
 	phi[1]=mn_p[1]=notP[1]=1;
