@@ -1,36 +1,35 @@
-#define D constexpr
+#define D constexpr MI
 #define C const
 #define O operator
-struct Z{
-	static D int mod=TODO;
-	D Z():v(0){}
+template<int mod>struct MI{
+	D():v(0){}
 	template<typename T>
-	D Z(T x):v(x%mod){if(v<0) v+=mod;}
+	D(T x):v(x%mod){if(v<0) v+=mod;}
 	template<typename T>
-	static D Z raw(T x){Z z; z.v=x; return z;}
-	D Z pow(LL n) C {
-		Z x=*this, r=1;
+	static D raw(T x){MI z; z.v=x; return z;}
+	D pow(LL n) C {
+		MI x=*this, r=1;
 		while(n){if(n&1) r*=x; x*=x; n>>=1;}
 		return r;
 	}
-	D Z inv() C {return pow(mod-2);}
-	Z& O+=(C Z& x){
+	D inv() C {return pow(mod-2);}
+	D& O +=(C MI& x){
 		if((v+=x.v)>=mod) v-=mod;
 		return *this;
 	}
-	Z& O-=(C Z& x){
+	D& O -=(C MI& x){
 		if((v-=x.v)<0) v+=mod;
 		return *this;
 	}
-	Z& O *=(C Z& x){
+	D& O *=(C MI& x){
 		LL z=v; z*=x.v; v=z%mod;
 		return *this;
 	}
-	Z& O /=(C Z& x){
+	D& O /=(C MI& x){
 		return *this=*this*x.inv();
 	}
 	int val() C{return v;}
-#define OP(s,t) friend Z O s(C Z& x,C Z& y){return Z(x) t y;}
+#define OP(s,t) friend D O s(C MI& x,C MI& y){return MI(x) t y;}
 	OP(+,+=) OP(-,-=) OP(*,*=) OP(/,/=)
 #undef OP
 private:
@@ -39,3 +38,6 @@ private:
 #undef D
 #undef C
 #undef O
+
+using Z=MI<TODO>;
+#define raw(x) Z::raw(x)
