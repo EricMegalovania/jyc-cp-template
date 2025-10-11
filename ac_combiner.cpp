@@ -13,6 +13,13 @@ int main(int argc, char* argv[]) {
 	}
 	
 	fs::path inputPath(argv[1]);
+	
+	fs::path originalDir = fs::current_path();
+	// 如果输入路径是相对路径，则转换为基于当前工作目录的绝对路径
+	if (inputPath.is_relative()) {
+		inputPath = originalDir / inputPath;
+	}
+	
 	if (!fs::exists(inputPath)) {
 		std::cerr << "Error: File does not exist\n";
 		return 1;
@@ -22,7 +29,6 @@ int main(int argc, char* argv[]) {
 	const fs::path expanderPath = acLibraryDir / "expander.py";
 	
 	// 在执行 Python 命令前切换到 AtCoder Library 目录
-	fs::path originalDir = fs::current_path();
 	fs::current_path(acLibraryDir);
 	
 	// 构建并执行 Python 命令，添加 --lib 参数

@@ -9,7 +9,7 @@ LL ksm(LL a,LL b){
 	return ret;
 }
 
-namespace Fac{//factorial
+namespace Fac{ // factorial
 	LL fc[N],fc_inv[N];
 	void init(){
 		fc[0]=fc_inv[0]=1;
@@ -35,4 +35,4 @@ namespace Fac{//factorial
 }
 
 // check mod !!!!
-Fac::init(); //初始化
+Fac::init();

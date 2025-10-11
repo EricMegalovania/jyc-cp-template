@@ -7,21 +7,18 @@ namespace ST_C{ //Sparse Table Constant
 		}
 	}
 }
-template<typename T>
+template<typename T,typename OP>
 class ST{
 	using VT=vector<T>;
 	using VVT=vector<VT>;
-	using func_t=function<T(const T&,const T&)>; //RMQ函数，也可以用lambda表达式
-	VVT a; //a is Sparse Table
-	func_t op;
+	VVT a; OP op;
 public:
 	ST(){}
-	ST(const vector<T> &v,int n,func_t func){
-		init(v,n,func); //v的有效下标为 1~n
+	ST(const vector<T> &v,int n,OP o):op(o){
+		init(v,n); // v的有效下标为 1~n
 	}
-	void init(const vector<T> &v,int n,func_t func){
-		op=func; //e.g. auto max_int=[](const int& x,const int& y)->int{return x>y?x:y;};
-		int mx_l=ST_C::Logn[n]+1; //max log
+	void init(const vector<T> &v,int n){
+		int mx_l=ST_C::Logn[n]+1; // max log
 		a.assign(n+1,VT(mx_l,0));
 		for(int i=1;i<=n;i++){
 			a[i][0]=v[i];
@@ -37,6 +34,18 @@ public:
 		int lt=r-l+1;
 		int p=ST_C::Logn[lt];
 		return op(a[l][p],a[r-(1<<p)+1][p]);
+	}
+};
+struct MAXOP{
+	template<typename T>
+	T operator()(const T& x,const T& y){
+		return max(x,y);
+	}
+};
+struct MINOP{
+	template<typename T>
+	T operator()(const T& x,const T& y){
+		return min(x,y);
 	}
 };
 
