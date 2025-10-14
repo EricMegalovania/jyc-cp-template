@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 		// 执行 Git 命令
 		std::system(gitAdd.c_str());
 		std::system(gitCommit.c_str());
-//		std::system(gitPush.c_str());
+		std::system(gitPush.c_str());
 	}
 	
 	return 0;
