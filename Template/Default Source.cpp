@@ -1,3 +1,8 @@
+#ifdef __FUCK_GCC
+#pragma GCC optimize(3)
+#pragma GCC optimize("Ofast,no-stack-protector")
+#pragma GCC optimize("inline","fast-math","unroll-loops")
+#endif
 #include<bits/stdc++.h>
 using namespace std;
 
