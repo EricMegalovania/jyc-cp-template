@@ -3,6 +3,8 @@
 #include <fstream>
 #include <locale>
 #include <codecvt> // 在C++17已废弃，但仍可使用
+#include <fcntl.h> // 添加这个头文件用于文件描述符操作
+#include <unistd.h> // 用于 dup 和 dup2
 #include <windows.h>
 #include <local/dbg.h>
 
@@ -25,6 +27,9 @@ void outputTitle(const std::string& command, const std::string& content) {
 }
 
 int main(int argc, char* argv[]) {
+	// 保存原始的 stdout 文件描述符
+	int original_stdout = dup(STDOUT_FILENO);
+	
 	using convert_type = std::codecvt_utf8<wchar_t>;
 	
 	// 创建转换器对象
@@ -157,6 +162,11 @@ int main(int argc, char* argv[]) {
 		std::cout << ch;
 	}
 	
+	// 恢复 stdout 到终端
+	fflush(stdout); // 确保所有缓冲数据已写入
+	dup2(original_stdout, STDOUT_FILENO); // 恢复原始 stdout
+	close(original_stdout); // 关闭保存的描述符副本
+	
 	// 添加自动 Git 提交功能
 	if (argc == 2) { // 检查是否有额外命令行参数
 		// 构建 Git 命令
@@ -167,7 +177,7 @@ int main(int argc, char* argv[]) {
 		// 执行 Git 命令
 		std::system(gitAdd.c_str());
 		std::system(gitCommit.c_str());
-		std::system(gitPush.c_str());
+//		std::system(gitPush.c_str());
 	}
 	
 	return 0;
