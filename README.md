@@ -96,6 +96,7 @@
   - 竞赛向配置vscode
   - 数位 dp
   - 模拟退火
+  - 约瑟夫问题
   - 和哈希
   - 手写 bitset
   - pbds 提供的 umap 代替品
