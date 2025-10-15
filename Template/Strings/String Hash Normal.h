@@ -58,12 +58,6 @@ public:
 		}
 		return ret;
 	}
-	static bool check(const ALH& a,const ALH& b){
-		for(int i=0;i<2;i++){
-			if(a[i]!=b[i]) return 0;
-		}
-		return 1;
-	}
 };
 ALH operator <<(const ALH& A,const int& len){
 	static ALH ret;
