@@ -44,3 +44,17 @@
 上面可以按自己的喜好修改编译命令，注意的是**开栈时必须用单引号引起来**
 
 随意打开一个cpp文件，按下 `Ctrl+Alt+N` 进行编译运行，我们可以把终端拉到右边，看着稍微舒服一些
+
+如果是在 Linux 系统中，vscode 没有 Code Runner 插件的话，可以编写如下 bash 脚本
+
+```bash
+#! /bin/bash
+g++ "$1.cpp" -pedantic -O2 -std=c++2a -pipe -Wall -Wextra -Wshadow -Wconversion -g -lm -W -fstack-protector-strong -s -o "$1.exe"
+```
+
+因为 Linux 中 ld（链接器）不支持 `-Wl,--stack=1073741824` 参数，在运行程序前，需要先指定当前 shell 的栈限制，再运行程序
+
+```bash
+# 设置栈大小为 1GB（单位：KB）
+ulimit -s 1048576
+```
