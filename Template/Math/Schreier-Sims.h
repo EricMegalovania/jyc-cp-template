@@ -1,16 +1,14 @@
 int rcnt[N];
 vector<int> r[N][N], invr[N][N];
 vector<vector<int>> t[N];
-inline vector<int> operator * (const vector<int> &lhs, const vector<int> &rhs)
-{
+inline vector<int> operator * (const vector<int> &lhs, const vector<int> &rhs){
 	vector<int> res(n);
 	for (int i = 0; i < n; ++i)
 		res[i] = lhs[rhs[i]];
 	return res;
 }
 inline void dfs(int u, const vector<int> &);
-inline void init()
-{
+inline void init(){
 	for (int i = 0; i < n; ++i)
 	{
 		++rcnt[i];
@@ -19,8 +17,7 @@ inline void init()
 			r[i][i][j] = invr[i][i][j] = j;
 	}
 }
-inline bool contain(int u, const vector<int> &g)
-{
+inline bool contain(int u, const vector<int> &g){
 	if (u == n)
 		return true;
 	int v = g[u];
@@ -28,8 +25,7 @@ inline bool contain(int u, const vector<int> &g)
 		return false;
 	return contain(u + 1, invr[u][v] * g);
 }
-inline void add(int u, const vector<int> &g)
-{
+inline void add(int u, const vector<int> &g){
 	if (contain(u, g))
 		return;
 	t[u].push_back(g);
@@ -38,8 +34,7 @@ inline void add(int u, const vector<int> &g)
 		if (!r[u][v].empty())
 			dfs(u, g * r[u][v]);
 }
-inline void dfs(int u, const vector<int> &g)
-{
+inline void dfs(int u, const vector<int> &g){
 	int v = g[u];
 	if (!r[u][v].empty())
 		add(u + 1, invr[u][v] * g);

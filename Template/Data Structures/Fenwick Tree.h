@@ -1,18 +1,16 @@
-template<typename T>//T is int or LL
-class Fenwick{
-private:
-	int n;
+template<typename T> // T is int or LL
+struct Fenwick{
+	int n,LOG;
 	vector<T>c;
 	inline int lowbit(const int& x){
 		return x&(-x);
 	}
-public:
-	Fenwick(){}
 	Fenwick(int n_){
 		init(n_);
 	}
 	void init(int n_){
 		c.assign(n=n_,T(0));
+		LOG=__lg(n)+1;
 	}
 	void add(int i,T x){
 		for(;i<n;i+=lowbit(i)) c[i]+=x;
@@ -21,5 +19,16 @@ public:
 		T res=0;
 		for(;i;i-=lowbit(i)) res+=c[i];
 		return res;
+	}
+	int kth(T k){
+		int ans=0,cnt=0;
+		for(int i=LOG;~i;--i) {
+			int nxt=ans+(1<<i);
+			if(nxt<n && cnt+c[nxt]<k){
+				cnt+=c[nxt];
+				ans=nxt;
+			}
+		}
+		return ans+1;
 	}
 };
