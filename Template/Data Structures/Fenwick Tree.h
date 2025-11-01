@@ -20,7 +20,7 @@ struct Fenwick{
 		for(;i;i-=lowbit(i)) res+=c[i];
 		return res;
 	}
-	int kth(T k){
+	int kth(T k){ // min p that sum(1,p)>=k
 		int ans=0,cnt=0;
 		for(int i=LOG;~i;--i) {
 			int nxt=ans+(1<<i);
