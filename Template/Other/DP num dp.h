@@ -1,6 +1,5 @@
 #define N 20
-int a[N];
-LL dp[N][3];
+int a[N]; LL dp[N][3];
 
 // 从高位往低位记忆化搜索
 // pos: cur-digit-pos, st: status, flag: can 0-9?
