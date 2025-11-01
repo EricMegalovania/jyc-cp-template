@@ -1,8 +1,6 @@
-#ifdef __FUCK_GCC
-#pragma GCC optimize(3)
-#pragma GCC optimize("Ofast,no-stack-protector")
-#pragma GCC optimize("inline","fast-math","unroll-loops")
-#endif
+// #pragma GCC optimize(3)
+// #pragma GCC optimize("Ofast,no-stack-protector")
+// #pragma GCC optimize("inline","fast-math","unroll-loops")
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -26,12 +24,10 @@ template<typename T>inline void clr(T& x){T().swap(x);}
 mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 LL rand(LL l,LL r){return rng()%(r-l+1)+l;}
 
-void solve(){}
 int main(){
 #ifndef LOCAL
 	cin.tie(nullptr)->sync_with_stdio(false);
 #endif
-	int t; cin>>t;
-	while(t--) solve();
+	// TODO
 	return 0;
 }

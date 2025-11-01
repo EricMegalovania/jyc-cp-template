@@ -3,8 +3,10 @@
 ## 包含的内容
 
 - 通用
+  - 编译用 Bash 脚本
   - 缺省源
-  - Mod-Int-Normal 类
+  - Mod-Int-Static 类
+  - Mod-Int-Dynamic 类
   - 超级快 C++ 风格 IO
 - 数据结构
   - 并查集
@@ -56,7 +58,6 @@
 - 数学
   - wjr 的数论
   - 高精度
-  - Barrett Reduction
   - 快速幂 \& 矩阵快速幂
   - \_{}\_{}int128 取平方根
   - 计算 $a^{1/b}$ 的下取整值

@@ -53,7 +53,7 @@
 \lstdefinestyle{llayout}{
 	breaklines       = true,
 	breakindent	     = 1.1em,
-	tabsize          = 4,
+	tabsize          = 3,
 	columns          = flexible,
 }
 \lstdefinestyle{lgeometry}{
@@ -93,17 +93,29 @@
 
 {\centering\section{通用}}
 
+\subsection{编译用 Bash 脚本}
+
+\lstinputlisting[style=C++]{../tools/compile.sh}
+
 \subsection{缺省源}
 
 \lstinputlisting[style=C++]{../Template/Default Source.cpp}
 
 \newpage
 
-\subsection{Mod-Int-Normal 类}
+\subsection{Mod-Int-Static 类}
 
 普普通通的整数取模类（注：进行四则运算时，让 Z 在前）
 
-\lstinputlisting[style=C++]{../Template/Mod-Int-Normal.h}
+\lstinputlisting[style=C++]{../Template/Mod-Int-Static.h}
+
+\newpage
+
+\subsection{Mod-Int-Dynamic 类}
+
+模数不确定时的取模
+
+\lstinputlisting[style=C++]{../Template/Mod-Int-Dynamic.h}
 
 \newpage
 
@@ -469,16 +481,6 @@ by fhy
 \end{table}
 
 \lstinputlisting[style=C++]{../Template/Math/BigIntTiny.h}
-
-\subsection{Barrett Reduction}
-
-在模数是题目输入的参量时使用，平时的取模因为模数带有\texttt{const}前缀，编译器会帮我们优化好
-
-对一个值域在\texttt{(-Mod,Mod)}数取模前，如果不确定其正负性，在\textbf{该式最后} \texttt{"+mod"}
-
-以下代码仅在模数 >2 时成立，并且取模完后数的值域为 \texttt{[0,Mod]}，故需要在输出答案前\textbf{特判} ans 是否等于 Mod
-
-\lstinputlisting[style=C++]{../Template/Math/Barrett Reduction.h}
 
 \newpage
 
