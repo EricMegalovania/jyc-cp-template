@@ -1,4 +1,4 @@
-namespace ST_C{ //Sparse Table Constant
+namespace ST_C{ // Sparse Table Constant
 	int Logn[N];
 	void init(){
 		Logn[1]=0,Logn[2]=1;
@@ -15,7 +15,7 @@ class ST{
 public:
 	ST(){}
 	ST(const vector<T> &v,int n,OP o):op(o){
-		init(v,n); // v的有效下标为 1~n
+		init(v,n); // v is 1-index
 	}
 	void init(const vector<T> &v,int n){
 		int mx_l=ST_C::Logn[n]+1; // max log
@@ -49,4 +49,5 @@ struct MINOP{
 	}
 };
 
-ST_C::init(); //初始化
+ST_C::init(); // init
+ST<int,MAXOP>st(a,n,MAXOP()); // usage
