@@ -49,6 +49,7 @@
     - 防 Hack 特供版哈希
   - KMP
   - Z 函数（扩展 KMP）
+  - Manacher
   - Trie
   - AC 自动机
   - AC 自动机（简单版）
