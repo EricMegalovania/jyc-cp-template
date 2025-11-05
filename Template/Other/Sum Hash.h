@@ -1,6 +1,5 @@
-using ALH=array<LL,2>;//array-LL-Hash
-namespace HC{//Hash Const
-	const int P[4]={13331,233};
+using ALH=array<LL,2>; // array-LL-Hash
+namespace HC{ // Hash Const
 	const int MOD[4]={(int)(1e9+7),998244353};
 	LL inv(const LL& A,const int& _){
 		LL a=A%MOD[_]; LL b=MOD[_]-2,res=1;
