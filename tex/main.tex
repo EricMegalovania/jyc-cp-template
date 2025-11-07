@@ -365,13 +365,13 @@ init 时，传入字符数组首地址，字符串长度（以及是否倒着求
 
 \lstinputlisting[style=C++]{../Template/Strings/String Hash Normal.h}
 
-\newpage
-
 \subsubsection{防 Hack 特供版哈希}
 
 1. 打表程序（生成 \texttt{1e9+x} 的质数）
 
 \lstinputlisting[style=C++]{../Template/Strings/Get Big Primes 1e9+x.cpp}
+
+\newpage
 
 2. 模板修改 \texttt{MOD} 数组
 
@@ -380,12 +380,10 @@ namespace HC{//Hash Const
 	const int TABLE_SIZE=500;
 	const int table[TABLE_SIZE]={7,9,21,33,87,93,97,/*复制打表程序的输出*/};
 	//generate modular
-	auto GP=[]()->int{return 10'0000'0000+table[rng()%TABLE_SIZE];};
+	auto GP=[]()->int{return (int)(1e9)+table[rng()%TABLE_SIZE];};
 	const int MOD[2]={GP(),GP()};
 }
 \end{lstlisting}
-
-\newpage
 
 \subsection{KMP}
 
@@ -395,6 +393,8 @@ namespace HC{//Hash Const
 
 \lstinputlisting[style=C++]{../Template/Strings/KMP.h}
 
+\newpage
+
 \subsection{Z 函数（扩展 KMP）}
 
 约定：字符串下标以 $0$ 为起点
@@ -403,13 +403,13 @@ namespace HC{//Hash Const
 
 \lstinputlisting[style=C++]{../Template/Strings/Z_Function.h}
 
-\newpage
-
 \subsection{Manacher}
 
 对于每个位置 $i = 0 \dots n - 1$，我们找出值 $d_1[i]$ 和 $d_2[i]$。二者分别表示以位置 $i$ 为中心的长度为奇数和长度为偶数的回文串个数。换个角度，二者也表示了以位置 $i$ 为中心的最长回文串的半径长度（半径长度 $d_1[i]$，$d_2[i]$ 均为从位置 $i$ 到回文串最右端位置包含的字符个数）。
 
 \lstinputlisting[style=C++]{../Template/Strings/Manacher.h}
+
+\newpage
 
 \subsection{最小表示法}
 

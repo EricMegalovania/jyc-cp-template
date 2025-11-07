@@ -1,5 +1,5 @@
-int mininal_string(const string& s){
-	const int n=s.size();
+int mininal_string(const auto& s){
+	const int n=(int)s.size();
 	int k=0,i=0,j=1;
 	while(k<n && i<n && j<n){
 		const char& ci=s[(i+k)%n];
