@@ -83,7 +83,7 @@
 \begin{document}
 
 \title{\vspace{-2cm}\textbf{\huge{JYCの算法竞赛模板}}}
-\author{作者：\href{https://codeforces.com/profile/MegalovaniaJ}{MegalovaniaJ}}
+\author{作者：\href{https://codeforces.com/profile/Meguhine}{Meguhine}}
 \date{}
 \maketitle
 
@@ -151,11 +151,17 @@
 
 \subsection{线段树}
 
-封装的不是很好，具体 $Info$ 的传递还是得自己修改源码，没法直接传个 $class$ 进来
+atcoder library 风格的线段树，但是下标 $1-n$，区间左闭右闭
 
-初始化时，传入一个一维 $vector$ $a$ 以及它的长度 $n$，数据存储在下标 $1-n$
+\lstinputlisting[style=C++]{../Template/Data Structures/Segment Tree - acl.h}
 
-\lstinputlisting[style=C++]{../Template/Data Structures/Segement Tree.h}
+\newpage
+
+\subsection{带懒标记的线段树}
+
+atcoder library 风格的带懒标记的线段树，但是下标 $1-n$，区间左闭右闭
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Segment Tree Lazy - acl.h}
 
 \newpage
 

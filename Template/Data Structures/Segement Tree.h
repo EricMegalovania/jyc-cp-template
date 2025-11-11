@@ -37,7 +37,7 @@ private:
 			
 			return;
 		}
-		int mid=l+r>>1;
+		int mid=(l+r)>>1;
 		build(a,l,mid,ls);
 		build(a,mid+1,r,rs);
 		q[id]=q[ls]+q[rs];
@@ -57,7 +57,7 @@ public:
 			return;
 		}
 		spread(id);
-		int mid=q[id].l+q[id].r>>1;
+		int mid=(q[id].l+q[id].r)>>1;
 		if(r<=mid) modify(l,r,val,ls);
 		else if(l>mid) modify(l,r,val,rs);
 		else modify(l,mid,val,ls),modify(mid+1,r,val,rs);
@@ -66,7 +66,7 @@ public:
 	int query(int l,int r,int id=1){
 		if(q[id].l==l && q[id].r==r) return q[id].mx;
 		spread(id);
-		int mid=q[id].l+q[id].r>>1;
+		int mid=(q[id].l+q[id].r)>>1;
 		if(r<=mid) return query(l,r,ls);
 		else if(l>mid) return query(l,r,rs);
 		return max(query(l,mid,ls),query(mid+1,r,rs));
@@ -74,7 +74,7 @@ public:
 	int get(int pos,int id=1){
 		if(q[id].l==q[id].r) return q[id].mx;
 		spread(id);
-		int mid=q[id].l+q[id].r>>1;
+		int mid=(q[id].l+q[id].r)>>1;
 		if(pos<=mid) return get(pos,ls);
 		return get(pos,rs);
 	}

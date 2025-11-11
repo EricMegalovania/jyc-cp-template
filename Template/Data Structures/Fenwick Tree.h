@@ -21,7 +21,7 @@ struct Fenwick{
 		return res;
 	}
 	int kth(T k){ // min p that sum(1,p)>=k
-		int ans=0,cnt=0;
+		int ans=0; T cnt=0;
 		for(int i=LOG;~i;--i) {
 			int nxt=ans+(1<<i);
 			if(nxt<n && cnt+c[nxt]<k){
