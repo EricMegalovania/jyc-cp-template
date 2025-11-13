@@ -7,14 +7,14 @@ namespace ST_C{ // Sparse Table Constant
 		}
 	}
 }
-template<typename T,typename OP>
+template<class T,auto op>
 class ST{
 	using VT=vector<T>;
 	using VVT=vector<VT>;
-	VVT a; OP op;
+	VVT a;
 public:
 	ST(){}
-	ST(const vector<T> &v,int n,OP o):op(o){
+	ST(const vector<T> &v,int n){
 		init(v,n); // v is 1-index
 	}
 	void init(const vector<T> &v,int n){
@@ -36,18 +36,9 @@ public:
 		return op(a[l][p],a[r-(1<<p)+1][p]);
 	}
 };
-struct MAXOP{
-	template<typename T>
-	T operator()(const T& x,const T& y){
-		return max(x,y);
-	}
-};
-struct MINOP{
-	template<typename T>
-	T operator()(const T& x,const T& y){
-		return min(x,y);
-	}
-};
+int op(int x,int y){
+	return max(x,y);
+}
 
 ST_C::init(); // init
-ST<int,MAXOP>st(a,n,MAXOP()); // usage
+ST<int,op>st(a,n); // usage
