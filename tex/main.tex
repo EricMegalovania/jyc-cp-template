@@ -594,11 +594,15 @@ by fhy
 
 \subsection{FFT}
 
+用法：poly\_{}mul(a,b) 会使 a=a*b，a 和 b 都会改变
+
 \lstinputlisting[style=C++]{../Template/Math/FFT.h}
 
 \newpage
 
 \subsection{NTT}
+
+用法：\texttt{poly\_{}mul(a,b)} 会使 a=a*b，a 和 b 都会改变；\texttt{init\_{}mod(NTT\_{}MOD)} 来设置 NTT 模数
 
 \lstinputlisting[style=C++]{../Template/Math/NTT.h}
 

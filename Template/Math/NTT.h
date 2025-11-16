@@ -1,6 +1,6 @@
 bool notP[N],haspr[N]; int phi[N],mn_p[N];
 vector<int>prime;
-void init_prime(const int& n=N){//init [1,n-1]
+void init_prime(const int& n=N){ // init [1,n-1]
 	haspr[2]=haspr[4]=phi[1]=mn_p[1]=notP[1]=1;
 	for(int i=2;i<n;i++){
 		if(!notP[i]){
@@ -159,7 +159,7 @@ namespace NTT{
 			r[i]=(r[i>>1]>>1)|((i&1)<<(L-1));
 		}
 	}
-	void poly_mul(Poly& a,Poly& b){
+	void poly_mul(Poly& a,Poly& b){ // a=a*b, b is changed
 		const int n=a.size()-1;
 		const int m=b.size()-1;
 		if(min(n,m)<=64){
@@ -209,5 +209,5 @@ Poly conv(const Poly& a,const Poly& b){
 }
 
 init_prime();
-init_mod();
-g=prim_root(P);
+init_mod(TODO_NTT_MOD);
+g=prim_root(P); // this is for conv(a,b)
