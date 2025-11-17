@@ -8,6 +8,10 @@
   - Mod-Int-Static 类
   - Mod-Int-Dynamic 类
   - 超级快 C++ 风格 IO
+- \texttt{\_{}\_{}gnu\_{}pbds}
+  - 红黑树
+  - 堆
+  - 哈希表
 - 数据结构
   - 并查集
   - “边带权”并查集
@@ -109,7 +113,6 @@
   - 预处理勾股数
   - 加速 std::bitset 的预处理指令
   - 某个交互题 trick
-  - 一些 Hash class
   - 质因数个数与因数个数的上界
   - 写在最后（来自 Benq 大神的几句话）
 

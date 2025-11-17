@@ -125,6 +125,36 @@
 
 \newpage
 
+{\centering\section{\texttt{\_{}\_{}gnu\_{}pbds}}}
+
+\subsection{红黑树}
+
+用 \texttt{rb\_{}tree<Key,Mapped,Cmp>} 定义一个红黑树，相当于一个 \texttt{map}。如果 \texttt{Mapped} 为 \texttt{null\_{}type}，则相当于一个 \texttt{set}。这里用 \texttt{rb\_{}tree} 封装了一个 \texttt{multiset\_{}rb\_{}tree}，可以当成 \texttt{multiset} 使用
+
+\texttt{order\_{}of\_{}key(Key x)}：红黑树里有多少个元素的 \texttt{Key} 比 \texttt{x} 小
+
+\texttt{find\_{}by\_{}order(int x)}：红黑树里第 \texttt{x} 小的元素是什么。注意这个函数是 \texttt{0-based}，其返回的是 \texttt{pair<Key,Mapped>} 的迭代器（如果 \texttt{Mapped} 是 \texttt{null\_{}type}，返回的是 \texttt{Key} 的迭代器）
+
+在 \texttt{multiset\_{}rb\_{}tree} 里，\texttt{find\_{}by\_{}order(int x)} 返回的直接是 \texttt{Key} 本身（因为实现迭代器太复杂了）
+
+\lstinputlisting[style=C++]{../Template/__gnu_pbds/pbds_tree.h}
+
+\newpage
+
+\subsection{堆}
+
+实测，原生的 \texttt{int, long long} 用 \texttt{binary\_{}heap\_{}tag}，自己定义的类型用 \texttt{pairing\_{}heap\_{}tag}
+
+\lstinputlisting[style=C++]{../Template/__gnu_pbds/pbds_heap.h}
+
+\subsection{哈希表}
+
+可以预先分配哈希表的大小，大大减少常数，使用方式见代码
+
+\lstinputlisting[style=C++]{../Template/__gnu_pbds/pbds_hash.h}
+
+\newpage
+
 {\centering\section{数据结构}}
 
 \subsection{并查集}
@@ -1129,16 +1159,16 @@ $P.S.$
 % 
 % \newpage
 
-\subsection{pbds 提供的 umap 代替品}
-
-\begin{lstlisting}[style=C++]
-#include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/hash_policy.hpp>
-using namespace std;
-using namespace __gnu_pbds;
-gp_hash_table<pair<int,int>,int> h;
-\end{lstlisting}
+% \subsection{pbds 提供的 umap 代替品}
+% 
+% \begin{lstlisting}[style=C++]
+% #include<bits/stdc++.h>
+% #include<ext/pb_ds/assoc_container.hpp>
+% #include<ext/pb_ds/hash_policy.hpp>
+% using namespace std;
+% using namespace __gnu_pbds;
+% gp_hash_table<pair<int,int>,int> h;
+% \end{lstlisting}
 
 \subsection{预处理勾股数}
 
@@ -1157,11 +1187,7 @@ gp_hash_table<pair<int,int>,int> h;
 
 对于正整数 $x\ (x>1)$，令 $n=x^2$，则 $\lceil \dfrac{n}{1}\rceil,\lceil \dfrac{n}{2}\rceil,\cdots,\lceil \dfrac{n}{x-1}\rceil$ 各不相同 (\href{https://codeforces.com/contest/2135/problem/D2}{CF2135D2})
 
-\newpage
-
-\subsection{一些 Hash class}
-
-\lstinputlisting[style=C++]{"../Template/Other/Hash.h"}
+% \newpage
 
 \subsection{质因数个数与因数个数的上界}
 
@@ -1178,16 +1204,16 @@ gp_hash_table<pair<int,int>,int> h;
 	\end{tabular}
 \end{table}
 
-\subsection{写在最后（来自 Benq 大神的几句话）}
-
-\begin{lstlisting}[style=C++]
-/* stuff you should look for
-* int overflow, array bounds
-* special cases (n=1?)
-* do smth instead of nothing and stay organized
-* WRITE STUFF DOWN
-* DON'T GET STUCK ON ONE APPROACH
-*/
-\end{lstlisting}
+% \subsection{写在最后（来自 Benq 大神的几句话）}
+% 
+% \begin{lstlisting}[style=C++]
+% /* stuff you should look for
+% * int overflow, array bounds
+% * special cases (n=1?)
+% * do smth instead of nothing and stay organized
+% * WRITE STUFF DOWN
+% * DON'T GET STUCK ON ONE APPROACH
+% */
+% \end{lstlisting}
 
 \end{document}

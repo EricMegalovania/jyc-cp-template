@@ -19,6 +19,13 @@ public:
 	_SGT(const vector<S>& a,int n){ init(a,n); }
 	void init(int n){ init(vector<S>(n+1,e()),n); }
 	void init(const vector<S>& a,int n){ q.resize(n*4+10); build(a,1,n); }
+	S query(int l,int r,int p=1){
+		if(q[p].l==l && q[p].r==r) return q[p].s;
+		int mid=(q[p].l+q[p].r)>>1;
+		if(r<=mid) return query(l,r,ls);
+		else if(l>mid) return query(l,r,rs);
+		else return op(query(l,mid,ls),query(mid+1,r,rs));
+	}
 	void set(int x,S s,int p=1){
 		if(q[p].l==q[p].r) return (void)(q[p].s=s);
 		int mid=(q[p].l+q[p].r)>>1;
