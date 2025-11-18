@@ -1,13 +1,13 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
-namespace __meg_rb_tree{
+namespace __gnu_rb_tree{
 	using namespace __gnu_pbds;
 	template<class Key,class Mapped=null_type,class Cmp=std::less<Key>>
 	using rb_tree=tree<Key,Mapped,Cmp,rb_tree_tag,tree_order_statistics_node_update>;
 }
-using __meg_rb_tree::rb_tree;
+using __gnu_rb_tree::rb_tree;
 
-namespace __meg_multi_rb_tree{
+namespace __multi_rb_tree{
 	using namespace __gnu_pbds;
 	template<class T,class Cmp=std::less<T>>
 	struct Wrapper{
@@ -73,4 +73,4 @@ namespace __meg_multi_rb_tree{
 		std::size_t size() const{ return rbt.size(); }
 	};
 }
-using __meg_multi_rb_tree::multiset_rb_tree;
+using __multi_rb_tree::multiset_rb_tree;

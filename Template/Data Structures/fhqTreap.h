@@ -65,7 +65,7 @@ public:
 		Split(root,val,rootX,rootY);
 		root=Merge(Merge(rootX,New(val)),rootY);
 	}
-	void erase(T val){//actually, 'extract' may be more precise
+	void erase(T val){ // actually, 'extract' may be more precise
 		Split(root,val,rootX,rootZ);
 		Split(rootX,val-1,rootX,rootY);
 		rootY=Merge(q[rootY].l,q[rootY].r);
