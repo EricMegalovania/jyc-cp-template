@@ -7,70 +7,76 @@ namespace __gnu_rb_tree{
 }
 using __gnu_rb_tree::rb_tree;
 
+#define x first
+#define y second
+#define lo lower_bound
+#define up upper_bound
 namespace __multi_rb_tree{
 	using namespace __gnu_pbds;
-	template<class T,class Cmp=std::less<T>>
+	using std::less,std::pair;
+	template<class T,class Cmp=less<T>>
 	struct Wrapper{
-		bool operator()(const std::pair<T,int>& a,const std::pair<T,int>& b) const{
-			if(Cmp{}(a.first,b.first)) return 1; // a.T < b.T
-			if(Cmp{}(b.first,a.first)) return 0; // b.T < a.T
-			return a.second<b.second; // a.T == b.T
+		using S=pair<T,int>;
+		bool operator()(const S& a,const S& b) const{
+			if(Cmp{}(a.x,b.x)) return 1; // a.T < b.T
+			if(Cmp{}(b.x,a.x)) return 0; // b.T < a.T
+			return a.y<b.y; // a.T == b.T
 		}
 	};
-	template<class Key,class Cmp=std::less<Key>>
+	template<class T,class Cmp=less<T>>
 	class multiset_rb_tree{
-		rb_tree<std::pair<Key,int>,null_type,Wrapper<Key,Cmp>>rbt;
+		rb_tree<pair<T,int>,null_type,Wrapper<T,Cmp>>a;
 		int count;
-		using S=std::pair<Key,bool>;
-		static consteval S e(){ return S{Key{},0}; }
+		using S=pair<T,bool>;
+		static consteval S e(){ return S{T{},0}; }
 		S _ret(auto&& it){
-			if(it!=rbt.end()) return {it->first,1};
+			if(it!=a.end()) return {it->x,1};
 			else return e();
 		}
 	public:
 		multiset_rb_tree():count(0){}
-		void insert(const Key& x){
-			rbt.insert({x,count++});
+		void insert(const T& x){
+			a.insert({x,count++});
 		}
-		void erase(const Key& x){
-			auto it=rbt.lower_bound({x,0});
-			while(it!=rbt.end() && it->first==x){
-				it=rbt.erase(it);
-			}
+		void erase(const T& x){
+			auto it=a.lo({x,0});
+			while(it!=a.end() && it->x==x) it=a.erase(it);
 		}
-		void extract(const Key& x){
-			auto it=rbt.lower_bound({x,0});
-			if(it!=rbt.end() && it->first==x){
-				rbt.erase(it);
-			}
+		void extract(const T& x){
+			auto it=a.lo({x,0});
+			if(it!=a.end() && it->first==x) a.erase(it);
 		}
-		std::size_t order_of_key(const Key& x){
-			return rbt.order_of_key({x,0});
+		std::size_t order_of_key(const T& x){
+			return a.order_of_key({x,0});
 		}
 		S find_by_order(int x){ // 0-index-based
-			return _ret(rbt.find_by_order(x));
+			return _ret(a.find_by_order(x));
 		}
-		S ge(const Key& x){ // greater equal, >=x
-			return _ret(rbt.lower_bound({x,0}));
+		S ge(const T& x){ // greater equal, >=x
+			return _ret(a.lo({x,0}));
 		}
-		S lt(const Key& x){ // less than, <x
+		S lt(const T& x){ // less than, <x
 			if(empty()) return e();
-			auto it=rbt.lower_bound({x,0});
-			if(it==rbt.begin()) return e();
+			auto it=a.lo({x,0});
+			if(it==a.begin()) return e();
 			else return _ret(--it);
 		}
-		S gt(const Key& x){ // greater than, >x
-			return _ret(rbt.upper_bound({x,INT_MAX}));
+		S gt(const T& x){ // greater than, >x
+			return _ret(a.up({x,INT_MAX}));
 		}
-		S le(const Key& x){ // less equal, <=x
+		S le(const T& x){ // less equal, <=x
 			if(empty()) return e();
-			auto it=rbt.upper_bound({x,INT_MAX});
-			if(it==rbt.begin()) return e();
+			auto it=a.up({x,INT_MAX});
+			if(it==a.begin()) return e();
 			else return _ret(--it);
 		}
-		bool find(const Key& x) const{ return rbt.find(x)!=rbt.end(); }
-		bool empty() const{ return rbt.empty(); }
-		std::size_t size() const{ return rbt.size(); }
+		bool find(const T& x) const{ return a.find(x)!=a.end(); }
+		bool empty() const{ return a.empty(); }
+		std::size_t size() const{ return a.size(); }
 	};
 }
+#undef x
+#undef y
+#undef lo
+#undef up
 using __multi_rb_tree::multiset_rb_tree;
