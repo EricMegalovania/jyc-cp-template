@@ -1,14 +1,13 @@
-constexpr int K=64;
-using ULL=unsigned long long;
-class LB{ //linear-basis
+template<class S,int K>
+class LB{ // linear-basis
 private:
-	array<ULL,K>a;
+	static_assert(std::is_integral_v<S>);
+	static_assert(K<=sizeof(S)*8);
+	array<S,K>a;
 public:
-	LB(){init();}
-	void init(){
-		fill(all(a),0);
-	}
-	void insert(ULL x){
+	LB(){ init(); }
+	void init(){ fill(all(a),0); }
+	void insert(S x){
 		for(int i=K-1;i>=0;i--){
 			if(!(x>>i)) continue;
 			if(!a[i]){
@@ -18,7 +17,7 @@ public:
 			x^=a[i];
 		}
 	}
-	bool find(ULL x){
+	bool find(S x){
 		for(int i=K-1;i>=0;i--){
 			if(!(x>>i)) continue;
 			if(!a[i]) return 0;
@@ -26,14 +25,14 @@ public:
 		}
 		return 1;
 	}
-	ULL max(){
-		ULL res=0;
+	S max() const{
+		S res=0;
 		for(int i=K-1;i>=0;i--){
 			if((res^a[i])>res) res^=a[i];
 		}
 		return res;
 	}
-	ULL min(){
+	S min() const{
 		for(int i=0;i<K;i++){
 			if(a[i]!=0) return a[i];
 		}
