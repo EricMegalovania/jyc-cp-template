@@ -30,7 +30,7 @@ private:
 		pull(p);
 	}
 	template<class F>
-	int _minl(int r,F f,S& s,int p){
+	int _minl(int r,F f,S& s,int p=1){
 		if(q[p].r==r){
 			S ns=op(q[p].s,s);
 			if(f(ns)) return s=ns,q[p].l;
@@ -45,7 +45,7 @@ private:
 		}
 	}
 	template<class F>
-	int _maxr(int l,F f,S& s,int p){
+	int _maxr(int l,F f,S& s,int p=1){
 		if(q[p].l==l){
 			S ns=op(s,q[p].s);
 			if(f(ns)) return s=ns,q[p].r;
@@ -96,15 +96,15 @@ public:
 	int min_left(int r){ return min_left<decltype(f)>(r,f); }
 	template<class F>
 	int min_left(int r,F f){
-		if(r<1 || r>q[1].r) return -1;
-		S s=e(); return max(1,_minl(r,f,s,1));
+		assert(q[1].l<=r && r<=q[1].r);
+		S s=e(); return max(q[1].l,_minl(r,f,s));
 	}
 	template<auto f>
 	int max_right(int l){ return max_right<decltype(f)>(l,f); }
 	template<class F>
 	int max_right(int l,F f){
-		if(l<1 || l>q[1].r) return -1;
-		S s=e(); return min(q[1].r,_maxr(l,f,s,1));
+		assert(q[1].l<=l && l<=q[1].r);
+		S s=e(); return min(q[1].r,_maxr(l,f,s));
 	}
 };
 #undef PP

@@ -13,21 +13,20 @@ using __gnu_rb_tree::rb_tree;
 #define up upper_bound
 namespace __multi_rb_tree{
 	using namespace __gnu_pbds;
-	using std::less,std::pair;
-	template<class T,class Cmp=less<T>>
+	template<class T,class Cmp=std::less<T>>
 	struct Wrapper{
-		using S=pair<T,int>;
+		using S=std::pair<T,int>;
 		bool operator()(const S& a,const S& b) const{
 			if(Cmp{}(a.x,b.x)) return 1; // a.T < b.T
 			if(Cmp{}(b.x,a.x)) return 0; // b.T < a.T
 			return a.y<b.y; // a.T == b.T
 		}
 	};
-	template<class T,class Cmp=less<T>>
+	template<class T,class Cmp=std::less<T>>
 	class multiset_rb_tree{
-		rb_tree<pair<T,int>,null_type,Wrapper<T,Cmp>>a;
+		rb_tree<std::pair<T,int>,null_type,Wrapper<T,Cmp>>a;
 		int count;
-		using S=pair<T,bool>;
+		using S=std::pair<T,bool>;
 		static consteval S e(){ return S{T{},0}; }
 		S _ret(auto&& it){
 			if(it!=a.end()) return {it->x,1};
@@ -35,9 +34,7 @@ namespace __multi_rb_tree{
 		}
 	public:
 		multiset_rb_tree():count(0){}
-		void insert(const T& x){
-			a.insert({x,count++});
-		}
+		void insert(const T& x){ a.insert({x,count++}); }
 		void erase(const T& x){
 			auto it=a.lo({x,0});
 			while(it!=a.end() && it->x==x) it=a.erase(it);

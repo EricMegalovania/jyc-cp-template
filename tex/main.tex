@@ -7,7 +7,7 @@
 \usepackage{amssymb}
 \usepackage{enumitem}
 \usepackage{pdfpages}
-\usepackage{pifont}% http://ctan.org/pkg/pifont
+\usepackage{pifont} % http://ctan.org/pkg/pifont
 \newcommand{\cmark}{\text{\color{ForestGreen}\ding{51}}}%
 \newcommand{\xmark}{\text{\color{red}\ding{55}}}%
 \usepackage[UTF8]{ctex}
@@ -181,17 +181,27 @@
 
 \subsection{线段树}
 
+\subsubsection{普通的线段树}
+
 atcoder library 风格的线段树，但是下标 $1-n$，区间左闭右闭
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Segment Tree - acl.h}
 
 \newpage
 
-\subsection{带懒标记的线段树}
+\subsubsection{带懒标记的线段树}
 
 atcoder library 风格的带懒标记的线段树，但是下标 $1-n$，区间左闭右闭
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Segment Tree Lazy - acl.h}
+
+\newpage
+
+\subsubsection{动态开点的线段树}
+
+\texttt{init} 时传入总的区间 \texttt{[L,R]}
+
+\lstinputlisting[style=C++]{../Template/Data Structures/Segment Tree Dynamic - acl.h}
 
 \newpage
 
