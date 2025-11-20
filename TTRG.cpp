@@ -1,4 +1,4 @@
-// tex to README.md Git 
+// tex to README.md Git
 #include <bits/stdc++.h>
 #include <fstream>
 #include <locale>
@@ -9,12 +9,18 @@
 #include <local/dbg.h>
 
 bool isTargetCommand(const std::string& cmd) {
-	dbg(cmd);
+	dbg("checking", cmd);
 	return cmd == "section" || cmd == "subsection" ||
 	       cmd == "subsubsection" || cmd == "subsubsubsection";
 }
 
 void outputTitle(const std::string& command, const std::string& content) {
+	auto W = [&](const std::string & s)->std::wstring{
+		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		std::wstring wstr = converter.from_bytes(s);
+		return wstr;
+	};
+//	std::wcerr << W(command) << " " << W(content) << std::endl;
 	if (command == "section") {
 		std::cout << "- " << content << "\n";
 	} else if (command == "subsection") {
@@ -52,7 +58,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	
-	freopen("./tex/main.tex", "r", stdin);
+	freopen("./tex/main.tex", "rb", stdin);
 	freopen("./README.md", "a", stdout);
 	
 	int state = 0; // 初始状态
@@ -71,6 +77,14 @@ int main(int argc, char* argv[]) {
 		if (!rd) break;
 		switch (state) {
 			case 0: // 普通状态
+				if (ch == '%') {
+					while ((ch = std::cin.get()) != EOF) {
+						if (ch == '\n' || ch == '\r') {
+							break;
+						}
+					}
+					break;
+				}
 				if (ch == '\\') {
 					state = 1; // 进入命令读取状态
 					currentCommand = "";
@@ -120,7 +134,12 @@ int main(int argc, char* argv[]) {
 				break;
 				
 			case 3: // 读取标题内容（正常模式）
-				if (ch == '\\') {
+				if (ch == '\n' || ch == '\r') {
+					assert(braceCounter == 0);
+					outputTitle(currentCommand, content);
+					state = 0;
+				}
+				else if (ch == '\\') {
 					state = 4; // 进入转义模式
 				} else if (ch == '{') {
 					braceCounter++;
@@ -140,8 +159,15 @@ int main(int argc, char* argv[]) {
 				break;
 				
 			case 4: // 读取标题内容（转义模式）
-				content += '\\'; // 添加转义的反斜杠
-				content += ch;
+				if (ch == '_') { // "\_{}" format
+					content += '_';
+					ch = std::cin.get();
+					ch = std::cin.get();
+				}
+				else {
+					content += '\\'; // 添加转义的反斜杠
+					content += ch;
+				}
 				state = 3; // 返回正常模式
 				break;
 		}
