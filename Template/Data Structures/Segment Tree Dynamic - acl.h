@@ -22,34 +22,34 @@ private:
 		if(!rs) rs=_new(mid+1,q[p].r);
 	}
 	void pull(int p){ q[p].s=op(q[ls].s,q[rs].s); }
-	template<class F>
-	T _minl(T r,F f,S& s,int p=1){
+	template<class G>
+	int _minl(int r,G g,S& s,int p=1){
 		if(q[p].r==r){
 			S ns=op(q[p].s,s);
-			if(f(ns)) return s=ns,q[p].l;
+			if(g(ns)) return s=ns,q[p].l;
 		}
 		if(q[p].l==q[p].r) return q[p].l+1;
 		PP;
-		if(r<=mid) return _minl(r,f,s,ls);
+		if(r<=mid) return _minl(r,g,s,ls);
 		else{
-			T res=_minl(r,f,s,rs);
+			int res=_minl(r,g,s,rs);
 			if(res>mid+1) return res;
-			else return _minl(mid,f,s,ls);
+			else return _minl(mid,g,s,ls);
 		}
 	}
-	template<class F>
-	T _maxr(T l,F f,S& s,int p=1){
+	template<class G>
+	int _maxr(int l,G g,S& s,int p=1){
 		if(q[p].l==l){
 			S ns=op(s,q[p].s);
-			if(f(ns)) return s=ns,q[p].r;
+			if(g(ns)) return s=ns,q[p].r;
 		}
 		if(q[p].l==q[p].r) return q[p].r-1;
 		PP;
-		if(l>mid) return _maxr(l,f,s,rs);
+		if(l>mid) return _maxr(l,g,s,rs);
 		else{
-			int res=_maxr(l,f,s,ls);
+			int res=_maxr(l,g,s,ls);
 			if(res<mid) return res;
-			else return _maxr(mid+1,f,s,rs);
+			else return _maxr(mid+1,g,s,rs);
 		}
 	}
 public:
@@ -75,19 +75,19 @@ public:
 		if(x<=mid) return at(x,ls);
 		else return at(x,rs);
 	}
-	template<auto f>
-	T min_left(T r){ return min_left<decltype(f)>(r,f); }
-	template<class F>
-	T min_left(T r,F f){
+	template<auto g>
+	int min_left(int r){ return min_left<decltype(g)>(r,g); }
+	template<class G>
+	int min_left(int r,G g){
 		assert(q[1].l<=r && r<=q[1].r);
-		S s=e(); return max(q[1].l,_minl(r,f,s));
+		S s=e(); return max(q[1].l,_minl(r,g,s));
 	}
-	template<auto f>
-	T max_right(T l){ return max_right<decltype(f)>(l,f); }
-	template<class F>
-	T max_right(T l,F f){
+	template<auto g>
+	int max_right(int l){ return max_right<decltype(g)>(l,g); }
+	template<class G>
+	int max_right(int l,G g){
 		assert(q[1].l<=l && l<=q[1].r);
-		S s=e(); return min(q[1].r,_maxr(l,f,s));
+		S s=e(); return min(q[1].r,_maxr(l,g,s));
 	}
 };
 #undef PP
@@ -104,4 +104,4 @@ namespace def{ // example: cnt
 	}
 	using SGT=_SGT<int,S,op,e>;
 };
-using def::SGT;
+using def::S,def::SGT;

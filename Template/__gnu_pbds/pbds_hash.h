@@ -7,7 +7,7 @@ struct chash_int{
 	LL operator()(LL x) const{
 		return __builtin_bswap64(x*C);
 	}
-}
+};
 struct chash_vec{
 	const size_t mg=0x9e3779b97f4a7c15;
 	size_t operator()(const auto& v) const{
