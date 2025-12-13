@@ -3,7 +3,7 @@ using __gnu_pbds::gp_hash_table;
 using __gnu_pbds::null_type;
 
 struct chash_int{
-	static const uint64_t C=LL(4e18*acos(0))|71;
+	static constexpr uint64_t C=LL(2e18*numbers::pi)|71;
 	LL operator()(LL x) const{
 		return __builtin_bswap64(x*C);
 	}

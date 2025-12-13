@@ -8,7 +8,7 @@ void TEST(string S,string sol="sol",string exe="exe"){
 	sprintf(TEST_ANS,"%s_%s.exe < %s_input.txt > %s_ans.txt",s,sol.c_str(),s,s);
 	if(exe=="exe") sprintf(TEST_OUT,"%s.exe < %s_input.txt > %s_out.txt",s,s,s);
 	else sprintf(TEST_OUT,"python %s.py < %s_input.txt > %s_out.txt",s,s,s);
-	sprintf(TEST_FC,"fc %s_ans.txt %s_out.txt /n",s,s);
+	sprintf(TEST_FC,"FC %s_ans.txt %s_out.txt /n",s,s);
 	while(1){
 		cerr<<"gen"<<endl; system(TEST_GEN);
 		cerr<<"ans"<<endl; system(TEST_ANS);

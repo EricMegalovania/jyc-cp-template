@@ -1,7 +1,7 @@
 #define D constexpr MI
 #define C const
 #define O operator
-template<int mod>struct MI{
+template<unsigned int mod>struct MI{
 	D():v(0){}
 	template<typename T>
 	D(T x):v(x%mod){if(v<0) v+=mod;}
@@ -29,6 +29,7 @@ template<int mod>struct MI{
 		return *this=*this*x.inv();
 	}
 	int val() C{return v;}
+	static constexpr unsigned int umod(){return mod;}
 #define OP(s,t) friend D O s(C MI& x,C MI& y){return MI(x) t y;}
 	OP(+,+=) OP(-,-=) OP(*,*=) OP(/,/=)
 #undef OP

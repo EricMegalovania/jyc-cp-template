@@ -1,19 +1,19 @@
-vector<int>dep(n+1),fa(n+1),siz(n+1),son(n+1);
+vector<int>dep(n+1),fa(n+1),siz(n+1),son(n+1,-1);
 auto dfs1=[&](auto&& self,int u,int pre)->void{
 	dep[u]=dep[pre]+1,fa[u]=pre,siz[u]=1;
 	for(auto v:e[u]){
 		if(v==pre) continue;
 		self(self,v,u);
 		siz[u]+=siz[v];
-		if(siz[v]>siz[son[u]]) son[u]=v;
+		if(son[u]==-1 || siz[v]>siz[son[u]]) son[u]=v;
 	}
 };
-dfs1(dfs1,root,0);
-vector<int>dfn(n+1),dfn_inv(n+1),top(n+1);
+dfs1(dfs1,root,-1);
+vector<int>dfn(n+1),dfn_inv(n+2),top(n+1);
 int timStamp=0;
 auto dfs2=[&](auto&& self,int u,int t)->void{
 	dfn[u]=++timStamp,dfn_inv[timStamp]=u,top[u]=t;
-	if(!son[u]) return;
+	if(son[u]==-1) return;
 	self(self,son[u],t);
 	for(auto v:e[u]){
 		if(v==fa[u] || v==son[u]) continue;

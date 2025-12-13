@@ -23,6 +23,9 @@ PDD operator -(PDD a,PDD b){return PDD{a.x-b.x,a.y-b.y};}
 PDD operator *(LD k,PDD a){return PDD{k*a.x,k*a.y};}
 PDD operator *(PDD a,LD k){return PDD{k*a.x,k*a.y};}
 PDD operator /(PDD a,LD k){return PDD{a.x/k,a.y/k};}
+bool operator ==(PDD a,PDD b){
+	return !dcmp(a.x,a.y) && !dcmp(b.x,b.y);
+}
 
 LD dot(PDD a,PDD b){ //内积
 	return a.x*b.x+a.y*b.y;
