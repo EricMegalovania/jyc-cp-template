@@ -86,6 +86,7 @@
   - 万能欧几里得算法
   - FFT
   - NTT
+  - Bostan Mori
   - Min_25 筛（超级无敌阉割版）
   - Schreier Sims
   - 字典序排列相关

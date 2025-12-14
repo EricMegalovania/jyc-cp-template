@@ -24,7 +24,7 @@ void init_prime(const int& n=N){ // init [1,n-1]
 	}
 }
 
-LL qpow(LL a,LL b,LL p){
+constexpr LL qpow(LL a,LL b,LL p){
 	a%=p; LL r=1;
 	while(b){
 		if(b&1) r=r*a%p;
@@ -110,13 +110,16 @@ namespace NTT{
 	inline void ADD(LL& x,const LL& y){
 		if((x+=y)>=mo) x-=mo;
 	}
-	void NTT(vector<LL>& a,int type){
+	template<int type>
+	void NTT(vector<LL>& a){
 		for(int i=0;i<lim;i++){
 			if(i<r[i]) swap(a[i],a[r[i]]);
 		}
 		for(int mid=1;mid<lim;mid<<=1){
 			// modify if mod is constexpr
-			LL Wn=qpow(type==1?g:gi,(mo-1)/(mid<<1),mo);
+			LL Wn;
+			if constexpr(type==1) Wn=qpow(g,(mo-1)/(mid<<1),mo);
+			else Wn=qpow(gi,(mo-1)/(mid<<1),mo);
 			for(int j=0;j<lim;j+=(mid<<1)){
 				LL w=1;
 				for(int k=0;k<mid;k++,w=(w*Wn)%mo){
@@ -128,7 +131,7 @@ namespace NTT{
 				}
 			}
 		}
-		if(type==-1){
+		if constexpr(type==-1){
 			// modify if mod is constexpr
 			LL inv=qpow(lim,mo-2,mo);
 			for(int i=0;i<lim;i++){
@@ -159,9 +162,9 @@ namespace NTT{
 			r[i]=(r[i>>1]>>1)|((i&1)<<(L-1));
 		}
 	}
-	void poly_mul(Poly& a,Poly& b){ // a=a*b, b is changed
-		const int n=a.size()-1;
-		const int m=b.size()-1;
+	Poly poly_mul(Poly a,Poly b){
+		const int n=(int)(a.size())-1;
+		const int m=(int)(b.size())-1;
 		if(min(n,m)<=64){
 			Poly c(n+m+1);
 			for(int i=0;i<=n;++i){
@@ -170,17 +173,17 @@ namespace NTT{
 					ADD(c[i+j],x);
 				}
 			}
-			swap(a,c);
-			return;
+			return c;
 		}
 		init(n+m);
-		a.resize(lim); NTT(a,1);
-		b.resize(lim); NTT(b,1);
+		a.resize(lim); NTT<1>(a);
+		b.resize(lim); NTT<1>(b);
 		for(int i=0;i<lim;i++){
 			a[i]=(a[i]*b[i])%mo;
 		}
-		NTT(a,-1);
+		NTT<-1>(a);
 		a.resize(n+m+1);
+		return a;
 	}
 }
 using NTT::init_mod;
@@ -195,7 +198,7 @@ Poly conv(const Poly& a,const Poly& b){
 		bb[i]=b[x];
 		x=x*g%P;
 	}
-	poly_mul(aa,bb);
+	aa=poly_mul(aa,bb);
 	for(int i=P-1;i<aa.size();++i){
 		int j=i%(P-1);
 		aa[j]=(aa[j]+aa[i])%mod;
