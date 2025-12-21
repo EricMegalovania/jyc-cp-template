@@ -13,8 +13,9 @@ struct HLD{
 		root=rt;
 		dep.resize(n+1),fa.resize(n+1),
 		siz.resize(n+1),son.assign(n+1,-1);
-		auto dfs1=[&](auto&& self,int u,int pre)->void{
-			dep[u]=dep[pre]+1,fa[u]=pre,siz[u]=1;
+		auto dfs1=[&](auto&& self,int u,int pre)->void {
+			if(pre!=-1) dep[u]=dep[pre]+1;
+			fa[u]=pre,siz[u]=1;
 			for(auto v:e[u]){
 				if(v==pre) continue;
 				self(self,v,u);
@@ -25,7 +26,7 @@ struct HLD{
 		dfs1(dfs1,root,-1);
 		dfn.resize(n+1),dfn_inv.resize(n+2),top.resize(n+1);
 		int timStamp=0;
-		auto dfs2=[&](auto&& self,int u,int t)->void{
+		auto dfs2=[&](auto&& self,int u,int t)->void {
 			dfn[u]=++timStamp,dfn_inv[timStamp]=u,top[u]=t;
 			if(son[u]==-1) return;
 			self(self,son[u],t);
