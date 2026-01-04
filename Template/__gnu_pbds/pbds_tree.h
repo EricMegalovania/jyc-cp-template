@@ -41,7 +41,7 @@ namespace __multi_rb_tree{
 		}
 		void extract(const T& x){
 			auto it=a.lo({x,0});
-			if(it!=a.end() && it->first==x) a.erase(it);
+			if(it!=a.end() && it->x==x) a.erase(it);
 		}
 		std::size_t order_of_key(const T& x){
 			return a.order_of_key({x,0});
