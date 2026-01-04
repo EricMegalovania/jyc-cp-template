@@ -111,8 +111,8 @@ Poly conv(const Poly& a,const Poly& b,const int P,const int g){  // g is pr of P
 	return c;
 }
 
-using Z=MI<0>;
-#define raw(x) Z::raw(x)
+// using Z=MI<0>; // contained in Mod-Int-Dynamic
+// #define raw(x) Z::raw(x) // contained in Mod-Int-Dynamic
 using Poly=PM<Z>;
 
 Poly::set_mod(TODO);

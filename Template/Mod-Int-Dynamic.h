@@ -63,6 +63,7 @@ template<int id>struct MI{
 		return *this=*this*x.inv();
 	}
 	int val() C{return v;}
+	static ui mod(){return bt.umod();}
 	static ui umod(){return bt.umod();}
 #define OP(s,t) friend D O s(C MI& x,C MI& y){return MI(x) t y;}
 	OP(+,+=) OP(-,-=) OP(*,*=) OP(/,/=)
