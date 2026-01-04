@@ -85,7 +85,9 @@
   - Pollard-Rho 分解质因数
   - 万能欧几里得算法
   - FFT
-  - NTT
+  - 原根
+  - NTT-Poly-Static
+  - NTT-Poly-Dynamic
   - Bostan Mori
   - Min_25 筛（超级无敌阉割版）
   - Schreier Sims

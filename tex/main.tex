@@ -16,6 +16,27 @@
 \geometry{headheight=2.6cm,headsep=3mm,footskip=13mm}
 \geometry{top=2cm,bottom=2cm,left=2cm,right=2cm}
 
+% \usepackage{fontspec}
+% \usepackage{xeCJK}
+% 
+% \setmainfont{MapleMono-NF-CN}[
+% 	Path = ./MapleMono-NF-CN-unhinted/,
+% 	UprightFont = *-Regular,
+% 	BoldFont = *-Bold,
+% 	ItalicFont = *-Italic,
+% 	BoldItalicFont = *-BoldItalic,
+% 	Extension = .ttf
+% ]
+% 
+% \setCJKmainfont{MapleMono-NF-CN}[
+% 	Path = ./MapleMono-NF-CN-unhinted/,
+% 	UprightFont = *-Regular,
+% 	BoldFont = *-Bold,
+% 	ItalicFont = *-Italic,
+% 	BoldItalicFont = *-BoldItalic,
+% 	Extension = .ttf
+% ]
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \rhead{{\sf\thepage}}
@@ -652,11 +673,27 @@ by fhy
 
 \newpage
 
-\subsection{NTT}
+\subsection{原根}
 
-用法：\texttt{poly\_{}mul(a,b)} 会使 \texttt{a=a*b}，a 和 b 都会改变；\texttt{init\_{}mod(NTT\_{}MOD)} 来设置 \texttt{NTT} 模数
+用法：\texttt{prim\_{}root<0>()} 求出最小原根；\texttt{prim\_{}root<1>()} 求出排好序的全部原根；
 
-\lstinputlisting[style=C++]{../Template/Math/NTT.h}
+\lstinputlisting[style=C++]{../Template/Math/NTT-Primitive-Root.h}
+
+\newpage
+
+\subsection{NTT-Poly-Static}
+
+\texttt{public} 继承了 \texttt{vector<LL>}，所以\textbf{不要用指针}来定义。用法：\texttt{Poly c=a*b}
+
+\lstinputlisting[style=C++]{../Template/Math/NTT-Poly-Static.h}
+
+\newpage
+
+\subsection{NTT-Poly-Dynamic}
+
+用法：\texttt{Poly::set\_{}mod(NTT\_{}MOD)} 来设置 \texttt{NTT} 模数；其他和 \texttt{NTT-Poly-Static} 一样
+
+\lstinputlisting[style=C++]{../Template/Math/NTT-Poly-Dynamic.h}
 
 \newpage
 
