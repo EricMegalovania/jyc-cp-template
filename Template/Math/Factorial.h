@@ -10,13 +10,10 @@ namespace Fac{ // factorial
 			fc_inv[i]=fc_inv[i+1]*raw(i+1);
 		}
 	}
-	Z F(const int& x){
-		return fc[x];
-	}
-	Z P(const int& x,const int& y){
+	Z P(const int x,const int y){
 		return fc[x]*fc_inv[x-y];
 	}
-	Z C(const int& x,const int& y){
+	Z C(const int x,const int y){
 		if(x==y) return raw(1);
 		if(x<0 || y<0 || x-y<0) return raw(0);
 		return fc[x]*fc_inv[y]*fc_inv[x-y];
