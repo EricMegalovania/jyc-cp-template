@@ -28,6 +28,9 @@
     - 01-Trie
     - 可持久 01-Trie
     - multiset 维护最小异或和
+    - Dynamic Xor Sum Set
+      - rb_tree 写法 (常数大)
+      - Fenwick 写法 (常数小)
   - 珂朵莉树
   - 树链剖分（重链剖分）（LCA模板）
   - 长链剖分

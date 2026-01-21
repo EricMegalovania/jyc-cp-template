@@ -43,7 +43,7 @@ namespace __multi_rb_tree{
 			auto it=a.lo({x,0});
 			if(it!=a.end() && it->x==x) a.erase(it);
 		}
-		std::size_t order_of_key(const T& x){
+		std::size_t order_of_key(const T& x){ // # keys strictly < x
 			return a.order_of_key({x,0});
 		}
 		S find_by_order(int x){ // 0-index-based

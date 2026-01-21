@@ -268,6 +268,27 @@ atcoder library 风格的带懒标记的线段树，但是下标 $1-n$，区间�
 
 \newpage
 
+\subsubsection{Dynamic Xor Sum Set}
+
+e.g. \href{https://codeforces.com/gym/105813/problem/D}{GYM105813D}. \texttt{xorsum<S,K>}, \texttt{S} 是整型, \texttt{K} 是位数
+
+\begin{enumerate}
+	\item \textbf{modi(x)} If $x$ is currently in the set $S$, remove it. Otherwise, add $x$ to the set.
+	\item \textbf{query(t)} Return $\displaystyle\bigoplus_{x \in S} (x + t)$.
+\end{enumerate}
+
+\subsubsubsection{rb\_{}tree 写法 (常数大)}
+
+\lstinputlisting[style=C++]{"../Template/Data Structures/Dynamic Xor Sum Set (rb_tree).h"}
+
+\newpage
+
+\subsubsubsection{Fenwick 写法 (常数小)}
+
+\lstinputlisting[style=C++]{"../Template/Data Structures/Dynamic Xor Sum Set (Fenwick).h"}
+
+\newpage
+
 \subsection{珂朵莉树}
 
 \lstinputlisting[style=C++]{../Template/Data Structures/Old Driver Tree.h}

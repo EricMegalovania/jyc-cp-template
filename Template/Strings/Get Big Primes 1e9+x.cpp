@@ -13,8 +13,8 @@ int main(){
 	for(int i=1;a.size()<N;i++){
 		deal(1e9+i);
 	}
-	printf("const int TABLE_SIZE=%d;\n",N);
-	printf("const int table[TABLE_SIZE]={%d",a[0]);
+	printf("constexpr int TABLE_SIZE=%d;\n",N);
+	printf("constexpr int table[TABLE_SIZE]={%d",a[0]);
 	for(int i=1;i<N;i++) printf(",%d",a[i]);
 	printf("};");
 	return 0;

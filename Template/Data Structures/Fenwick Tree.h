@@ -5,6 +5,7 @@ struct Fenwick{
 	inline int lowbit(const int& x){
 		return x&(-x);
 	}
+	Fenwick(){}
 	Fenwick(int n_){
 		init(n_);
 	}

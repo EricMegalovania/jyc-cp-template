@@ -1,7 +1,7 @@
 using ALH=array<LL,2>;//array-LL-Hash
 namespace HC{//Hash Const
-	const int P[2]={13331,233};
-	const int MOD[2]={(int)(1e9+7),998244353};
+	constexpr int P[2]={13331,233};
+	constexpr int MOD[2]={(int)(1e9+7),998244353};
 	LL ksm[N][2];
 	void init(){
 		for(int j=0;j<2;j++){
@@ -18,10 +18,10 @@ private:
 	bool sign;//0:normal 1:reverse
 public:
 	Hash(){}
-	Hash(char *s,int n,bool sign_=0){
+	Hash(const char *s,int n,bool sign_=0){
 		init(s,n,sign_);
 	}
-	void init(char *s,int n,bool sign_=0){//s stores at pos [1,n], and just give para s (NOT s+1)
+	void init(const char *s,int n,bool sign_=0){//s stores at pos [1,n], and just give para s (NOT s+1)
 		h.resize(n+2);
 		sign=sign_;
 		if(!sign){
@@ -41,7 +41,7 @@ public:
 			}
 		}
 	}
-	ALH calc(const int& l,const int& r){
+	ALH calc(const int l,const int r){
 		static ALH ret;
 		if(!sign){
 			for(int j=0;j<2;j++){

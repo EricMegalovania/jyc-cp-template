@@ -1,7 +1,7 @@
 #define ls (p<<1)
 #define rs (p<<1|1)
 #define PP push(p); int mid=(q[p].l+q[p].r)>>1
-template<class S,auto op,auto e,class F,auto mp,auto comp,auto id>
+template<class S,auto op,auto e,class F,auto mp,auto comp,auto id,bool sgtbeats=false>
 struct _SGT{ // acl-like lazy_segtree
 private:
 	struct Node{ int l,r; S s; F f; };
@@ -10,9 +10,13 @@ private:
 		Node& u=q[p]; u.s=mp(f,u.s);
 		if(u.l!=u.r){
 			u.f=comp(f,u.f);
-//			if(u.s.fail) push(p),pull(p);
+			if constexpr(sgtbeats){
+				if(u.s.fail) push(p),pull(p);
+			}
 		}
-//		else assert(!u.s.fail);
+		else if constexpr(sgtbeats){
+			assert(!u.s.fail);
+		}
 	}
 	void push(int p){
 		if(q[p].l==q[p].r) return;
