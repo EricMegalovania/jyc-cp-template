@@ -146,3 +146,7 @@
   - 杂项
     - 其他随机化算法
   - to be continued ...
+
+## 字体
+
+本模板库在构建 pdf 时用到了 **[Maple Mono](https://github.com/subframe7536/maple-font)** 字体，遵循 **[OFL-1.1](https://github.com/subframe7536/maple-font?tab=OFL-1.1-1-ov-file#readme)** 许可证。版权所有 (c) [subframe7536](https://github.com/subframe7536)

@@ -28,10 +28,7 @@ namespace __multi_rb_tree{
 		int count;
 		using S=std::pair<T,bool>;
 		static consteval S e(){ return S{T{},0}; }
-		S _ret(auto&& it){
-			if(it!=a.end()) return {it->x,1};
-			else return e();
-		}
+		S _ret(auto&& it){ return (it!=a.end()) ? S{it->x,1} : e(); }
 	public:
 		multiset_rb_tree():count(0){}
 		void insert(const T& x){ a.insert({x,count++}); }

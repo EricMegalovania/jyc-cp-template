@@ -16,27 +16,6 @@
 \geometry{headheight=2.6cm,headsep=3mm,footskip=13mm}
 \geometry{top=2cm,bottom=2cm,left=2cm,right=2cm}
 
-% \usepackage{fontspec}
-% \usepackage{xeCJK}
-% 
-% \setmainfont{MapleMono-NF-CN}[
-% 	Path = ./MapleMono-NF-CN-unhinted/,
-% 	UprightFont = *-Regular,
-% 	BoldFont = *-Bold,
-% 	ItalicFont = *-Italic,
-% 	BoldItalicFont = *-BoldItalic,
-% 	Extension = .ttf
-% ]
-% 
-% \setCJKmainfont{MapleMono-NF-CN}[
-% 	Path = ./MapleMono-NF-CN-unhinted/,
-% 	UprightFont = *-Regular,
-% 	BoldFont = *-Bold,
-% 	ItalicFont = *-Italic,
-% 	BoldItalicFont = *-BoldItalic,
-% 	Extension = .ttf
-% ]
-
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \rhead{{\sf\thepage}}
@@ -58,15 +37,27 @@
 }
 
 \usepackage{listings}
+
+\newfontfamily\LocalMono{MapleMonoNormalNL}[
+	Path = ./MapleMonoNormalNL-TTF/,
+	Extension = .ttf,  % 或 .otf
+	UprightFont = *-Regular,
+	BoldFont = *-Bold,
+	ItalicFont = *-Italic,
+	BoldItalicFont = *-BoldItalic,
+]
+
 \lstdefinestyle{lfonts}{
-	basicstyle   = \footnotesize\ttfamily,
-	stringstyle  = \color{purple},
-	keywordstyle = \color{blue!60!black}\bfseries,
-	commentstyle = \color{olive},
+	basicstyle   = \footnotesize\LocalMono,
+	stringstyle  = \color{purple}\LocalMono,
+	keywordstyle = \color{blue!60!black}\bfseries\LocalMono,
+	commentstyle = \color{olive}\LocalMono,
+	identifierstyle = \LocalMono,
+	numberstyle = \tiny\LocalMono
 }
 \lstdefinestyle{lnumbers}{
 	numbers     = left,
-	numberstyle = \tiny,
+	numberstyle = \tiny\LocalMono,
 	numbersep   = 1em,
 	firstnumber = 1,
 	stepnumber  = 1,
@@ -91,6 +82,7 @@
 	style = llayout,
 	style = lgeometry,
 	showstringspaces = false,
+	literate = {*}{\raisebox{-0.13ex}{*}}1,  % 调整*的位置
 }
 \lstdefinestyle{C++}{
 	language = {C++},
@@ -140,9 +132,9 @@
 
 \newpage
 
-\subsection{超级快 C++ 风格 IO}
-
-\lstinputlisting[style=C++]{"../Template/IO.h"}
+% \subsection{超级快 C++ 风格 IO}
+% 
+% \lstinputlisting[style=C++]{"../Template/IO.h"}
 
 \newpage
 
