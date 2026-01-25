@@ -1,4 +1,5 @@
 namespace Fac{ // factorial
+	constexpr int N=TODO;
 	Z fc[N],fc_inv[N];
 	void init(){
 		fc[0]=fc_inv[0]=raw(1);

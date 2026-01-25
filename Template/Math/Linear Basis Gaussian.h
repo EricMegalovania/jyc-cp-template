@@ -1,12 +1,11 @@
 template<class S,int K>
+requires(is_integral_v<S> && K<=sizeof(S)*8)
 class LB{ // linear-gaussian-basis
 private:
-	static_assert(std::is_integral_v<S>);
-	static_assert(K<=sizeof(S)*8);
 	array<S,K>a; vector<S>dp;
 	bool flag;
 public:
-	LB(){init();}
+	LB(){ init(); }
 	void init(){
 		fill(all(a),0);
 		flag=0;

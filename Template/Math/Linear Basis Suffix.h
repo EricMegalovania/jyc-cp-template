@@ -1,8 +1,7 @@
 constexpr int inf=1e9;
 template<class S,int K>
+requires(is_integral_v<S> && K<=sizeof(S)*8)
 struct SLB{ // suffix-linear-basis
-	static_assert(std::is_integral_v<S>);
-	static_assert(K<=sizeof(S)*8);
 	array<S,K>a; array<int,K>t;
 	SLB(){ init(); }
 	void init(){

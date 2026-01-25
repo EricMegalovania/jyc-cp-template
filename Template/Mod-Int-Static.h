@@ -1,7 +1,7 @@
-#define D constexpr MIS
+#define D constexpr MI
 #define C const
 #define O operator
-template<unsigned int mod>struct MIS{
+template<unsigned int mod>struct MI{
 	D():v(0){}
 	template<typename T>
 	D(T x):v(x%mod){ if(v<0) v+=mod; }
@@ -38,5 +38,5 @@ private:
 #undef C
 #undef O
 
-using Z=MIS<TODO>;
+using Z=MI<TODO>;
 #define raw(x) Z::raw(x)

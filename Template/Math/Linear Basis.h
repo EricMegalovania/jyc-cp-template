@@ -1,21 +1,21 @@
 template<class S,int K>
+requires(is_integral_v<S> && K<=sizeof(S)*8)
 class LB{ // linear-basis
 private:
-	static_assert(std::is_integral_v<S>);
-	static_assert(K<=sizeof(S)*8);
 	array<S,K>a;
 public:
 	LB(){ init(); }
 	void init(){ fill(all(a),0); }
-	void insert(S x){
+	bool insert(S x){
 		for(int i=K-1;i>=0;i--){
 			if(!(x>>i)) continue;
 			if(!a[i]){
 				a[i]=x;
-				break;
+				return 1;
 			}
 			x^=a[i];
 		}
+		return 0;
 	}
 	bool find(S x){
 		for(int i=K-1;i>=0;i--){

@@ -1,8 +1,6 @@
-/*
-  P(x) / Q(x) = ( P(x) * Q(-x) ) / ( Q(x) * Q(-x) )
-= ( U_0(x^2) + x * U_1(x^2) ) / V(x^2)
-[x^k](P(x)/Q(x)) = [x^floor(k/2)](U_(k%2)(x)/V(x))
-*/
+//   P(x) / Q(x) = ( P(x) * Q(-x) ) / ( Q(x) * Q(-x) )
+// = ( U_0(x^2) + x * U_1(x^2) ) / V(x^2)
+// [x^k](P(x)/Q(x)) = [x^floor(k/2)](U_(k%2)(x)/V(x))
 LL BM(Poly P,Poly Q,LL k){ // Bostan Mori, [x^k](P(x)/Q(x))
 	while(k>0){
 		Poly Q_neg=Q;
