@@ -6,13 +6,13 @@ vector<int> nums{1, 2, 3, 4, 5, 6};  // 假设有这个数组
 
 ## 过滤 (filter)
 ```cpp
-auto even = nums | views::filter(int n { return n % 2 == 0; });
+auto even = nums | views::filter([](int n){ return n % 2 == 0; });
 for (int n : even) std::cout << n << " ";  // 输出: 2 4 6
 ```
 
 ## 转换 (transform)
 ```cpp
-auto squares = nums | views::transform(int n { return n * n; });
+auto squares = nums | views::transform([](int n){ return n * n; });
 for (int n : squares) std::cout << n << " ";  // 输出: 1 4 9 16 25 36
 ```
 
@@ -33,8 +33,8 @@ auto without_last2 = nums | views::drop_last(2);  // 输出: 1 2 3 4
 ```cpp
 // 链式操作：过滤偶数 -> 平方 -> 取前2个
 auto result = nums 
-    | views::filter(int n { return n % 2 == 0; })
-    | views::transform(int n { return n * n; })
+    | views::filter([](int n){ return n % 2 == 0; })
+    | views::transform([](int n){ return n * n; })
     | views::take(2);
 for (int n : result) std::cout << n << " ";  // 输出: 4 16
 ```
@@ -76,6 +76,8 @@ auto first5 = views::iota(1) | views::take(5);  // 1, 2, 3, 4, 5
 auto evens = views::iota(0, 10, 2);  // 0, 2, 4, 6, 8
 ```
 
+<!--
+not supported in c++20, need c++23
 ## 滑动窗口 (adjacent/adjacent_transform)
 
 ```cpp
@@ -84,6 +86,7 @@ auto diffs = nums | views::adjacent_transform<2>([](int a, int b) {
     return b - a;
 });  // 1 1 1 1 1
 ```
+--!>
 
 ## 转换为容器
 
@@ -94,7 +97,7 @@ vector<int> vec(view.begin(), view.end());
 
 ## 范围for循环中使用
 ```cpp
-for (int n : nums | views::filter(int x { return x > 3; })) {
+for (int n : nums | views::filter([](int x){ return x > 3; })) {
     std::cout << n << " ";  // 4 5 6
 }
 ```

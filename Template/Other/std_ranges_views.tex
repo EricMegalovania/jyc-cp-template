@@ -1,4 +1,4 @@
-\texttt{std::views} 是\textbf{惰性求值}的，只会在遍历时计算；并且\textbf{不复制}数据
+\texttt{std::views} 是\textbf{惰性求值}的，只会在遍历时计算；并且\textbf{不复制}数据；\textbf{创建} \texttt{std::views} 的复杂度为常数
 
 \begin{lstlisting}[style=C++]
 vector<int> nums{1, 2, 3, 4, 5, 6};  // 假设有这个数组
@@ -7,14 +7,14 @@ vector<int> nums{1, 2, 3, 4, 5, 6};  // 假设有这个数组
 过滤 \texttt{views::filter}
 
 \begin{lstlisting}[style=C++]
-auto even = nums | views::filter(int n { return n % 2 == 0; });
+auto even = nums | views::filter([](int n){ return n % 2 == 0; });
 for (int n : even) std::cout << n << " ";  // 输出: 2 4 6
 \end{lstlisting}
 
 转换 \texttt{views::transform}
 
 \begin{lstlisting}[style=C++]
-auto squares = nums | views::transform(int n { return n * n; });
+auto squares = nums | views::transform([](int n){ return n * n; });
 for (int n : squares) std::cout << n << " ";  // 输出: 1 4 9 16 25 36
 \end{lstlisting}
 
@@ -37,8 +37,8 @@ auto without_last2 = nums | views::drop_last(2);  // 输出: 1 2 3 4
 \begin{lstlisting}[style=C++]
 // 链式操作：过滤偶数 -> 平方 -> 取前2个
 auto result = nums 
-    | views::filter(int n { return n % 2 == 0; })
-    | views::transform(int n { return n * n; })
+    | views::filter([](int n){ return n % 2 == 0; })
+    | views::transform([](int n){ return n * n; })
     | views::take(2);
 for (int n : result) std::cout << n << " ";  // 输出: 4 16
 \end{lstlisting}
@@ -86,14 +86,15 @@ auto first5 = views::iota(1) | views::take(5);  // 1, 2, 3, 4, 5
 auto evens = views::iota(0, 10, 2);  // 0, 2, 4, 6, 8
 \end{lstlisting}
 
-滑动窗口 \texttt{views::adjacent / views::adjacent\_{}transform}
-
-\begin{lstlisting}[style=C++]
-auto pairs = nums | views::adjacent<2>;  // (1,2) (2,3) (3,4) (4,5) (5,6)
-auto diffs = nums | views::adjacent_transform<2>([](int a, int b) {
-    return b - a;
-});  // 1 1 1 1 1
-\end{lstlisting}
+% not supported in c++20, need c++23
+% 滑动窗口 \texttt{views::adjacent / views::adjacent\_{}transform}
+% 
+% \begin{lstlisting}[style=C++]
+% auto pairs = nums | views::adjacent<2>;  // (1,2) (2,3) (3,4) (4,5) (5,6)
+% auto diffs = nums | views::adjacent_transform<2>([](int a, int b) {
+%     return b - a;
+% });  // 1 1 1 1 1
+% \end{lstlisting}
 
 转换为容器
 
@@ -105,7 +106,7 @@ vector<int> vec(view.begin(), view.end());
 范围 for 循环中使用
 
 \begin{lstlisting}[style=C++]
-for (int n : nums | views::filter(int x { return x > 3; })) {
+for (int n : nums | views::filter([](int x){ return x > 3; })) {
     std::cout << n << " ";  // 4 5 6
 }
 \end{lstlisting}
