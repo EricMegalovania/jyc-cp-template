@@ -1,0 +1,111 @@
+\texttt{std::views} 是\textbf{惰性求值}的，只会在遍历时计算；并且\textbf{不复制}数据
+
+\begin{lstlisting}[style=C++]
+vector<int> nums{1, 2, 3, 4, 5, 6};  // 假设有这个数组
+\end{lstlisting}
+
+过滤 \texttt{views::filter}
+
+\begin{lstlisting}[style=C++]
+auto even = nums | views::filter(int n { return n % 2 == 0; });
+for (int n : even) std::cout << n << " ";  // 输出: 2 4 6
+\end{lstlisting}
+
+转换 \texttt{views::transform}
+
+\begin{lstlisting}[style=C++]
+auto squares = nums | views::transform(int n { return n * n; });
+for (int n : squares) std::cout << n << " ";  // 输出: 1 4 9 16 25 36
+\end{lstlisting}
+
+取前 $N$ 个 / 最后 $N$ 个 \texttt{views::take / views::take\_{}last}
+
+\begin{lstlisting}[style=C++]
+auto first3 = nums | views::take(3);  // 输出: 1 2 3
+auto last3 = nums | views::take_last(3);  // 输出: 4 5 6
+\end{lstlisting}
+
+丢弃前 $N$ 个 / 最后 $N$ 个 \texttt{views::drop / views::drop\_{}last}
+
+\begin{lstlisting}[style=C++]
+auto without_first2 = nums | views::drop(2);  // 输出: 3 4 5 6
+auto without_last2 = nums | views::drop_last(2);  // 输出: 1 2 3 4
+\end{lstlisting}
+
+管道操作符 \texttt{|}
+
+\begin{lstlisting}[style=C++]
+// 链式操作：过滤偶数 -> 平方 -> 取前2个
+auto result = nums 
+    | views::filter(int n { return n % 2 == 0; })
+    | views::transform(int n { return n * n; })
+    | views::take(2);
+for (int n : result) std::cout << n << " ";  // 输出: 4 16
+\end{lstlisting}
+
+反转 \texttt{views::reverse}
+
+\begin{lstlisting}[style=C++]
+auto reversed = nums | views::reverse;  // 输出: 6 5 4 3 2 1
+\end{lstlisting}
+
+键 / 值视图 \texttt{views::keys / views::values}
+
+\begin{lstlisting}[style=C++]
+map<int, string> m{{1, "a"}, {2, "b"}};
+auto keys = m | views::keys;      // 1, 2
+auto values = m | views::values;  // "a", "b"
+\end{lstlisting}
+
+连接 \texttt{views::join}
+
+\begin{lstlisting}[style=C++]
+std::vector<std::vector<int>> vecs{{1,2}, {3,4}};
+auto flattened = vecs | views::join;  // 输出: 1 2 3 4
+\end{lstlisting}
+
+\newpage
+
+分割字符串 \texttt{views::split}
+
+\begin{lstlisting}[style=C++]
+#include <string>
+std::string str = "hello,world,cpp";
+auto parts = str | views::split(',');
+// parts: "hello" "world" "cpp"
+\end{lstlisting}
+
+生成序列 \texttt{views::iota}
+
+\begin{lstlisting}[style=C++]
+// 生成无限序列
+auto infinite = views::iota(1);  // 1, 2, 3, 4...
+auto first5 = views::iota(1) | views::take(5);  // 1, 2, 3, 4, 5
+
+// 带步长
+auto evens = views::iota(0, 10, 2);  // 0, 2, 4, 6, 8
+\end{lstlisting}
+
+滑动窗口 \texttt{views::adjacent / views::adjacent\_{}transform}
+
+\begin{lstlisting}[style=C++]
+auto pairs = nums | views::adjacent<2>;  // (1,2) (2,3) (3,4) (4,5) (5,6)
+auto diffs = nums | views::adjacent_transform<2>([](int a, int b) {
+    return b - a;
+});  // 1 1 1 1 1
+\end{lstlisting}
+
+转换为容器
+
+\begin{lstlisting}[style=C++]
+auto view = nums | views::take(3);
+vector<int> vec(view.begin(), view.end());
+\end{lstlisting}
+
+范围 for 循环中使用
+
+\begin{lstlisting}[style=C++]
+for (int n : nums | views::filter(int x { return x > 3; })) {
+    std::cout << n << " ";  // 4 5 6
+}
+\end{lstlisting}
