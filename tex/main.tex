@@ -1279,6 +1279,14 @@ $P.S.$
 
 对于正整数 $x\ (x>1)$，令 $n=x^2$，则 $\lceil \dfrac{n}{1}\rceil,\lceil \dfrac{n}{2}\rceil,\cdots,\lceil \dfrac{n}{x-1}\rceil$ 各不相同 (\href{https://codeforces.com/contest/2135/problem/D2}{CF2135D2})
 
+\subsection{某个数论 trick}
+
+对于两个整数 $u, v \in [0, m-1]$，(\href{https://qoj.ac/contest/2609/problem/14719}{2025 ICPC 武汉 A})
+
+$$
+[u < v] = [u \leq v-1] = 1 + \left\lfloor \frac{(v-1) - u}{m} \right\rfloor
+$$
+
 % \newpage
 
 \subsection{质因数个数与因数个数的上界}
