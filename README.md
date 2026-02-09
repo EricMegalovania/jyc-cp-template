@@ -55,6 +55,7 @@
   - Tarjan（有向图）
   - 点分治
   - Kruskal 重构树
+  - 二分图最大匹配（bitset 优化 KM）
   - 最大流（Dinic）
   - 费用流（Dinic）
 - 字符串
