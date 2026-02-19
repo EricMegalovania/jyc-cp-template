@@ -75,14 +75,14 @@ public:
 	template<class G>
 	int min_left(int r,G g){
 		assert(q[1].l<=r && r<=q[1].r);
-		S s=e(); return max(q[1].l+1,_minl(r,g,s));
+		S s=e(); return _minl(r,g,s);
 	}
 	template<auto g>
 	int max_right(int l){ return max_right<decltype(g)>(l,g); }
 	template<class G>
 	int max_right(int l,G g){
 		assert(q[1].l<=l && l<=q[1].r);
-		S s=e(); return min(q[1].r-1,_maxr(l,g,s));
+		S s=e(); return _maxr(l,g,s);
 	}
 };
 #undef PP
