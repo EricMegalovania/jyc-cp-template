@@ -1,17 +1,18 @@
 @dataclass(slots=True)
 class DSU:
     n: int
-    fa: List[int]
-    sz: List[int]
+    fa: array
+    sz: array
 
     def __init__(self, n: int) -> None:
         self.n = n
-        self.fa = list(range(n))
-        self.sz = [1] * n
+        self.fa = array('i', range(n))
+        self.sz = array('i', [1] * n)
 
     def get(self, x: int) -> int:
-        while x != self.fa[x]:
-            x = self.fa[x] = self.fa[self.fa[x]]
+        while x != self.fa[x]:  # DONT MERGE !!!
+            self.fa[x] = self.fa[self.fa[x]]
+            x = self.fa[x]
         return x
 
     def same(self, x: int, y: int) -> bool:

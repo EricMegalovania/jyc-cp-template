@@ -29,3 +29,11 @@ class Graph:
         while tmp != -1:
             yield self.val[tmp]
             tmp = self.pre[tmp]
+
+    def pop(self, i: int) -> Optional[Tuple]:
+        tmp = self.head[i]
+        if tmp == -1:
+            return None
+        ret = self.val[tmp]
+        self.head[i] = self.pre[tmp]
+        return (ret, tmp)

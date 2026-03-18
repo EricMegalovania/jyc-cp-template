@@ -82,7 +82,7 @@ from functools import cmp_to_key
 """
 def cmp(x,y):
     if x==y: return 0
-    return -1 if x>y else 0
+    return -1 if x>y else 1
 
 a=LII()
 a.sort(key=cmp_to_key(cmp))
