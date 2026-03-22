@@ -80,13 +80,13 @@ from functools import cmp_to_key
 0:  x 和 y 相同
 1:  x 排在 y 后
 """
-def cmp(x,y):
-    if x==y: return 0
-    return -1 if x>y else 1
-
-a=LII()
+def cmp(x, y):
+    if x == y:
+        return 0
+    return -1 if x > y else 1
+a = list(map(int, input().split()))
 a.sort(key=cmp_to_key(cmp))
-b=sort(a,key=cmp_to_key(cmp))
+b = sorted(a, key=cmp_to_key(cmp))
 ```
 
 这个排序跟 C++ 不同，C++ 是：

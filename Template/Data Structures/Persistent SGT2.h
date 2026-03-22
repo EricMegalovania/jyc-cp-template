@@ -7,7 +7,7 @@ private:
 	};
 	vector<Node>q;
 	void update(int id){
-		q[id].cnt=min(q[q[id].ls].mn,q[q[id].rs].mn);
+		q[id].mn=min(q[q[id].ls].mn,q[q[id].rs].mn);
 	}
 	int build(const vector<int>& a,int l,int r){
 		int id=q.size();
@@ -77,7 +77,7 @@ int main(){
 	}
 	vector<int>dfn(n+1),dep(n+1),siz(n+1);
 	int timStamp=0,max_dep=0;
-	auto dfs=[&](auto self,int u,int fa)->void{
+	auto dfs=[&](auto self,int u,int fa)->void {
 		dfn[u]=++timStamp,dep[u]=dep[fa]+1,siz[u]=1;
 		max_dep=max(max_dep,dep[u]);
 		for(int v:e[u]){

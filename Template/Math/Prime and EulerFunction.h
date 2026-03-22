@@ -7,7 +7,7 @@ void init_prime(const int n=N){ // init [1,n-1]
 			prime.push_back(mn_p[i]=i);
 			phi[i]=i-1;
 		}
-		for(const int& p:prime){
+		for(const int p:prime){
 			if(i>(n-1)/p) break;
 			notP[i*p]=1,mn_p[i*p]=p;
 			if(i%p==0){
