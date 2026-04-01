@@ -4,7 +4,7 @@ class Fenwick:
         self._n = n
         self.data = [0] * n
 
-    def init(self, a: List | array) -> None:
+    def init(self, a: Iterable) -> None:
         for i, x in enumerate(a, 1):
             if i >= self._n:
                 break
