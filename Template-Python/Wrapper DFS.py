@@ -1,4 +1,6 @@
 from types import GeneratorType
+
+
 def bootstrap(f, stk=[]):
     def wrappedfunc(*args, **kwargs):
         if stk:

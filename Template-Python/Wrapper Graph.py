@@ -1,3 +1,8 @@
+from array import array
+from dataclasses import dataclass
+from typing import Any, List, Optional, Tuple
+
+
 @dataclass(slots=True)
 class Graph:
     n: int

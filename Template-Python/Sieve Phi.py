@@ -1,17 +1,20 @@
+from array import array
+
+
 pri = []
-not_prime = [False] * N
-not_prime[1] = True
-phi = [1] * N
+notp = array('b', [0] * N)
+notp[1] = 1
+phi = array('i', [1] * N)
 for i in range(2, N):
-    if not not_prime[i]:
+    if not notp[i]:
         pri.append(i)
         phi[i] = i - 1
-    for pri_j in pri:
-        x = i * pri_j
+    for p in pri:
+        x = i * p
         if x >= N:
             break
-        not_prime[x] = True
-        if i % pri_j == 0:
-            phi[x] = phi[i] * pri_j
+        notp[x] = 1
+        if i % p == 0:
+            phi[x] = phi[i] * p
             break
-        phi[x] = phi[i] * phi[pri_j]
+        phi[x] = phi[i] * (p - 1)

@@ -1,13 +1,16 @@
+from array import array
+
+
 pri = []
-not_prime = [False] * N
-not_prime[1] = True
+notp = array('b', [0] * N)
+notp[1] = 1
 for i in range(2, N):
-    if not not_prime[i]:
+    if not notp[i]:
         pri.append(i)
-    for pri_j in pri:
-        x = i * pri_j
+    for p in pri:
+        x = i * p
         if x >= N:
             break
-        not_prime[x] = True
-        if i % pri_j == 0:
+        notp[x] = 1
+        if i % p == 0:
             break

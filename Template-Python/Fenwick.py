@@ -1,3 +1,7 @@
+from array import array
+from typing import Any, List
+
+
 class Fenwick:
 
     def __init__(self, n: int = 0) -> None:

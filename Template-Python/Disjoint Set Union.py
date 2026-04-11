@@ -1,3 +1,7 @@
+from array import array
+from dataclasses import dataclass
+
+
 @dataclass(slots=True)
 class DSU:
     n: int
