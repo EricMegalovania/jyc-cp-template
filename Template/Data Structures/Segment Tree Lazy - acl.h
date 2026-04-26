@@ -20,9 +20,11 @@ private:
 	}
 	void push(int p){
 		if(q[p].l==q[p].r) return;
-		update(ls,q[p].f);
-		update(rs,q[p].f);
-		q[p].f=id();
+		if(q[p].f!=id()){
+			update(ls,q[p].f);
+			update(rs,q[p].f);
+			q[p].f=id();
+		}
 	}
 	void pull(int p){ q[p].s=op(q[ls].s,q[rs].s); }
 	void build(const vector<S>& a,int l,int r,int p=1){
