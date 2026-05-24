@@ -1,4 +1,6 @@
-template<typename T> // T is int or LL
+template<typename T>
+inline T __fen_add(const T x, const T y){ return x + y; }
+template<typename T,auto op=__fen_add<T>> // T is int or LL
 struct Fenwick{
 	int n,LOG;
 	vector<T>c;
@@ -11,22 +13,22 @@ struct Fenwick{
 	}
 	void init(int n_){
 		c.assign(n=n_,T(0));
-		LOG=__lg(n)+1;
+		LOG=bit_width((unsigned)n);
 	}
 	void add(int i,T x){
-		for(;i<n;i+=lowbit(i)) c[i]+=x;
+		for(;i<n;i+=lowbit(i)) c[i]=op(c[i],x);
 	}
 	T query(int i){
 		T res=0;
-		for(;i;i-=lowbit(i)) res+=c[i];
+		for(;i;i-=lowbit(i)) res=op(res,c[i]);
 		return res;
 	}
 	int kth(T k){ // min p that sum(1,p)>=k
 		int ans=0; T cnt=0;
 		for(int i=LOG;~i;--i) {
 			int nxt=ans+(1<<i);
-			if(nxt<n && cnt+c[nxt]<k){
-				cnt+=c[nxt];
+			if(nxt<n && op(cnt,c[nxt])<k){
+				cnt=op(cnt,c[nxt]);
 				ans=nxt;
 			}
 		}
