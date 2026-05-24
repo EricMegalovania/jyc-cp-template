@@ -88,15 +88,13 @@ public:
 	void set(int x,S s,int p=1){
 		if(q[p].l==q[p].r) return (void)(q[p].s=s);
 		PP;
-		if(x<=mid) set(x,s,ls);
-		else set(x,s,rs);
+		set(x,s,x<=mid?ls:rs);
 		pull(p);
 	}
 	S at(int x,int p=1){
 		if(q[p].l==q[p].r) return q[p].s;
 		PP;
-		if(x<=mid) return at(x,ls);
-		else return at(x,rs);
+		return at(x,x<=mid?ls:rs);
 	}
 	template<auto g>
 	int min_left(int r){ return min_left<decltype(g)>(r,g); }
