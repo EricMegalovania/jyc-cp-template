@@ -26,8 +26,9 @@ template<unsigned int mod>struct MI{
 		return *this;
 	}
 	D& O /=(C MI& x){ return *this=*this*x.inv(); }
-	int val() C { return v; }
+	constexpr int val() C { return v; }
 	static constexpr unsigned int umod(){ return mod; }
+	friend constexpr bool O ==(C MI & x, C MI &y){ return x.val()==y.val(); }
 #define OP(s,t) friend D O s(C MI& x,C MI& y){ return MI(x) t y; }
 	OP(+,+=) OP(-,-=) OP(*,*=) OP(/,/=)
 #undef OP

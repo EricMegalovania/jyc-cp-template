@@ -62,9 +62,10 @@ template<int id>struct MI{
 	D& O /=(C MI& x){
 		return *this=*this*x.inv();
 	}
-	int val() C{ return v; }
+	constexpr int val() C{ return v; }
 	static ui mod(){ return bt.umod(); }
 	static ui umod(){ return bt.umod(); }
+	friend constexpr bool O ==(C MI & x, C MI &y){ return x.val()==y.val(); }
 #define OP(s,t) friend D O s(C MI& x,C MI& y){return MI(x) t y;}
 	OP(+,+=) OP(-,-=) OP(*,*=) OP(/,/=)
 #undef OP
