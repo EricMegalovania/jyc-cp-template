@@ -48,7 +48,7 @@ template<int id>struct MI{
 	}
 	D inv() C { return pow(mod()-2); }
 	D& O +=(C MI& x){
-		if((v+=x.v)>=mod()) v-=mod();
+		if(unsigned(v+=x.v)>=mod()) v-=mod();
 		return *this;
 	}
 	D& O -=(C MI& x){
