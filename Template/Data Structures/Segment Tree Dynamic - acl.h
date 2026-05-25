@@ -23,7 +23,7 @@ private:
 	}
 	void pull(int p){ q[p].s=op(q[ls].s,q[rs].s); }
 	template<class G>
-	T _minl(T r,G g,S& s,int p=1){
+	T _minl(T r,const G& g,S& s,int p=1){
 		if(q[p].r==r){
 			S ns=op(q[p].s,s);
 			if(g(ns)) return s=ns,q[p].l;
@@ -38,7 +38,7 @@ private:
 		}
 	}
 	template<class G>
-	T _maxr(T l,G g,S& s,int p=1){
+	T _maxr(T l,const G& g,S& s,int p=1){
 		if(q[p].l==l){
 			S ns=op(s,q[p].s);
 			if(g(ns)) return s=ns,q[p].r;
@@ -76,14 +76,14 @@ public:
 	template<auto g>
 	T min_left(T r){ return min_left<decltype(g)>(r,g); }
 	template<class G>
-	T min_left(T r,G g){
+	T min_left(T r,const G& g){
 		assert(q[1].l<=r && r<=q[1].r);
 		S s=e(); return _minl(r,g,s);
 	}
 	template<auto g>
 	T max_right(T l){ return max_right<decltype(g)>(l,g); }
 	template<class G>
-	T max_right(T l,G g){
+	T max_right(T l,const G& g){
 		assert(q[1].l<=l && l<=q[1].r);
 		S s=e(); return _maxr(l,g,s);
 	}
