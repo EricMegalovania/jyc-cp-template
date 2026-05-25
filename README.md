@@ -93,6 +93,7 @@
   - NTT-Poly-Static
   - NTT-Poly-Dynamic
   - Bostan Mori
+  - FWT XOR
   - Min_25 筛（超级无敌阉割版）
   - Schreier Sims
   - 字典序排列相关
