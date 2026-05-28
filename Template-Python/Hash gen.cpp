@@ -105,7 +105,6 @@ int main() {
             }
         }
     }
-    cout << "sub = ord('a') - 1\n";
     cout << "FUCK_YOU = [" << off[0];
     for (auto x : off | views::drop(1)) {
         cout << ", " << x;
