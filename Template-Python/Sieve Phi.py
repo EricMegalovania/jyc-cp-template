@@ -2,7 +2,7 @@ from array import array
 
 
 pri = []
-notp = array('b', [0] * N)
+notp = bytearray(N)
 notp[1] = 1
 phi = array('i', [1] * N)
 for i in range(2, N):
