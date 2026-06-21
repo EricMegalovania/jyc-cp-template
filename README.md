@@ -46,6 +46,7 @@
   - 虚树
   - 两个 set 维护中位数
   - mindeque
+  - Ring Buffer
   - 归并树
   - 左偏树
 - 图论
