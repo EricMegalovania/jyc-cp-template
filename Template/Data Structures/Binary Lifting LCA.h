@@ -1,5 +1,5 @@
 vector<int>dep(n+1);
-const int mx_p=log2(n)+2;
+const int mx_p=bit_width((unsigned)n)+2;
 vector lca(n+1,vector<int>(mx_p));
 auto dfs_init=[&](auto&& self,int u,int fa)->void{
 	dep[u]=dep[fa]+1,lca[u][0]=fa;
