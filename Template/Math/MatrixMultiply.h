@@ -1,10 +1,10 @@
 using M=vector<vector<Z>>;
-vector<Z> mul(const M& a,vector<Z>& f,int n){ // a*f
+[[nodiscard]] vector<Z> mul(const M& a,vector<Z>& f,int n){ // a*f
 	vector<Z>b(n);
 	for(int i=0;i<n;i++) for(int j=0;j<n;j++) b[i]+=a[i][j]*f[j];
 	return b;
 }
-M mul(const M& a,M& b,int n){ // a*b
+[[nodiscard]] M mul(const M& a,M& b,int n){ // a*b
 	vector c(n,vector<Z>(n));
 	for(int k=0;k<n;k++) for(int i=0;i<n;i++) for(int j=0;j<n;j++){
 		c[i][j]+=a[i][k]*b[k][j];
