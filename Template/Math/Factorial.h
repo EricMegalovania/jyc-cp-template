@@ -1,7 +1,7 @@
 namespace Fac{ // factorial
 	constexpr int N=TODO;
 	Z fc[N],fc_inv[N];
-	void init(){
+	auto __init_fac = []() -> bool {
 		fc[0]=fc_inv[0]=raw(1);
 		for(int i=1;i<N;i++){
 			fc[i]=fc[i-1]*raw(i);
@@ -10,7 +10,8 @@ namespace Fac{ // factorial
 		for(int i=N-2;i>0;i--){
 			fc_inv[i]=fc_inv[i+1]*raw(i+1);
 		}
-	}
+		return 1;
+	}();
 	Z P(const int x,const int y){
 		return fc[x]*fc_inv[x-y];
 	}
@@ -20,6 +21,3 @@ namespace Fac{ // factorial
 		return fc[x]*fc_inv[y]*fc_inv[x-y];
 	}
 }
-
-// check mod !!!!
-Fac::init();
