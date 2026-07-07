@@ -1,5 +1,4 @@
-from array import array
-from typing import Any, List
+from typing import Any, Iterable
 
 
 class Fenwick:
