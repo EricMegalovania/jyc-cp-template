@@ -17,7 +17,7 @@ bool __init_sieve = []() -> bool { // init [1, N)
 			mu[i]=-1;
 			d[i]=2,num[i]=1;
 		}
-		for(const int& p:prime){
+		for(const int p:prime){
 			if(i>(N-1)/p) break;
 			int j=i*p;
 			notP[j]=1,mn_p[j]=p;
