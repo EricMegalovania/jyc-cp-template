@@ -6,10 +6,10 @@ vector<Edge>e(2);
 vector<int>h(n+1);
 auto addedge=[&](int u,int v)->void{
 	e.emplace_back(v,h[u]);
-	h[u]=e.size()-1;
+	h[u]=int(e.size())-1;
 };
 for(int i=1,u,v;i<=m;i++){
-	u=read(),v=read();
+	cin>>u>>v;
 	addedge(u,v);
 	addedge(v,u);
 }
