@@ -1,6 +1,6 @@
 #define N 1024
 LL tab[N][N];
-void init(){
+const bool __init_tab=[]() -> bool {
 	for(int i=0;i<N;++i){
 		tab[0][i]=tab[i][0]=tab[i][i]=i;
 		tab[1][i]=tab[i][1]=1;
@@ -10,7 +10,8 @@ void init(){
 			tab[i][j]=tab[j][i]=tab[j][i%j];
 		}
 	}
-}
+	return 1;
+}();
 LL gc(LL x,LL y){
 	if(x<N && y<N) return tab[x][y];
 	return y?gc(y,x%y):x;
@@ -48,5 +49,3 @@ struct frac{ //fraction
 		return res;
 	}
 };
-
-init();
