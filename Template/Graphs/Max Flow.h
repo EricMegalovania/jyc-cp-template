@@ -1,4 +1,3 @@
-const int inf=INT_MAX; //inf可按需要修改
 template<typename T> //T是int或者LL
 class MF{ //Max Flow
 private:
@@ -38,6 +37,7 @@ private:
 		return ret;
 	}
 public:
+	static constexpr T inf_f = numeric_limits<T>::max();
 	MF(){}
 	MF(int n_){init(n_);}
 	void init(int n_){//n个点，下标从1~n
@@ -47,9 +47,9 @@ public:
 	}
 	void addedge(int u,int v,T w){
 		e.push_back({v,fir[u],w,0});
-		fir[u]=e.size()-1;
+		fir[u]=int(e.size())-1;
 		e.push_back({u,fir[v],0,0});
-		fir[v]=e.size()-1;
+		fir[v]=int(e.size())-1;
 	}
 	LL dinic(int s_,int t_){
 		s=s_,t=t_;

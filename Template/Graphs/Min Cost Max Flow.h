@@ -1,5 +1,3 @@
-const int inf_f=INT_MAX;
-const LL inf_c=LLONG_MAX;
 template<typename T1,typename T2> //T1:flow type, T2:cost type
 class MCMF{ //Min Cost Max Flow
 private:
@@ -54,6 +52,8 @@ private:
 		return dis[t]!=inf_c;
 	}
 public:
+	static constexpr T1 inf_f = numeric_limits<T1>::max();
+	static constexpr T2 inf_c = numeric_limits<T2>::max();
 	MCMF(){}
 	MCMF(int n_){init(n_);}
 	void init(int n_){//n个点，下标从1~n
@@ -65,9 +65,9 @@ public:
 	edge get(int id){return e[id];}
 	void addedge(int u,int v,T1 w,T2 c){
 		e.push_back({v,head[u],w,c});
-		head[u]=e.size()-1;
+		head[u]=int(e.size())-1;
 		e.push_back({u,head[v],0,-c});
-		head[v]=e.size()-1;
+		head[v]=int(e.size())-1;
 	}
 	pair<T1,T2>dinic(int s_,int t_){
 		s=s_,t=t_;
