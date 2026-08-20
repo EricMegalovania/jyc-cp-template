@@ -1,7 +1,7 @@
 using LD=long double;
 //eps不一定是越精度高越好！
 constexpr LD eps=1e-8; //精度，可按需要增加至1e-12之类的(?)
-constexpr LD pi=numbers::pi;
+constexpr LD pi=numbers::pi_v<LD>;
 constexpr int sign(LD x){ //符号函数
 	if(fabs(x)<eps) return 0;
 	if(x<0) return -1;
@@ -111,7 +111,7 @@ constexpr bool seg_inter(const PDD& a1, const PDD& a2, const PDD& b1, const PDD&
 //计算**任意**多边形面积（不一定凸）
 LD polygon_area(vector<PDD>p){
 	LD s = 0;
-	for (int i = 1; i + 1 < p.size(); i ++ )
+	for (int i = 1; i + 1 < int(p.size()); ++i )
 		s += cross(p[i] - p[0], p[i + 1] - p[i]);
 	return s / 2;
 }

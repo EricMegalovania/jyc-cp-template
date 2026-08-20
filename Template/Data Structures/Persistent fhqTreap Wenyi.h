@@ -10,12 +10,12 @@ private:
     int New(T val) {
         Node new_node = Node(val);
         q.push_back(new_node);
-        return q.size() - 1;
+        return int(q.size()) - 1;
     }
     int clone(int id) {
         if (!id) return 0;
         q.push_back(q[id]);
-        return q.size() - 1;
+        return int(q.size()) - 1;
     }
     void update(int id) { q[id].siz = q[q[id].l].siz + q[q[id].r].siz + 1; }
     void spread(int id) {
@@ -94,7 +94,7 @@ public:
     int insert(const int ver, const T x) {
         const int nr = merge(roots[ver], New(x));
         roots.push_back(nr);
-        return roots.size() - 1;
+        return int(roots.size()) - 1;
     }
     int reverse(const int ver, const int l, const int r) {
         int rootX, rootY, rootZ;
@@ -103,7 +103,7 @@ public:
         q[rootY].lazy ^= 1;
         const int nr = merge(merge(rootX, rootY), rootZ);
         roots.push_back(nr);
-        return roots.size() - 1;
+        return int(roots.size()) - 1;
     }
     // work() use _q to avoid shadow
     int work(const int ver, const int p, const int _q) {
@@ -116,7 +116,7 @@ public:
         const int nr = merge(rootY, rootX);
         assert(q[nr].siz == q[roots[ver]].siz);
         roots.push_back(nr);
-        return roots.size() - 1;
+        return int(roots.size()) - 1;
     }
     T get(const int ver, int rank) {
         int id = roots[ver];

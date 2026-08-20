@@ -6,7 +6,7 @@ constexpr bool cmpPDD(const PDD& A,const PDD& B){
 // counter-clockwise
 vector<PDD> Andrew(vector<PDD>& a){
 	sort(all(a),cmpPDD);
-	const int n=a.size();
+	const int n=int(a.size());
 	vector<PDD>b={a[0]};
 #define sb (int)(b.size())
 	for(int i=1;i<n;++i){
