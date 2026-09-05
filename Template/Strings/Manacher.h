@@ -3,7 +3,7 @@
 // d1, between (i-1) and i is center
 #define vi vector<int>
 void manacher(auto&& s,vi& d0,vi& d1){
-	const int& n=s.size();
+	const int n=int(s.size());
 #define WORK(X) d##X.assign(n,0); \
 	for(int i=0,l=0,r=-1;i<n;++i){ \
 	int k=(i>r)?0:min(d##X[l+r-i+X],r-i+1); \

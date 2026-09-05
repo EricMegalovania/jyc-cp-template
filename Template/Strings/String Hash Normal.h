@@ -3,14 +3,15 @@ namespace HC{//Hash Const
 	constexpr int P[2]={13331,233};
 	constexpr int MOD[2]={(int)(1e9+7),998244353};
 	LL ksm[N][2];
-	void init(){
+	const bool init=[]() -> bool {
 		for(int j=0;j<2;j++){
 			ksm[0][j]=1;
 			for(int i=1;i<N;i++){
 				ksm[i][j]=(ksm[i-1][j]*P[j])%MOD[j];
 			}
 		}
-	}
+		return 1;
+	}();
 }
 class Hash{
 private:

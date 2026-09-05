@@ -18,7 +18,7 @@ private:
 	int New(T val){
 		Node new_node=Node(0,0,1,rng(),val,val);
 		q.push_back(new_node);
-		return q.size()-1;
+		return int(q.size())-1;
 	}
 	void Update(int id){
 		q[id].siz=q[q[id].l].siz+q[q[id].r].siz+1;

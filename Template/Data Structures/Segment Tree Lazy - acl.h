@@ -9,7 +9,7 @@ private:
 	void update(int p,const F& f){
 		Node& u=q[p]; u.s=mp(f,u.s);
 		if(u.l!=u.r){
-			u.f=comp(f,u.f);
+			u.f=comp(f,u.f); // 如果要传入 l,r, 修改这里和 mapping 函数的接口
 			if constexpr(sgtbeats){
 				if(u.s.fail) push(p),pull(p);
 			}

@@ -11,6 +11,7 @@ struct rbf { // Ring Buffer
         for (int i = 0; i < len; ++i) buf[i] = (*this)[i];
         std::swap(a, buf); head = 0;
     }
+    bool empty() const { return len == 0; }
     int size() const { return len; }
     T &operator[](int idx) {
         if ((idx += head) >= sz) idx -= sz;
