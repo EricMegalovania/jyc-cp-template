@@ -96,6 +96,9 @@
   - NTT-Poly-Dynamic
   - Bostan Mori
   - FWT XOR
+  - (扩展) 中国剩余定理
+  - Lucas 定理
+  - 扩展 Lucas 定理
   - Min_25 筛（超级无敌阉割版）
   - Schreier Sims
   - 字典序排列相关
