@@ -1,0 +1,273 @@
+% !TEX program = xelatex
+% By Kimi K3
+% 公平组合游戏结论速查 —— 整理自 OI-Wiki《公平组合游戏》
+% 编译方式：xelatex（中文依赖 ctex；示意图依赖 tikz）
+
+% \usepackage{amsmath,amssymb,amsthm,mathtools}
+% \usepackage[a4paper,margin=2.2cm]{geometry}
+% \usepackage{tikz}
+% \usepackage{enumitem}
+% \setlist{nosep}
+% \usepackage[colorlinks,linkcolor=black,urlcolor=blue]{hyperref}
+% 
+% \newtheorem{theorem}{定理}
+% \newtheorem{lemma}[theorem]{引理}
+% \newtheorem{corollary}[theorem]{推论}
+% \theoremstyle{definition}
+% \newtheorem{definition}[theorem]{定义}
+% \newtheorem{game}[theorem]{游戏}
+% \theoremstyle{remark}
+% \newtheorem*{remark}{注}
+% 
+% \DeclareMathOperator{\SG}{SG}
+% \DeclareMathOperator{\mex}{mex}
+% \newcommand{\Pw}{\mathcal{P}}   % (先手) 必败状态
+% \newcommand{\Nw}{\mathcal{N}}   % (先手) 必胜状态
+% \newcommand{\N}{\mathbf{N}}
+
+	
+本文所有游戏若无特殊说明，均为\textbf{正常规则}的公平组合游戏（无法移动者负）。
+状态分为（先手）必胜状态 $\Nw$ 与（先手）必败状态 $\Pw$（$\Nw/\Pw$ 取 Next/Previous player wins 之意）。
+
+\subsection{Nim 游戏与博弈图}
+
+\begin{game}[Nim]
+	$n$ 堆石子，第 $i$ 堆 $a_i$ 枚。两人轮流从任意一堆取走任意多枚石子，不能不取。取走最后一枚者胜。
+\end{game}
+
+\begin{lemma}[状态分类引理]
+	正常规则的公平组合游戏中：
+	\begin{enumerate}
+		\item 无后继状态的状态是必败状态 $\Pw$；
+		\item 状态为 $\Nw$ 当且仅当它存在至少一个后继为 $\Pw$；
+		\item 状态为 $\Pw$ 当且仅当它的所有后继均为 $\Nw$。
+	\end{enumerate}
+	公平组合游戏的博弈图是有向无环图（每次操作总量严格减少），逆拓扑递推可在 $O(|V|+|E|)$ 内完成全部状态的 $\Nw/\Pw$ 分类。直接对 Nim 画博弈图则需 $\Omega\!\left(\prod_{i=1}^n(a_i+1)\right)$，不可行。
+\end{lemma}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+		xscale=1.5, yscale=1.25,
+		every node/.style={circle, ultra thick, draw, inner sep=2pt},
+		every path/.style={thick, ->, >=latex},
+		]
+		\node[draw=red] (112) at (-2, 3) {1,1,2};
+		\node[draw=red] (111) at ( 2, 3) {1,1,1};
+		\node[draw=red] (012) at (-4, 0) {0,1,2};
+		\node[draw=black] (011) at (-2, 0) {0,1,1};
+		\node[draw=black] (110) at ( 0, 0) {1,1,0};
+		\node[draw=red] (102) at ( 2, 0) {1,0,2};
+		\node[draw=black] (101) at ( 4, 0) {1,0,1};
+		\node[draw=red] (010) at (-3,-3) {0,1,0};
+		\node[draw=red] (002) at (-1,-3) {0,0,2};
+		\node[draw=red] (001) at ( 1,-3) {0,0,1};
+		\node[draw=red] (100) at ( 3,-3) {1,0,0};
+		\node[draw=black] (000) at ( 0,-6) {0,0,0};
+		\path (112) edge (012);
+		\path (012) edge (002);
+		\path (002) edge (001);
+		\path (001) edge (000);
+		\path (002) edge (000);
+		\path (012) edge (011);
+		\path (011) edge (001);
+		\path (011) edge (010);
+		\path (010) edge (000);
+		\path (012) edge (010);
+		\path (112) edge (102);
+		\path (102) edge (002);
+		\path (102) edge (101);
+		\path (101) edge (001);
+		\path (101) edge (100);
+		\path (100) edge (000);
+		\path (102) edge (100);
+		\path (112) edge (111);
+		\path (111) edge (011);
+		\path (111) edge (101);
+		\path (111) edge (110);
+		\path (110) edge (010);
+		\path (110) edge (100);
+		\path (112) edge (110);
+	\end{tikzpicture}
+	\caption{初始局面 $(1,1,2)$ 的 Nim 博弈图。红圈为必胜状态 $\Nw$，黑圈为必败状态 $\Pw$。}
+\end{figure}
+
+\begin{definition}[Nim 和]
+	$a_1\oplus a_2\oplus\cdots\oplus a_n$（按位异或）。
+\end{definition}
+
+\begin{theorem}[Nim 游戏判定]
+	$ (a_1,a_2,\cdots,a_n)\in\Pw \iff a_1\oplus a_2\oplus\cdots\oplus a_n=0. $
+\end{theorem}
+
+\begin{proof}[证明要点（同时给出必胜策略）]
+	对状态归纳，设 $k=a_1\oplus\cdots\oplus a_n$。
+	若 $k\neq0$：取 $k$ 的最高位 $d$，必存在某堆 $a_i$ 第 $d$ 位为 $1$，此时 $a_i>a_i\oplus k$，把该堆取到 $a_i\oplus k$ 枚即留给对手 Nim 和为 $0$ 的局面。
+	若 $k=0$：任何合法操作把某 $a_i$ 变为 $a_i'\neq a_i$，新 Nim 和为 $a_i'\oplus a_i\neq0$。
+\end{proof}
+
+\subsection{Sprague--Grundy 理论}
+
+\begin{definition}[单堆 Nim 的记号]
+	$*0=\{\}$，$*n=\{*m:m<n,\ m\in\N\}=\{*0,*1,\cdots,*(n-1)\}$，即 $n$ 枚石子的单堆 Nim。记号 $T\in S$ 表示 $T$ 是 $S$ 的后继状态。
+\end{definition}
+
+\begin{definition}[游戏的和（析取和）]
+	$$G+H=\{g+H:g\in G\}\cup\{G+h:h\in H\}.$$
+	即两个子游戏并行，每步选一个移动一步，都走不动时结束。满足交换律与结合律；Nim 游戏就是若干单堆 Nim 的和。
+\end{definition}
+
+\begin{definition}[游戏的等价]
+	$G_1\approx G_2 \iff$ 对所有游戏 $H$，$G_1+H$ 与 $G_2+H$ 同为必胜或同为必败。$\approx$ 是全体公平游戏上的等价关系。
+\end{definition}
+
+\begin{lemma}
+	对任意必败游戏 $A\in\Pw$，有 $G\approx G+A$。
+\end{lemma}
+
+\begin{lemma}[等价的判别]
+	$G\approx G' \iff G+G'\in\Pw$。（标准证法：后手在另一子游戏中模仿先手。）
+\end{lemma}
+
+\begin{theorem}[Sprague--Grundy]
+	任意（有限）公平游戏 $G$，存在 $n\in\N$ 使 $G\approx *n$。
+\end{theorem}
+
+\begin{definition}[Nim 数 / SG 函数]
+	使 $G\approx *n$ 成立的唯一自然数 $n$ 称为 $G$ 的 Nim 数；映射 $\SG(\cdot)$ 称为 Sprague--Grundy 函数。
+\end{definition}
+
+\begin{corollary}[SG 递推]
+	$$\SG(x)=\mex\{\SG(x'):x'\in x\},\qquad \mex A:=\min\{n\in\N:n\notin A\}.$$
+	即一个状态的 SG 值等于其后继状态 SG 值的 $\mex$；终止状态 $\SG=\mex\varnothing=0$。
+\end{corollary}
+
+\begin{corollary}
+	$x\in\Nw \iff \SG(x)\neq0$。
+\end{corollary}
+
+\begin{theorem}[游戏的和的 SG 值]
+	$$\SG(G_1+G_2+\cdots+G_n)=\SG(G_1)\oplus\SG(G_2)\oplus\cdots\oplus\SG(G_n).$$
+\end{theorem}
+
+\begin{remark}[SG 计算套路]
+	（1）多个独立子游戏：分别求 SG 再取 Nim 和；（2）单游戏：$\SG=\mex\{\text{后继的 SG}\}$；（3）终止态 SG 为 $0$。实际赛题中常先\textbf{打表}猜 SG 表达式，再用归纳法验证。
+\end{remark}
+
+\begin{remark}[Nim 数的代数结构（了解即可）]
+	Nim 和即 $\oplus$；Nim 积
+	$$a\otimes b=\mex\{(a'\otimes b)\oplus(a\otimes b')\oplus(a'\otimes b'):a'<a,\ b'<b,\ a',b'\in\N\}.$$
+	全体 Nim 数在 $\oplus,\otimes$ 下构成特征 $2$ 的域，且前 $2^{2^n}$ 个 Nim 数构成有限域 $\mathbf F_{2^{2^n}}$。
+\end{remark}
+
+\subsection{常见公平游戏结论速查}
+
+本节结论的证明均为验证式：只需验证「从 $\Pw$ 出发只能到 $\Nw$；从 $\Nw$ 出发总能到某个 $\Pw$」，再对博弈图归纳即严格。
+
+\subsubsection{Bachet 游戏}
+\begin{game}[Bachet]
+	一堆 $n$ 枚石子，每次取 $1\sim k$ 枚，取走最后一枚者胜。
+\end{game}
+\begin{theorem}
+	$\Pw \iff n\equiv0\pmod{k+1}$；且 $\SG(n)=n\bmod(k+1)$。
+\end{theorem}
+必胜策略：取走 $n\bmod(k+1)$ 枚使余数归零；对手取 $k'$ 枚后自己取 $k+1-k'$ 枚。
+
+\subsubsection{Moore's Nim-$k$ 游戏}
+\begin{game}[Moore's Nim-$k$]
+	$n$ 堆石子，每次可从至少 $1$ 堆、至多 $k$ 堆中各取任意多枚（不能不取），取走最后一枚者胜。
+\end{game}
+\begin{theorem}
+	把每堆石子数写成二进制，对每个数位 $d$ 统计「第 $d$ 位为 $1$ 的堆数」模 $(k+1)$ 的余数。所有数位的余数全为 $0$ $\iff$ $\Pw$，否则 $\Nw$。$k=1$ 时即普通 Nim。
+\end{theorem}
+
+\subsubsection{阶梯 Nim 游戏}
+\begin{game}[阶梯 Nim]
+	$n$ 堆石子排成一列。每次要么取走第 $1$ 堆中任意多枚，要么把第 $i>1$ 堆中任意多枚移到第 $i-1$ 堆，不能不动。取走最后一枚者胜。
+\end{game}
+\begin{theorem}
+	$$\Pw \iff a_1\oplus a_3\oplus\cdots\oplus a_{n-1+(n\bmod 2)}=0\quad(\text{只看奇数号堆}).$$
+\end{theorem}
+直觉：偶数堆移向奇数堆的操作会被对手原样继续下移/取走而抵消，故等价于奇数号堆上的普通 Nim。
+
+\subsubsection{Fibonacci Nim 游戏}
+\begin{game}[Fibonacci Nim]
+	一堆 $n$ 枚石子。先手第一步可取任意多枚但不能取完；之后每步所取不得超过对手上一步所取的两倍，且不得为 $0$。取走最后一枚者胜。
+\end{game}
+\begin{theorem}[Zeckendorf]
+	记 $q$ 为当前回合限额（首回合 $q=n-1$，之后为对手上步所取的二倍）。当前状态 $\Nw \iff q\ge n$ 的 Fibonacci 分解（Zeckendorf 表示：分解为互不相邻的正 Fibonacci 数之和）中的最小项。特别地，开局 $\Pw \iff n$ 本身是 Fibonacci 数。
+\end{theorem}
+
+\subsubsection{Wythoff 游戏}
+\begin{game}[Wythoff]
+	两堆石子 $a_1,a_2$。每次从一堆取任意多枚，或从两堆取相同数目，不能不取。取走最后一枚者胜。
+\end{game}
+\begin{theorem}
+	设 $a_1\le a_2$，$\phi=\dfrac{\sqrt5+1}{2}$，则
+	$$\Pw \iff a_1=\big\lfloor(a_2-a_1)\,\phi\big\rfloor.$$
+	即必败态恰为 $(\lfloor k\phi\rfloor,\ \lfloor k\phi^2\rfloor)=(\lfloor k\phi\rfloor,\ \lfloor k\phi\rfloor+k)$，$k\in\N$。
+\end{theorem}
+\begin{lemma}[Beatty--Rayleigh]
+	无理数 $r,s>1$ 满足 $\frac1r+\frac1s=1$，则 Beatty 序列 $\mathcal B_r=\{\lfloor kr\rfloor:k\in\N_+\}$ 与 $\mathcal B_s$ 构成 $\N_+$ 的分划。Wythoff 中取 $r=\phi,\ s=\phi+1=\phi^2$。
+\end{lemma}
+
+\subsubsection{翻硬币游戏}
+\begin{game}[翻硬币]
+	$(S,\preceq)$ 为良基偏序集，$f:S\to\mathcal{P}\mathcal{P}S$ 满足：对所有 $s$，$f(s)$ 非空；$T\in f(s)\Rightarrow s\in T$；$t\in T\Rightarrow t\preceq s$。$S$ 每处放一枚硬币（正面或背面朝上）。每步选一枚正面硬币 $s$ 与集合 $T\in f(s)$，翻转 $T$ 中所有硬币。把硬币全部翻成背面者胜。
+\end{game}
+\begin{theorem}
+	设 $G_s$ 为仅 $s$ 处硬币正面的基础局面，$H(G)\subseteq S$ 为局面 $G$ 中正面位置的集合，则
+	$$\SG(G)=\bigoplus_{s\in H(G)}\SG(G_s),\qquad
+	\SG(G_s)=\mex_{T\in f(s)}\ \bigoplus_{t\in T\setminus\{s\}}\SG(G_t).$$
+\end{theorem}
+要点：每枚正面硬币是一个独立子游戏，整体是它们的和；同一位置翻回正面相当于「复制」已有子游戏，异或下两两抵消，故 SG 值只取决于正面位置的集合。
+
+\subsubsection{二分图博弈（无向图删点游戏）}
+\begin{game}[二分图博弈]
+	局面为 $(G,v)$，$G=(V,E)$ 无向图，$v\in V$。当前玩家选一个与 $v$ 相邻的顶点 $u$，从图中删去 $v$ 及其所有关联边，新局面 $(G',u)$ 交给对手。轮到时 $v$ 无相邻顶点者负。
+\end{game}
+\begin{theorem}
+	先手必胜 $\iff$ $v$ 是 $G$ 的最大匹配关键点（出现在 $G$ 的所有最大匹配中）。结论对一般无向图成立，与二分结构无关。
+\end{theorem}
+\begin{corollary}[变体：相邻取石子]
+	每个顶点放一枚石子，先手任取一枚起步，之后每步所取顶点须与对手上一步所取相邻。先手必败 $\iff$ 每个顶点都是最大匹配关键点 $\iff$ $G$ 存在完美匹配。
+\end{corollary}
+
+\subsection{反常（Mis\`ere）Nim 游戏}
+
+规则同 Nim，但取走最后一枚石子者\textbf{负}。
+\begin{theorem}
+	$(a_1,a_2,\cdots,a_n)\in\Pw$ 当且仅当：
+	\begin{enumerate}
+		\item 存在 $a_i>1$，且 $a_1\oplus a_2\oplus\cdots\oplus a_n=0$；或
+		\item 所有 $a_i\le1$，且非空堆数为奇数。
+	\end{enumerate}
+\end{theorem}
+即：存在多于一枚的堆时结论与正常 Nim 一致；全为单枚堆时奇偶反转。
+
+\subsection{有向图游戏（允许有环，含平局）}
+
+沿有向边轮流移动，无法移动者按正常/反常规则判负/判胜；游戏可能永不终止（平局）。分类规则：
+\begin{itemize}
+	\item 有后继的状态：$\Nw \iff$ 存在后继为 $\Pw$；$\Pw \iff$ 所有后继为 $\Nw$；
+	\item 无法归入上两类的状态为平局。
+\end{itemize}
+逆拓扑（retrograde）算法，$O(|V|+|E|)$：
+\begin{enumerate}
+	\item 记录所有状态出度；出度为 $0$ 的状态入队，按正常/反常规则分别设为 $\Pw$/$\Nw$；
+	\item 弹出队首：若为 $\Pw$，把所有未判定前驱设为 $\Nw$ 并入队；若为 $\Nw$，把其前驱出度各减一，出度归零的前驱设为 $\Pw$ 并入队；
+	\item 队列空即终止；仍未判定的状态全是平局。
+\end{enumerate}
+
+\subsection{例题套路摘要}
+
+\begin{enumerate}
+	\item \href{https://www.luogu.com.cn/problem/P2148}{Luogu P2148 [SDOI2009] E\&D}：$2n$ 堆两两分组，组间独立。打表得一组 $(i,j)$ 的
+	$$\SG(i,j)=g(i-1,j-1),\qquad
+	g(i,j)=\begin{cases}0,&2\mid i\text{ 且 }2\mid j,\\ g(\lfloor i/2\rfloor,\lfloor j/2\rfloor)+1,&\text{否则}.\end{cases}$$
+	等价地，$g(i,j)$ 是 $i\mathbin{\mathrm{or}}j$ 的二进制末尾连续 $1$ 的个数，即 \texttt{\_\_builtin\_ctz(\textasciitilde(i|j))}，$O(\log\max\{i,j\})$ 或 $O(1)$。
+	\item \href{https://www.luogu.com.cn/problem/P5675}{Luogu P5675 [GZOI2017] 取石子游戏}：任选若干堆（总 Nim 和为 $v$）并强制先手第一步从第 $i$ 堆取，则先手无法获胜 $\iff a_i\le a_i\oplus v$（$a_i\oplus v$ 即其余所选堆的 Nim 和）。$n,a_i\le200$：枚举 $i$，对其余堆做子集异或计数 DP，累加 Nim 和 $\ge a_i$ 的方案数。
+	\item \href{https://www.luogu.com.cn/problem/P2599}{Luogu P2599 [ZJOI2009] 取石子游戏}：只能从最左/最右堆取，无独立子游戏结构，回到状态分类引理。设两端堆为 $x,y$，$f(x,y)=0 \iff \forall s<x,\ t<y:\ f(x,t)=f(s,y)=1$；每行每列恰一个 $0$，打表知 $f(x,y)=0$ 的位置
+	$$y=\begin{cases}0,&x=x_0,\\ x-1,&x_0<x\le y_0,\\ x+1,&y_0\le x<x_0,\\ x,&\text{其他},\end{cases}$$
+	其中 $x_0,y_0$ 分别为 $f(x,0)=0$、$f(0,y)=0$ 的唯一解，由内层子问题（区间 DP，每层只维护 $x_0,y_0$）递归给出。
+\end{enumerate}

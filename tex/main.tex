@@ -16,6 +16,30 @@
 \geometry{headheight=2.6cm,headsep=3mm,footskip=13mm}
 \geometry{top=2cm,bottom=2cm,left=2cm,right=2cm}
 
+% === Start: Presets for `../Template/Math/impartial_game.tex` ===
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+% \usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{tikz}
+\usepackage{enumitem}
+\setlist{nosep}
+\usepackage[colorlinks,linkcolor=black,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{game}[theorem]{游戏}
+\theoremstyle{remark}
+\newtheorem*{remark}{注}
+
+\DeclareMathOperator{\SG}{SG}
+\DeclareMathOperator{\mex}{mex}
+\newcommand{\Pw}{\mathcal{P}}   % (先手) 必败状态
+\newcommand{\Nw}{\mathcal{N}}   % (先手) 必胜状态
+\newcommand{\N}{\mathbf{N}}
+% === End: Presets for `../Template/Math/impartial_game.tex` ===
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \rhead{{\sf\thepage}}
@@ -887,6 +911,13 @@ $$
 \centerline{没有}
 
 待补充：同一行/列的第一类斯特林数的计算
+
+\newpage
+
+{\centering\section{博弈论 (公平组合游戏)}}
+
+% \input{"../Template/Math/impartial_game.tex"}
+\input{"../Template/Math/impartial_game_core.tex"}
 
 \newpage
 
