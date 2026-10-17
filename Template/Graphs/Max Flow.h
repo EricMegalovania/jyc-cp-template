@@ -37,7 +37,7 @@ private:
 		return ret;
 	}
 public:
-	static constexpr T inf_f = numeric_limits<T>::max();
+	static constexpr T inf = numeric_limits<T>::max();
 	MF(){}
 	MF(int n_){init(n_);}
 	void init(int n_){//n个点，下标从1~n
