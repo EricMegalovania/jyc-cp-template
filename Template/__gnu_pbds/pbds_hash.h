@@ -2,18 +2,19 @@
 using __gnu_pbds::gp_hash_table;
 using __gnu_pbds::null_type;
 
+using u64=uint64_t;
 struct chash_int{
-	static constexpr uint64_t C=LL(2e18*numbers::pi)|71;
-	LL operator()(LL x) const{
+	static constexpr u64 C=u64(2e18*numbers::pi)|71;
+	u64 operator()(LL x) const{
 		return __builtin_bswap64(x*C);
 	}
 };
 struct chash_vec{
-	const size_t mg=0x9e3779b97f4a7c15;
-	size_t operator()(const auto& v) const{
-		size_t seed=mg;
-		for(auto& x:v) {
-			seed^=std::hash<LL>{}(x)+mg+(seed<<6)+(seed>>2);
+	const u64 mg=0x9e3779b97f4a7c15;
+	u64 operator()(const auto& v) const{
+		u64 seed=mg;
+		for(auto x:v) {
+			seed^=chash_int{}(x)+mg+(seed<<6)+(seed>>2);
 		}
 		return seed;
 	}
