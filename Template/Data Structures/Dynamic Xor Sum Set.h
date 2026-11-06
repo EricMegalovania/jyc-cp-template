@@ -26,7 +26,7 @@ private:
 };
 
 template<class S,int K,bool _fenwick=false,bool ins_and_del=false>
-requires (is_integral_v<S> && K<=sizeof(S)*8 && (!_fenwick || K<=20))
+requires (is_integral_v<S> && K<sizeof(S)*8 && (!_fenwick || K<=20))
 struct xorsum{ // a set, no duplicate element
 private:
 	conditional_t<ins_and_del,set<S>,monostate>a;

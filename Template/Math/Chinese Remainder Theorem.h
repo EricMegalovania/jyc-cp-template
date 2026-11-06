@@ -52,8 +52,8 @@ namespace CRT {
         for (int i = 0; i < n; i++) {
             x[i] = red(a[i], m[i]);
             for (int j = 0; j < i; j++) {
-                LL inv = inv(m[j], m[i]); // m[j]^{-1} mod m[i]
-                x[i] = mul(x[i] - x[j], inv, m[i]);
+                LL iv = inv(m[j], m[i]); // m[j]^{-1} mod m[i]
+                x[i] = mul(x[i] - x[j], iv, m[i]);
                 if (x[i] < 0) x[i] += m[i];
             }
         }

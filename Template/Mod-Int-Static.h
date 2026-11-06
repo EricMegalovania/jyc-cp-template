@@ -4,7 +4,7 @@
 template<unsigned int mod>struct MI{
 	D():v(0){}
 	template<typename T>
-	D(T x):v(x%mod){ if(v<0) v+=mod; }
+	D(T x):v(x%int(mod)){ if(v<0) v+=mod; }
 	template<typename T>
 	static D raw(T x){ MI z; z.v=x; return z; }
 	D pow(LL n) C {

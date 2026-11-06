@@ -97,5 +97,3 @@ public:
 		return hash<LL>()(c[0])^hash<LL>()(c[1]);
 	}
 };
-
-HC::init(); //初始化

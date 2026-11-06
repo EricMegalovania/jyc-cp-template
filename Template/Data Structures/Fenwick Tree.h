@@ -4,7 +4,7 @@ template<typename T,auto op=__fen_add<T>,auto e=[](){ return T(0); }> // T is in
 struct Fenwick{
 	int n,LOG;
 	vector<T>c;
-	inline int lowbit(const int& x){
+	static inline int lowbit(const int& x){
 		return x&(-x);
 	}
 	Fenwick(){}

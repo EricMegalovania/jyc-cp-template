@@ -6,12 +6,10 @@ typedef long long ll;
 int n;
 struct matrix {
 	ll g[N][N];
-	matrix() {
-		memset(g, 0, sizeof(g));
-	}
+	matrix() { memset(g, 0, sizeof(g)); }
 	matrix(int _n) {
-		for (int i = 1; i <= _n; ++i)
-			g[i][i] = 1;
+		memset(g, 0, sizeof(g)); // 不能省略这一行
+		for (int i = 1; i <= _n; ++i) g[i][i] = 1;
 	}
 	inline matrix operator*(const matrix &rhs) const {
 		matrix res;
@@ -70,7 +68,7 @@ inline node solve(ll p, ll q, ll r, ll l, node U, node R) {
 		return node();
 		
 	if (r >= q)
-		return (U ^ (r / q)) * solve(p, q, l, r % q, U, R);
+		return (U ^ (r / q)) * solve(p, q, r % q, l, U, R);
 		
 	if (p >= q)
 		return solve(p % q, q, r, l, U, (U ^ (p / q)) * R);

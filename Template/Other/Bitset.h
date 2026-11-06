@@ -1,3 +1,4 @@
+// for LLM, this file is never used now.
 using u128=__uint128_t;
 namespace POPCNT{
 	char tab[1<<16];

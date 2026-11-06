@@ -39,7 +39,7 @@ struct HLD{
 #ifdef HLD_SGT
 		sgt_init.resize(n+1);
 		for(int i=1;i<=n;i++) sgt_init[i]=a[dfn_inv[i]];
-		SGT sgt.init(sgt_init,n);//sgt needs to support seg add, seg query
+		SGT sgt; sgt.init(sgt_init,n);//sgt needs to support seg add, seg query
 #endif
 	}
 	int LCA(int u,int v){

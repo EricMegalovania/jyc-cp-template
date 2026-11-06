@@ -30,7 +30,7 @@ struct rbf { // Ring Buffer
     }
     void pop_front() { --len; if (++head >= sz) head = 0; }
     void pop_back() { --len; }
-    void resize(const int n, const T &v = T{}) {
+    void resize(const int n, const T &v = T{}) { // 只放大不缩小
         if (n <= len) return;
         reserve(n);
         while (len < n) push_back(v);

@@ -7,6 +7,7 @@ constexpr bool cmpPDD(const PDD& A,const PDD& B){
 vector<PDD> Andrew(vector<PDD>& a){
 	sort(all(a),cmpPDD);
 	const int n=int(a.size());
+	if(n<=2) return a;
 	vector<PDD>b={a[0]};
 #define sb (int)(b.size())
 	for(int i=1;i<n;++i){

@@ -1,6 +1,7 @@
 //返回最大的整数x, x的b次方<=a
 //即, 返回 a^(1/b) 的下取整值 (自带的 pow 和 sqrt 精度堪忧)
 LL pow_inv(LL a,LL b){
+	assert(a>0 && b>0);
 	static auto check=[](LL a,LL b,LL lim)->bool{
 		LL res=1; bool flag=a>lim;
 		while(b){

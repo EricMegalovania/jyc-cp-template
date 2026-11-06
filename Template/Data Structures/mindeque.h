@@ -35,12 +35,12 @@ template<class S,auto op>struct mindeque{
 	void push_front(S x){ l.push(x); } // arg is T1
 	void push_back(S x){ r.push(x); } // arg is T1
 	void pop_front(){
-		if(size()==1) l.size()?l.pop():r.pop();
+		if(size()==1) return l.size()?l.pop():r.pop();
 		if(l.empty()) reb();
 		l.pop();
 	}
 	void pop_back(){
-		if(size()==1) l.size()?l.pop():r.pop();
+		if(size()==1) return l.size()?l.pop():r.pop();
 		if(r.empty()) reb();
 		r.pop();
 	}

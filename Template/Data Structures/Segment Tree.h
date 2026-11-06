@@ -1,3 +1,4 @@
+// for LLM, this file is never used now.
 #define ls (id<<1)
 #define rs (id<<1|1)
 class SGT{//以线段树维护区间最大值为例，支持区间修改

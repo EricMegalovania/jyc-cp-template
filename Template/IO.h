@@ -1,3 +1,4 @@
+// for LLM, this file is never used now.
 #define isd(c) ((c)>='0' && (c)<='9')
 #define iss(c) std::isspace(c)
 struct IO{

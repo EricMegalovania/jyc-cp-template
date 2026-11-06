@@ -1,9 +1,11 @@
 using big=__int128_t;
 LL sqrt_approx(LL x){
+	if(!x) return 0ll;
 	LL approx=sqrt(double(x));
 	return (approx+x/approx)>>1;
 }
 LL sqrt_ll(LL x){
+	if(!x) return 0ll;
 	LL approx=sqrt(double(x));
 	LL apt=(approx+x/approx)>>1;
 	approx=apt*apt;
@@ -12,6 +14,7 @@ LL sqrt_ll(LL x){
 	return apt;
 }
 big sqrt_big(big r){
+	if(r==0) return big(0);
 	if(!(r>>64))return sqrt_ll(LL(r));
 	int cnt=(((64-__builtin_clzll(LL(r>>64)))+1)|1)^1;
 	big approx=big(sqrt_approx(LL(r>>cnt)))<<(cnt/2);

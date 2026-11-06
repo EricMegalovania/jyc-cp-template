@@ -605,36 +605,36 @@ by fhy
 
 \newpage
 
-\subsection{高精度}
-
-\href{https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h}{BigIntTiny Template Link}，顺便从大佬的 README 里放个 Features preview，不支持的功能就现写吧。
-
-\begin{table}[!ht]
-	\centering
-	\begin{tabular}{|l|l|l|l|l|}
-		\hline
-		operators & BigIntHex & BigIntDec & BigIntMini & BigIntTiny \\ \hline
-		constructor Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
-		constructor int & \cmark & \cmark & \cmark & \cmark \\ \hline
-		constructor char* & \cmark & \cmark & \xmark & \xmark \\ \hline
-		constructor string & \cmark & \cmark & \cmark & \cmark \\ \hline
-		=Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
-		=int & \cmark & \cmark & \cmark & \cmark \\ \hline
-		=string & \cmark & \cmark & \cmark & \cmark \\ \hline
-		=char* & \cmark & \cmark & \cmark & \xmark \\ \hline
-		<, ==, >, <=, >=, != Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
-		+, -, *, /, \% int & \xmark & \xmark & \xmark & \cmark \\ \hline
-		+=, -=, *=, /=, \%= int & \xmark & \xmark & \xmark & \xmark \\ \hline
-		+, -, *, /, \% Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
-		+=, -=, *=, /=, \%= Bigint & \cmark & \cmark & \xmark & \xmark \\ \hline
-		Base conversion & \cmark & \cmark & \xmark & \xmark \\ \hline
-		Efficiency & $\star$ $\star$ $\star$ $\star$ & $\star$ $\star$ $\star$ & $\star$ $\star$ & $\star$ \\ \hline
-	\end{tabular}
-\end{table}
-
-\lstinputlisting[style=C++]{../Template/Math/BigIntTiny.h}
-
-\newpage
+%\subsection{高精度}
+%
+%\href{https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h}{BigIntTiny Template Link}，顺便从大佬的 README 里放个 Features preview，不支持的功能就现写吧。
+%
+%\begin{table}[!ht]
+%	\centering
+%	\begin{tabular}{|l|l|l|l|l|}
+%		\hline
+%		operators & BigIntHex & BigIntDec & BigIntMini & BigIntTiny \\ \hline
+%		constructor Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		constructor int & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		constructor char* & \cmark & \cmark & \xmark & \xmark \\ \hline
+%		constructor string & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		=Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		=int & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		=string & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		=char* & \cmark & \cmark & \cmark & \xmark \\ \hline
+%		<, ==, >, <=, >=, != Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		+, -, *, /, \% int & \xmark & \xmark & \xmark & \cmark \\ \hline
+%		+=, -=, *=, /=, \%= int & \xmark & \xmark & \xmark & \xmark \\ \hline
+%		+, -, *, /, \% Bigint & \cmark & \cmark & \cmark & \cmark \\ \hline
+%		+=, -=, *=, /=, \%= Bigint & \cmark & \cmark & \xmark & \xmark \\ \hline
+%		Base conversion & \cmark & \cmark & \xmark & \xmark \\ \hline
+%		Efficiency & $\star$ $\star$ $\star$ $\star$ & $\star$ $\star$ $\star$ & $\star$ $\star$ & $\star$ \\ \hline
+%	\end{tabular}
+%\end{table}
+%
+%\lstinputlisting[style=C++]{../Template/Math/BigIntTiny.h}
+%
+%\newpage
 
 \subsection{矩阵快速幂}
 
@@ -985,6 +985,12 @@ by fhy
 \newpage
 
 {\centering\section{杂项}}
+
+\subsection{Python 相关}
+
+\input{"../Template/Other/Python.tex"}
+
+\newpage
 
 \subsection{std::views 语法糖}
 

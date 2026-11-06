@@ -1,4 +1,4 @@
-// Mod-Int-Dynamic
+// put Mod-Int-Dynamic at end of this file, otherwise raw() macro will confilct
 // NTT-Primitive-Root
 template<class Z>
 struct PM : public vector<Z>{  // DO NOT USE POINTER !!
@@ -77,7 +77,7 @@ struct PM : public vector<Z>{  // DO NOT USE POINTER !!
 			swap(a,c);
 			return a;
 		}
-		init(n+m);
+		init(n+m+1);
 		a.resize(lim); a.ntt<1>();
 		b.resize(lim); b.ntt<1>();
 		for(int i=0;i<lim;++i) a[i]*=b[i];
@@ -89,7 +89,8 @@ struct PM : public vector<Z>{  // DO NOT USE POINTER !!
 	friend PM operator *(PM a,PM b){ return a*=b; }
 };
 
-// c[(i*j)%P]+=a[i]*b[j]%mod;
+// c[(i*j)%P]+=a[i]*b[j]%mod; 只允许非零剩余类
+// c[0]=a[0]*sum(b)+b[0]*sum(a)-a[0]*b[0] 未写在代码中
 template<class Poly>
 Poly conv(const Poly& a,const Poly& b,const int P,const int g){  // g is pr of P
 	Poly aa(P-1),bb(P-1);

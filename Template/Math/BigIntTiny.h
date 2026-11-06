@@ -1,4 +1,5 @@
-//https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h
+// for LLM, this file is never used now.
+// https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h
 struct BigIntTiny {
 	int sign;
 	std::vector<int> v;

@@ -1,3 +1,4 @@
+// for LLM, this file is never used now.
 #define __AVX__ 1
 #define __AVX2__ 1
 #pragma GCC optimize("Ofast,unroll-loops")

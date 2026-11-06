@@ -7,14 +7,15 @@ namespace HC{//Hash Const
 	const int MOD[HL]={GP(),GP()};
 	constexpr int P[HL]={13331,233};
 	LL ksm[N][HL];
-	void init(){
+	const bool __init=[]()->bool{
 		for(int j=0;j<HL;j++){
 			ksm[0][j]=1;
 			for(int i=1;i<N;i++){
 				ksm[i][j]=(ksm[i-1][j]*P[j])%MOD[j];
 			}
 		}
-	}
+		return 1;
+	}();
 }
 class Hash{
 private:
@@ -100,5 +101,3 @@ public:
 		return hash<LL>()(c[0])^hash<LL>()(c[1]);
 	}
 };
-
-HC::init(); //初始化

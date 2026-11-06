@@ -1,4 +1,5 @@
-// https://www.luogu.com.cn/articl/wzl5otpu
+// https://www.luogu.com.cn/article/wzl5otpu
+// 这个模板是静态查第 K 小 (1-index-based)
 #define ls l,mid,o+1
 #define rs mid+1,r,o+1
 template<typename T>
@@ -9,9 +10,9 @@ struct DVT{ // dividing-tree
 	DVT(){}
 	DVT(const vector<T>& v,int n){init(v,n);}
 	void init(const vector<T>& v,int n){ // a1~an
-		int m=__lg(n)+2;
-		a.resize(m,vector<T>(n+1));
-		tol.resize(m,vector<int>(n+1));
+		int m=bit_width(n)+1;
+		a.assign(m,vector<T>(n+1));
+		tol.assign(m,vector<int>(n+1));
 		b=v;
 		sort(b.begin()+1,b.end());
 		for(int i=1;i<=n;++i) a[0][i]=v[i];

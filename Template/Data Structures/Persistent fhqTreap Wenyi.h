@@ -89,7 +89,7 @@ public:
     }
     int init(const vector<T> &a) {
         roots.push_back(build(0, int(a.size()) - 1, a));
-        return roots.back();
+        return int(roots.size()) - 1;
     }
     int insert(const int ver, const T x) {
         const int nr = merge(roots[ver], New(x));

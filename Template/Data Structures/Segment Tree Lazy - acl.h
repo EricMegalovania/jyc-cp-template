@@ -137,5 +137,6 @@ namespace def{ // example: range add, range sum
 		return 0;
 	}
 	using SGT=_SGT<S,op,e,F,mapping,composition,id>;
+	// SGT sgt(vector<S>(n+1,S{0,1}), n);
 };
 using def::S,def::F,def::SGT;

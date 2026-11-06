@@ -1,6 +1,6 @@
 // #include<template/rb_tree>
 template<class S,int K>
-requires (is_integral_v<S> && K<=sizeof(S)*8)
+requires (is_integral_v<S> && K<sizeof(S)*8)
 struct xorsum{ // a set, no duplicate element
 private:
 	array<rb_tree<S>,K+1>dp{};
