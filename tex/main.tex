@@ -499,6 +499,35 @@ e.g. \href{https://codeforces.com/gym/105813/problem/D}{GYM105813D}. \texttt{xor
 
 \newpage
 
+\subsection{双向完全图分解成哈密顿路径}
+
+将双向完全图 $\overleftrightarrow{K_n}$ 的所有有向边，分解为 $n$ 条有向哈密顿路径。
+
+\textbf{偶数}
+
+$$
+\begin{gathered}
+	1 \to 2 \to 8 \to 3 \to 7 \to 4 \to 6 \to 5 \\
+	2 \to 3 \to 1 \to 4 \to 8 \to 5 \to 7 \to 6 \\
+	3 \to 4 \to 2 \to 5 \to 1 \to 6 \to 8 \to 7 \\
+	4 \to 5 \to 3 \to 6 \to 2 \to 7 \to 1 \to 8 \\
+	5 \to 6 \to 4 \to 7 \to 3 \to 8 \to 2 \to 1 \\
+	6 \to 7 \to 5 \to 8 \to 4 \to 1 \to 3 \to 2 \\
+	7 \to 8 \to 6 \to 1 \to 5 \to 2 \to 4 \to 3 \\
+	8 \to 1 \to 7 \to 2 \to 6 \to 3 \to 5 \to 4
+\end{gathered}
+$$
+
+\textbf{奇数}
+
+仅 $n \ge 7$ 有解
+
+需要用到 \href{https://github.com/Anjiang-Wei/TuscanSquare/blob/main/Tuscan.java}{Tuscan Square (托斯卡纳方阵)}
+
+\lstinputlisting[style=C++]{"../Template/Graphs/Tuscan Square.cpp"}
+
+\newpage
+
 {\centering\section{字符串}}
 
 \subsection{字符串哈希（多重哈希）}
@@ -1077,14 +1106,14 @@ $P.S.$
 
 \newpage
 
-\subsection{加速 std::bitset 的预处理指令}
-
-\begin{lstlisting}[style=C++]
-	#define __AVX__ 1
-	#define __AVX2__ 1
-	#pragma GCC optimize("Ofast,unroll-loops")
-	#pragma GCC target("avx2,bmi,fma,popcnt")
-\end{lstlisting}
+% \subsection{加速 std::bitset 的预处理指令}
+% 
+% \begin{lstlisting}[style=C++]
+% 	#define __AVX__ 1
+% 	#define __AVX2__ 1
+% 	#pragma GCC optimize("Ofast,unroll-loops")
+% 	#pragma GCC target("avx2,bmi,fma,popcnt")
+% \end{lstlisting}
 
 \subsection{某个交互题 trick}
 
@@ -1097,8 +1126,6 @@ $P.S.$
 $$
 [u < v] = [u \leq v-1] = 1 + \left\lfloor \frac{(v-1) - u}{m} \right\rfloor
 $$
-
-% \newpage
 
 \subsection{质因数个数与因数个数的上界}
 

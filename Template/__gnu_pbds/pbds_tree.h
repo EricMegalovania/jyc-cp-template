@@ -64,7 +64,8 @@ namespace __multi_rb_tree{
 			if(it==a.begin()) return e();
 			else return _ret(--it);
 		}
-		bool find(const T& x) const{ return a.find(x)!=a.end(); }
+		// find 的逻辑有问题, 日后再改
+		// bool find(const T& x) const{ return a.find(x)!=a.end(); }
 		bool empty() const{ return a.empty(); }
 		std::size_t size() const{ return a.size(); }
 	};

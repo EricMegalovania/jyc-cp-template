@@ -1,3 +1,4 @@
+// 需要图中每个点都从源点可达, 不然算势能会出问题
 template<typename T1,typename T2> //T1:flow type, T2:cost type
 class MCMF{ //Min Cost Max Flow
 private:
