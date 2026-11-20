@@ -115,6 +115,12 @@
 	% morecomment = [l][\color{green!50!black}\bfseries]{\#},  % # 开头的用绿色高亮
 }
 
+\lstdefinestyle{Bash}{
+	language = {bash},
+	style    = lgeneral,
+	literate = {*}{\raisebox{-0.13ex}{*}}1 {\$\#}{{\$\#}}2 {\#\#}{{\#\#}}2,
+}
+
 \newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
 \setcounter{secnumdepth}{4} % how many sectioning levels to assign numbers to
 \setcounter{tocdepth}{4} % how many sectioning levels to show in ToC
@@ -134,29 +140,33 @@
 
 \subsection{编译用 Bash 脚本}
 
-\lstinputlisting[style=C++]{../tools/compile.sh}
+\lstinputlisting[style=Bash]{../tools/compile.sh}
 
-注意此时开栈只能用 \texttt{ulimit -s 1048576 / 524288 / 262144}, 不能 \texttt{ulimit -s unlimited}
+\subsection{.bashrc}
+
+\lstinputlisting[style=Bash]{../tools/.bashrc}
 
 \subsection{mt19937-64 小指令}
-
-发现老长的板子只有 \texttt{mt19937\_64} 需要记一下, 于是把其他的都删了
 
 \begin{lstlisting}[style=C++]
 mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 \end{lstlisting}
 
+\newpage
+
 \subsection{对拍脚本}
 
-\lstinputlisting[style=C++]{../tools/check.sh}
+\lstinputlisting[style=Bash]{../tools/check.sh}
+
+用法: \texttt{check F.cpp F\_bf.cpp F\_gen.py}, 每次会生成出 \texttt{F\_in.txt} \texttt{F\_out.txt} \texttt{F\_ans.txt}
 
 \newpage
 
-\subsection{Mod-Int-Static 类}
-
-普普通通的整数取模类（注：进行四则运算时，让 Z 在前）
-
-\lstinputlisting[style=C++]{../Template/Mod-Int-Static.h}
+%\subsection{Mod-Int-Static 类}
+%
+%普普通通的整数取模类（注：进行四则运算时，让 Z 在前）
+%
+%\lstinputlisting[style=C++]{../Template/Mod-Int-Static.h}
 
 \newpage
 

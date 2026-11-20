@@ -1,29 +1,32 @@
 #!/bin/bash
-
 set -e
+[ $# -ge 3 ] || { echo 'check wa ac gen'; exit 1; }
 
-[ $# -ge 3 ] || { echo 'check ac wa gen [FILE]'; exit 1; }
-d=${4:-FILE}
+c=${1##*/}
+c=${c%.*}
 
-mkdir -p -- "$d"
-gen=(./gen)
+in=${c}_in.txt
+out=${c}_out.txt
+ans=${c}_ans.txt
 
-for p in ac wa gen; do
-    if [[ $p == gen && $1 == *.py ]]; then
-        cp -- "$1" "$d/gen"
-        gen=(python3 gen)
+PY=pypy  # 根据赛场实际情况变更
+cmd() {
+    if [[ $1 == *.py ]]; then
+        C="$PY $1"
     else
-        g++ -std=c++20 -O2 "$1" -o "$d/$p"
+        bash "$HOME/compile.sh" "${1%.cpp}" || exit 1
+        C="./${1%.cpp}"
     fi
-        shift
-done
+}
 
-cd -- "$d"
+cmd "$1"; W=$C
+cmd "$2"; A=$C
+cmd "$3"; G=$C
 
-for ((i=1;;i++)); do
+for ((i=1;i<=100;i++)); do
     echo "Test $i"
-    "${gen[@]}" > data.in
-    ./ac < data.in > ac.out
-    ./wa < data.in > wa.out
-    diff -bBqZ ac.out wa.out || break
+    $G > "$in" || exit 1
+    $W < "$in" > "$out" || exit 1
+    $A < "$in" > "$ans" || exit 1
+    diff -ubBZ --color=auto "$out" "$ans" || break
 done
