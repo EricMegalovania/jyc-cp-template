@@ -136,9 +136,19 @@
 
 \lstinputlisting[style=C++]{../tools/compile.sh}
 
-\subsection{缺省源}
+注意此时开栈只能用 \texttt{ulimit -s 1048576 / 524288 / 262144}, 不能 \texttt{ulimit -s unlimited}
 
-\lstinputlisting[style=C++]{../Template/Default Source.cpp}
+\subsection{mt19937-64 小指令}
+
+发现老长的板子只有 \texttt{mt19937\_64} 需要记一下, 于是把其他的都删了
+
+\begin{lstlisting}[style=C++]
+mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
+\end{lstlisting}
+
+\subsection{对拍脚本}
+
+\lstinputlisting[style=C++]{../tools/check.sh}
 
 \newpage
 
