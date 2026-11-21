@@ -28,5 +28,5 @@ for ((i=1;i<=100;i++)); do
     $G > "$in"
     $W < "$in" > "$out"
     $A < "$in" > "$ans"
-    diff -ubBZ --color=auto "$out" "$ans" || break
+    diff -ubBZ --color=auto "$out" "$ans"
 done
