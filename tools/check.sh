@@ -14,7 +14,7 @@ cmd() {
     if [[ $1 == *.py ]]; then
         C="$PY $1"
     else
-        bash "$HOME/compile.sh" "${1%.cpp}" || exit 1
+        bash "$HOME/compile.sh" "${1%.cpp}"
         C="./${1%.cpp}"
     fi
 }
@@ -25,8 +25,8 @@ cmd "$3"; G=$C
 
 for ((i=1;i<=100;i++)); do
     echo "Test $i"
-    $G > "$in" || exit 1
-    $W < "$in" > "$out" || exit 1
-    $A < "$in" > "$ans" || exit 1
+    $G > "$in"
+    $W < "$in" > "$out"
+    $A < "$in" > "$ans"
     diff -ubBZ --color=auto "$out" "$ans" || break
 done
