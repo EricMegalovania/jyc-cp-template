@@ -1,5 +1,4 @@
-bitset<N>notP; int phi[N],mn_p[N];
-vector<int>prime;
+bitset<N>notP; int phi[N],mn_p[N]; vector<int>prime;
 bool __init_sieve = []() -> bool { // init [1, N)
 	phi[1]=mn_p[1]=notP[1]=1;
 	for(int i=2;i<N;i++){
