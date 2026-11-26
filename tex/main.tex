@@ -612,6 +612,18 @@ namespace HC{//Hash Const
 
 \newpage
 
+\subsection{后缀数组}
+
+\lstinputlisting[style=C++]{../Template/Strings/Suffix Array.h}
+
+\texttt{h[i] = lcp(sa[i-1], sa[i])}
+
+\texttt{h[1] = 0}
+
+\texttt{lcp(sa[i], sa[j]) = min\{h[i+1 ... j]\}}
+
+\newpage
+
 \subsection{Trie}
 
 \lstinputlisting[style=C++]{../Template/Strings/Trie.h}
