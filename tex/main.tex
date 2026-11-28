@@ -152,6 +152,16 @@
 mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 \end{lstlisting}
 
+\subsection{手动开栈}
+
+\begin{lstlisting}[style=C++]
+int main(){
+	constexpr int size(1024 << 20); // 1024 MB
+	__asm__("movq %0, %%rsp\n" ::"r"((char *)malloc(size) + size));
+	exit(0); // never use `return 0;` if `__asm__`
+}
+\end{lstlisting}
+
 \newpage
 
 \subsection{对拍脚本}
@@ -162,11 +172,11 @@ mt19937_64 rng(chrono::system_clock::now().time_since_epoch().count());
 
 \newpage
 
-%\subsection{Mod-Int-Static 类}
-%
-%普普通通的整数取模类（注：进行四则运算时，让 Z 在前）
-%
-%\lstinputlisting[style=C++]{../Template/Mod-Int-Static.h}
+\subsection{Mod-Int-Static 类}
+
+普普通通的整数取模类（注：进行四则运算时，让 Z 在前）
+
+\lstinputlisting[style=C++]{../Template/Mod-Int-Static.h}
 
 \newpage
 

@@ -6,6 +6,7 @@
   - 编译用 Bash 脚本
   - .bashrc
   - mt19937-64 小指令
+  - 手动开栈
   - 对拍脚本
   - Mod-Int-Static 类
   - Mod-Int-Dynamic 类
